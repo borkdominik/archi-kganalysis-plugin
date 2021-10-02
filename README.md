@@ -9,6 +9,12 @@
 [Archi User Guide](https://www.archimatetool.com/downloads/Archi%20User%20Guide.pdf)  
 [Archi GitHub Repo](https://github.com/archimatetool/archi) ([Wiki](https://github.com/archimatetool/archi/wiki))
 
+**Archi Plugins**  
+[ArchiContribs](http://archi-contribs.github.io/)  
+[Specialization Plugin](https://github.com/archi-contribs/specialization-plugin) - Icons and labels can be replaced in Archi  
+[Form Plugin](https://github.com/archi-contribs/form-plugin) - Allows to create forms to view and edit Archi models  
+[Repository Plugin](https://github.com/archimatetool/archi-modelrepository-plugin) - Allows collaborative work on Archi (sharing and versioning)
+
 Archi Concepts and Colors:
 <img src="https://www.archimatetool.com/wp-content/uploads/2018/11/ArchiMate-3.0-Notation-Overview-ArchiMate-standard-default-color-scheme.png">
 
