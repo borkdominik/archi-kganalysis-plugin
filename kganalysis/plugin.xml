@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.archimatetool.editor.exportHandler">
+      <exportHandler
+            class="kganalysis.KGAnalysisExporter"
+            id="kganalysis.exportHandler"
+            label="Hello KG Analysis">
+      </exportHandler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="kganalysis.command.showSmellsView"
+            name="Show Smells View">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu?after=tools">
+         <menu
+               id="kganalysi.menu"
+               label="KG Analysis Menu">
+            <command
+                  commandId="kganalysis.command.showSmellsView"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="kganalysis.preferences.SamplePreferencePage"
+            id="kganalysis.preferences.SamplePreferencePage"
+            name="KG Analysis Plugin">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="kganalysis.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

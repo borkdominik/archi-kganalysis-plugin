@@ -1,12 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Knowledge Graph Analysis Tool
-Bundle-SymbolicName: org.kganalysis;singleton:=true
+Bundle-SymbolicName: kganalysis;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Philipp-Lorenz Glaser
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.archimatetool.editor
-Automatic-Module-Name: org.kganalysis
+Automatic-Module-Name: kganalysis
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: kganalysis.KGAnalysisPlugin

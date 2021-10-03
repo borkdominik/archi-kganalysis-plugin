@@ -3,7 +3,7 @@
  * are made available under the terms of the License
  * which accompanies this distribution in the file LICENSE.txt
  */
-package com.kganalysis;
+package kganalysis;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,15 +28,16 @@ import com.archimatetool.model.IFolder;
 /**
  * Example Exporter of Archimate model
  * 
+ * @author Phillip Beauvoir
  */
-public class MyExporter implements IModelExporter {
+public class KGAnalysisExporter implements IModelExporter {
     
     String MY_EXTENSION = ".mex"; //$NON-NLS-1$
     String MY_EXTENSION_WILDCARD = "*.mex"; //$NON-NLS-1$
     
     private OutputStreamWriter writer;
     
-    public MyExporter() {
+    public KGAnalysisExporter() {
     }
 
     @Override
