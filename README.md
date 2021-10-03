@@ -49,18 +49,22 @@ Archi Concepts:
 
 Archi is developed based on the Eclipse Rich Client Platform (RCP).  
 
-Eclipse application consists of individual software components, called *plug-ins* (e.g. new menu entries, toolbar entries). Eclipse RCP application typically uses the same base components as the Eclipse IDE and also add application-specific components on top. Core Components of the Eclipse Platform:
-- **OSGi**, specification for modular Java applications
-- **Equinox**, implementation of the OSGi specification, used by Eclipse 
-- **SWT**,  standard  user  interface  component  library  used  by Eclipse (+ JFace)
-- **Workbench**, provides framework for the application, responsible for all other UI components
-
-<img src="https://www.vogella.com/tutorials/EclipseRCP/img/architecture20.png" width="60%">
-</center>
-
-Important configuration files:
+#### Plug-in manifest
+Ties all the code and resources together. Split into 2 manifest files:
 - `MANIFEST.MF`, contains OSGi configuration information (API and dependencies)
 - `plugin.xml`, contains Eclipse specific extension mechanisms, *Extension-points* (interfaces  for plug-ins  to  contribute  functionality) and *Extensions* (functionality)
+
+#### SWT and JFace
+
+**Standard Widget Toolkit (SWT)** - Java based user interface library, provides lots of standard widgets, e.g., buttons and text field or custom widgets  
+**JFace** - adds additional convenient functionality on top of SWT and makes the usage of SWT simpler (e.g., JFace builder API)
+
+Key components of SWT:
+- `Shell` - represents Window
+- `Display` - manages event loops, fonts, colors (base for all SWT components)
+
+[Available SWT widgets](https://www.eclipse.org/swt/widgets/)
+
 
 ### Links and Publications 
 
