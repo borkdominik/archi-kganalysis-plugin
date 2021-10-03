@@ -31,7 +31,7 @@
 
 ArchiMate Language Model (Structure):
 
-<img src="./images/archi-language.png" width="60%">
+<img src="./images/archi-language.png" width="50%">
 
 **ArchiMate Framework** classifies the elements of the language structure into *layers* and *aspects*.
 
@@ -50,7 +50,7 @@ ArchiMate Language Model (Structure):
 
 ArchiMate Framework:
 
-<img src="./images/archi-framework.png" width="80%">
+<img src="./images/archi-framework.png" width="60%">
 
 <br>
 
@@ -89,6 +89,7 @@ Key components of SWT:
 
 [Available SWT widgets](https://www.eclipse.org/swt/widgets/)
 
+<br>
 
 ### Links and Publications 
 
