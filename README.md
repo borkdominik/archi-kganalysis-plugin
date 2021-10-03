@@ -118,6 +118,9 @@ Key components of SWT:
 [Specialization Plugin](https://github.com/archi-contribs/specialization-plugin) - Icons and labels can be replaced in Archi  
 [Form Plugin](https://github.com/archi-contribs/form-plugin) - Allows to create forms to view and edit Archi models  
 [Repository Plugin](https://github.com/archimatetool/archi-modelrepository-plugin) - Allows collaborative work on Archi (sharing and versioning)
+
+
+**RCP**  
 [RCP Page Eclipse Wiki](http://wiki.eclipse.org/Rich_Client_Platform)
 
 #### Publications
