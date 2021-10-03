@@ -52,6 +52,18 @@ ArchiMate Framework:
 
 <img src="./images/archi-framework.png" width="60%">
 
+
+**Relationships**
+
+[Overview](https://archimate.visual-paradigm.com/archimate-notation-part-8-relationships/)
+
+- *Structural* - e.g. aggregation (element consists of one or more other elements) or realization
+- *Dependency* - e.g. serving (element provides functionality to other element)
+- *Dynamic* - e.g. flow (transfer from one elemet to another)
+- *Other* - e.g. specialization (kind of other element) or association, junction
+
+
+
 <br>
 
 ### Archi
@@ -96,6 +108,7 @@ Key components of SWT:
 #### Links
 
 [ArchiMate Language Specification](https://pubs.opengroup.org/architecture/archimate31-doc/toc.html)  
+[ArchiMate Concepts Overview](https://archimate.visual-paradigm.com/category/archimate-concepts/)  
 [Archi User Guide](https://www.archimatetool.com/downloads/Archi%20User%20Guide.pdf)  
 [Archi GitHub Repo](https://github.com/archimatetool/archi) ([Wiki](https://github.com/archimatetool/archi/wiki))
 
