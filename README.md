@@ -25,17 +25,41 @@
 
 ## Notes
 
-### Archi and ArchiMate
+### ArchiMate
 
-ArchiMate language comprises 5 **layers**:
-- *Business* - business proccesses, functions, events, roles, services
-- *Application* - components, interfaces, data objects
-- *Technology* - artifacts, nodes, software, devices
-- *Motivation* - business drivers, goals, requirementss
-- *Implementation & Migration* - work package, deliverable, gap
+**ArchiMate Language** defines the concepts to model Enterprise Architectures.
+
+ArchiMate Language Model (Structure):
+
+<img src="./images/archi-language.png" width="60%">
+
+**ArchiMate Framework** classifies the elements of the language structure into *layers* and *aspects*.
+
+**Layers**
+- *Motivation* - why?
+- *Strategy* - how to get there?
+- *Business* - structure and function of business organization (conceptual)
+- *Application* - running apps, available data (logical)
+- *Technology* - (logical & physical)
+- *Implementation & Migration*
+
+**Aspects**
+- *Passive Structure* - structural elements (business actors, application componets)
+- *Behaviour* - behaviour (processes, functions, events) performed by actors
+- *Active Structure* - objects on which behavior is performed
+
+ArchiMate Framework:
+
+<img src="./images/archi-framework.png" width="80%">
+
+<br>
+
+### Archi
+
+Archi uses ArchiMate language
 
 Archi Concepts:
-<img src="https://www.archimatetool.com/wp-content/uploads/2018/11/ArchiMate-3.0-Notation-Overview-ArchiMate-standard-default-color-scheme.png">
+<img src="https://www.archimatetool.com/wp-content/uploads/2018/11/ArchiMate-3.0-Notation-Overview-ArchiMate-standard-default-color-scheme.png" width="90%">
 
 <br>
 
