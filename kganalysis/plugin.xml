@@ -6,30 +6,8 @@
       <exportHandler
             class="kganalysis.KGAnalysisExporter"
             id="kganalysis.exportHandler"
-            label="Hello KG Analysis">
+            label="Export to Knowledge Graph">
       </exportHandler>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            id="kganalysis.command.showSmellsView"
-            name="Show Smells View">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="menu:org.eclipse.ui.main.menu?after=tools">
-         <menu
-               id="kganalysi.menu"
-               label="KG Analysis Menu">
-            <command
-                  commandId="kganalysis.command.showSmellsView"
-                  style="push">
-            </command>
-         </menu>
-      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
@@ -44,6 +22,64 @@
       <initializer
             class="kganalysis.preferences.PreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="kganalysis.ShowKGAnalysisView"
+            id="kganalysis.command.showKGAnalysisView"
+            name="Show KG Analysis View">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:window?after=show_view_append">
+          <command
+                commandId="kganalysis.command.showKGAnalysisView"
+                id="kganalysis.menuitem.showKGAnalysisView"
+                icon="icons/sample.png"
+                label="KG Analysis"
+                style="push">
+          </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:toolbar_views?after=com.archimatetool.hammer.toolbaritem.showValidatorView">
+          <command
+                commandId="kganalysis.command.showKGAnalysisView"
+                icon="icons/sample.png"
+                id="kganalysis.toolbars.showKGAnalysisView"
+                tooltip="KG Analysis">
+           </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="kganalysis.views.KGAnalysisView"
+            icon="icons/sample.png"
+            id="kganalysis.kgAnalysisView"
+            name="KG Analysis View"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="*">
+         <view
+               id="kganalysis.kgAnalysisView"
+               minimized="false"
+               relationship="stack"
+               relative="com.archimatetool.editor.propertiesView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="kganalysis.Startup">
+      </startup>
    </extension>
 
 </plugin>
