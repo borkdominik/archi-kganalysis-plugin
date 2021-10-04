@@ -5,19 +5,23 @@
 
 ## Archi Customizations
 
+### Menubar
+
+<img src="./images/menubar.png" width="50%">
+
+### Toolbar
+
+<img src="./images/toolbar.png" width="50%">
+
+
 ### Import/Export
 
-<!-- TODO -->
+<img src="./images/export.png" width="50%">
 
 
 ### Preferences
 
-<img src="./images/preferences.png" width="80%">
-
-
-### Menubar
-
-<!-- TODO -->
+<img src="./images/preferences.png" width="70%">
 
 
 ---
@@ -77,7 +81,12 @@ Archi Concepts:
 
 ### EA Smells
 
+Concept (similar to Code Smells) which indicate possible Technical Debts.
+
 [Knowledge Base for EA Smells](https://swc-public.pages.rwth-aachen.de/smells/ea-smells/)
+
+
+
 
 <br>
 
