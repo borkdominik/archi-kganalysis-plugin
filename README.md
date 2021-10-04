@@ -21,7 +21,12 @@
 
 ### Preferences
 
-<img src="./images/preferences.png" width="70%">
+<img src="./images/preferences.png" width="60%">
+
+
+### Basic View
+
+<img src="./images/basic-view.png" width="60%">
 
 
 ---
