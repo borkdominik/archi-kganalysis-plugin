@@ -47,3 +47,28 @@ Archi Concepts:
 <img src="https://www.archimatetool.com/wp-content/uploads/2018/11/ArchiMate-3.0-Notation-Overview-ArchiMate-standard-default-color-scheme.png" width="90%">
 
 <br>
+
+## Archi Customizations
+
+### Menubar
+
+<img src="../images/menubar.png" width="50%">
+
+### Toolbar
+
+<img src="../images/toolbar.png" width="50%">
+
+
+### Import/Export
+
+<img src="../images/export.png" width="50%">
+
+
+### Preferences
+
+<img src="../images/preferences.png" width="60%">
+
+
+### Basic View
+
+<img src="./images/basic-view.png" width="60%">
