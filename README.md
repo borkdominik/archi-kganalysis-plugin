@@ -1,16 +1,12 @@
-
-# archi-kganalysis-plugin
-
-
-<center>
-<img src="./images/logo.png" width="20%">
-</center>
+<h1 align="center">Archi KG Analaysis Plugin </h1>
+<p align="center">
+  <img src="./images/logo.png" width="20%">
+</p>
 
 <br>
 
-[Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
+> [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
 
-----
 
 ## Concept Draft
 
@@ -20,29 +16,25 @@
 
 <!-- TODO: Picture of Knowledge Graph View -->
 
-- Main View (top-right)
-- Initiated through `View Knowledge Graph` action 
+Initiated through `View Knowledge Graph` action.
 
-*Graph Visualization*
+**Graph Visualization**
 
 Archi model is automatically transformed and uploaded to a neo4j database (as .graphml). This requires to configure the database connection first (credentials/server/port). Neovis.js then visualizes the graph and adds additional graph algorithms.
 
-*Graph Algorithms*
-
-Adds additional visualization:
+**Graph Algorithms**
 
 - Node size -> Centralities
 - Color -> Community Detection
 - Relationship Thickness -> Weight
 
-### EA Smells
+### EA Smells (Additional View)
 
 <!-- TODO: Picture of EA Smells View -->
   
-- *Additional View* (bottom-right)
-- Initiated through `Detect EA Smells` action
+Initiated through `Detect EA Smells` action.
 
-View contains tabular list of detected EA smells. Individual, detected smells can be expanded:
+Contains tabular list of detected EA smells. Individual, detected smells can be expanded:
 - EA Smell Description
 - Affected elements
 - Action: Jump to smell in archi model/knowledge graph
@@ -51,7 +43,7 @@ View contains tabular list of detected EA smells. Individual, detected smells ca
 
 <!-- TODO: Picture of Archi View (https://github.com/archimatetool/archi-modelrepository-plugin/wiki/Understand-the-Basics) -->
 
-*Menu*
+**Menu**
 
 <img src="./images/kg-menu.png" width="70%">
 
@@ -60,28 +52,29 @@ View contains tabular list of detected EA smells. Individual, detected smells ca
 - View Knowledge Graph in external browser
 - Detect EA Smells
 
-*Toolbar* 
+**Toolbar** 
 
 <img src="./images/kg-toolbar.png" width="70%">
 
 - Knowledge Graph
 - Detect EA Smells
 
-*Views*
+**Views**
 
 - Top-Right: Knowledge Graph View
 - Bottom-Right EA Smells View
 
-
 ### Additional Features
 
-#### Export/Import
+Overview of additional features that will be included in the plugin (implementation in later stages).
+
+**Export/Import**
 
 New menu entry in `File -> Export`:
 - Model to GraphML
 - Model to RDF/OWL
 
-#### Preferences
+**Preferences**
 
 1. Plugin
    - Current Version
@@ -94,7 +87,7 @@ New menu entry in `File -> Export`:
    - Detect EA Smells when model gets saved automatically (implicit)
    - Detect EA Smells when executing respective Command (explicit)
 
-#### Graph Analysis
+**Graph Analysis**
 
 Graph analysis/algorithm functionality (offered in the CM2KG platform).
 
@@ -112,7 +105,6 @@ Community Detection:
 - Modularity Optimization
 - Label Propagation
 - Local Clustering Coefficient
-
 
 
 ## Questions
