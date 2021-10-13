@@ -28,7 +28,7 @@ Archi model is automatically transformed and uploaded to a neo4j database (as .g
 - Color -> Community Detection
 - Relationship Thickness -> Weight
 
-### EA Smells (Additional View)
+### EA Smells
 
 <!-- TODO: Picture of EA Smells View -->
   
@@ -47,17 +47,9 @@ Contains tabular list of detected EA smells. Individual, detected smells can be 
 
 <img src="./images/kg-menu.png" width="70%">
 
-"Knowledge Graph" menu entry:
-- View Knowledge Graph
-- View Knowledge Graph in external browser
-- Detect EA Smells
-
 **Toolbar** 
 
 <img src="./images/kg-toolbar.png" width="70%">
-
-- Knowledge Graph
-- Detect EA Smells
 
 **Views**
 
@@ -123,6 +115,16 @@ Import jar?
 > What can be used from CM2KG
 
 whole web interface?
+
+
+## Next Steps
+
+- [ ] Make neo4j connection configurable
+  - [ ] Set in Preferences or new additional View
+- [ ] Use CM2KG to transform model and upload it to neo4j
+- [ ] Implement Graph Analysis/Algorithms in "Knowledge Graph View"
+- [ ] Implement EA Smell Detection
+  - [ ] Expand individual EA Smells showing the affected elements
 
 ---
 

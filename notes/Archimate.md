@@ -50,14 +50,6 @@ Archi Concepts:
 
 ## Archi Customizations
 
-### Menubar
-
-<img src="../images/menubar.png" width="50%">
-
-### Toolbar
-
-<img src="../images/toolbar.png" width="50%">
-
 
 ### Import/Export
 
@@ -67,8 +59,3 @@ Archi Concepts:
 ### Preferences
 
 <img src="../images/preferences.png" width="60%">
-
-
-### Basic View
-
-<img src="./images/basic-view.png" width="60%">
