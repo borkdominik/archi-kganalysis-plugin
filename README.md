@@ -98,33 +98,21 @@ Community Detection:
 - Label Propagation
 - Local Clustering Coefficient
 
+## Questions and Next Steps
 
-## Questions
+Target Audience: EA Architects  
+-> Only provide Graph Analysis + EA Smell Detection for now  
+-> "Hide" database from user, no custom queries  
+ 
 
-> 3rd View (bottom-left)?  
+Include neo4j within client?  
+-> Embedded Neo4j, then send data or driver to neovis
 
-"Database" View?
-
-Shows active connection to database.  
-If no connection: Configuration to connect to a neo4j db
-
-> Prefered way to use CM2KG?
-
-Import jar?
-
-> What can be used from CM2KG
-
-whole web interface?
-
-
-## Next Steps
-
-- [ ] Make neo4j connection configurable
-  - [ ] Set in Preferences or new additional View
-- [ ] Use CM2KG to transform model and upload it to neo4j
+- [ ] Embedded Neo4J Database
+  - [ ] Render embedded database with neovis 
+- [ ] Use CM2KG to transform model
 - [ ] Implement Graph Analysis/Algorithms in "Knowledge Graph View"
 - [ ] Implement EA Smell Detection
-  - [ ] Expand individual EA Smells showing the affected elements
 
 ---
 
