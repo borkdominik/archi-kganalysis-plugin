@@ -1,5 +1,11 @@
 package kganalysis;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import org.eclipse.core.runtime.Path;
+
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -17,6 +23,8 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	public static KGAnalysisPlugin INSTANCE;
+	
+	private static File fPluginFolder;
 		
 	public KGAnalysisPlugin() {
 		INSTANCE = this;
@@ -34,13 +42,37 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	*/
+	
 	public static KGAnalysisPlugin getDefault() {
 		return INSTANCE;
 	}
+	
+	
+    public File getPluginFolder() {
+        if(fPluginFolder == null) {
+            URL url = getBundle().getEntry("/"); //$NON-NLS-1$
+            try {
+                url = FileLocator.resolve(url);
+            }
+            catch(IOException ex) {
+                ex.printStackTrace();
+            }
+            fPluginFolder = new File(url.getPath());
+        }
+        
+        return fPluginFolder;
+    }
+    
+    public File getTemplatesFolder() {
+    	URL url = FileLocator.find(getBundle(), new Path("$nl$/templates"), null); //$NON-NLS-1$
+    	try {
+            url = FileLocator.resolve(url);
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+        return new File(url.getPath()); 
+    }
+    
 
 }

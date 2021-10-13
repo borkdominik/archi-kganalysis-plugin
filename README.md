@@ -14,6 +14,8 @@
 
 ## Concept Draft
 
+<img src="./images/kg-archi.png" width="100%">
+
 ### Knowledge Graph
 
 <!-- TODO: Picture of Knowledge Graph View -->
@@ -51,12 +53,16 @@ View contains tabular list of detected EA smells. Individual, detected smells ca
 
 *Menu*
 
+<img src="./images/kg-menu.png" width="70%">
+
 "Knowledge Graph" menu entry:
 - View Knowledge Graph
 - View Knowledge Graph in external browser
 - Detect EA Smells
 
 *Toolbar* 
+
+<img src="./images/kg-toolbar.png" width="70%">
 
 - Knowledge Graph
 - Detect EA Smells
@@ -147,13 +153,13 @@ General:
 
 Implementation:
 
-- [ ] Toolbar entries
-  - [ ] Knowledge Graph
-  - [ ] Detect EA Smells
-- [ ] Menu entries
-  - [ ] View Knowledge Graph
-  - [ ] View Knowledge Graph in external browser
-  - [ ] Detect EA Smells
+- [x] Toolbar entries
+  - [x] Knowledge Graph
+  - [x] Detect EA Smells
+- [x] Menu entries
+  - [x] View Knowledge Graph
+  - [x] View Knowledge Graph in external browser
+  - [x] Detect EA Smells
 - [x] Knowledge Graph View (draft)
   - [x] Graph Visualization
 - [x] Basic EA Smells View (draft)

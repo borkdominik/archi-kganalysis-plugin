@@ -6,9 +6,11 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Philipp-Lorenz Glaser
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
+Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- com.archimatetool.editor
+ com.archimatetool.editor,
+ com.archimatetool.editor.browser
 Automatic-Module-Name: kganalysis
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: kganalysis.KGAnalysisPlugin
