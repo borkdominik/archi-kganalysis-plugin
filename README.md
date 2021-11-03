@@ -8,36 +8,100 @@
 > [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
 
 
-## Concept Draft
+## Concept Draft 
 
-<img src="./images/kg-archi.png" width="100%">
+Target Audience: EA Architects 
+
+- View Archi model as a **Knowledge Graph**
+- **Detect EA Smells** within the model
+- Perform common **Graph Analysis algorithms**
+
 
 ### Knowledge Graph
 
-<!-- TODO: Picture of Knowledge Graph View -->
+Transforms ArchiMate models into a graph structure and adds visualization in form of a *Knowledge Graph*.
 
-Initiated through `View Knowledge Graph` action.
+<img src="./images/kg-archi.png" width="70%">
 
-**Graph Visualization**
+The Knowledge Graph View allows for further analysis on the ArchiMate model by offering typical graph algorithms for *Centralities* and *Community Detection*. EA Smell Detection is enabled by executing predefined cypher queries on the graph, while there is also an option to run custom, user-defined queries.
 
-Archi model is automatically transformed and uploaded to a neo4j database (as .graphml). This requires to configure the database connection first (credentials/server/port). Neovis.js then visualizes the graph and adds additional graph algorithms.
+**Technical Details**
 
-**Graph Algorithms**
+Once the `View Knowledge Graph` Action is executed the currently opened model is transformed into a graph structure (GraphML format) by using [CM2KG](https://github.com/borkdominik/CM2KG). If no model is loaded in Archi the Action can not be executed (e.g. menu grayed out).
 
-- Node size -> Centralities
-- Color -> Community Detection
-- Relationship Thickness -> Weight
+The transformation is done in the background and the GraphML file is stored in the Archi user directory (`/Library/Application Support/Archi4` on Mac). 
 
-### EA Smells
+Next Step: Visualize the transformed model as a Knowledge Graph
 
-<!-- TODO: Picture of EA Smells View -->
-  
-Initiated through `Detect EA Smells` action.
+> TODO ⚠️ 
 
-Contains tabular list of detected EA smells. Individual, detected smells can be expanded:
-- EA Smell Description
-- Affected elements
-- Action: Jump to smell in archi model/knowledge graph
+#### 1st Approach - New graph visualization framework
+
+Use a new tool to directly visualize the GraphML model. 
+
+*Advantages*: 
+- Plugin works independently, no graph database required. 
+- User does not need to be concerned with setting up an external database and connecting to it.
+
+*Problems*:
+- No appropriate tool found yet
+- Graph Analysis (Algorithms, EA Smells) might have to be implemented from scratch or could become a tedious/complex task to perfom (e.g. no queries available, no default algorithms like in neovis)
+- Knowledge Graph "Visualization" such as in Neovis might not be available (e.g. colors for communities, size of nodes/edges determined by weight/rank)
+
+[List of Graph Visualization Tools](ttps://elise-deux.medium.com/list-of-free-graph-visualization-applications-9c4ff5c1b3cd)  ➜ Mostly tools for specific use-cases (e.g. social media graphs) or unfitting for an Archi Plugin. 
+
+
+#### 2nd Approach - Keep using neo4j with neovis.js
+
+Transformed model gets stored into a Neo4j database instance, which is either embedded or externally set up by the user. Neovis.js then connects to the instance and visualizes the stored Knowledge Graph. 
+
+*Advantages*: 
+- Advanced Graph Analysis becomes easier to perform (cypher queries, neo4j/neovis default features)
+- Ready-to-use Visualization and easy to configure
+
+*Problems*:
+- External vs Embedded Neo4j instance, not sure if embedded possible
+
+*Embedded Instance*: Creates a new neo4j database instance and stores the transformed model. Neovis then connects to the embedded instance and renders the Knowledge Graph. All of this is done in the background and the user does not have to be concerned with any neo4j setup.  
+➜ Still not sure if the embedded neo4j driver can be used within an Archi plugin 
+
+*External Instance*: Requires user to set up an external neo4j database instance (e.g. through Desktop app or sandbox)and provide connections details to the plugin (e.g. in preferences or own view). Neovis then uses this information to connect to the database and render the Knowledge Graph.  
+➜ Definitely possible, but well established concept required for appropriate user experience
+
+
+#### EA Smells
+
+> TODO ⚠️ 
+
+Contains tabular list of detected EA smells. 
+
+#### Graph Analysis
+
+> TODO ⚠️ 
+
+Node size -> Centralities  
+Color -> Community Detection  
+Relationship Thickness -> Weight
+
+Graph analysis/algorithm functionality offered within the CM2KG platform:
+
+**Centralities**:
+- Degree
+- Eigenvector
+- Page Rank
+- Article Rank
+- Betweenes
+- Approx. Betweenes
+- Closeness
+
+**Community Detection**:
+- Louvain
+- Modularity Optimization
+- Label Propagation
+- Local Clustering Coefficient
+
+---
+
 
 ### User Interface elements
 
@@ -79,26 +143,8 @@ New menu entry in `File -> Export`:
    - Detect EA Smells when model gets saved automatically (implicit)
    - Detect EA Smells when executing respective Command (explicit)
 
-**Graph Analysis**
 
-Graph analysis/algorithm functionality (offered in the CM2KG platform).
-
-Centralities:
-- Degree
-- Eigenvector
-- Page Rank
-- Article Rank
-- Betweenes
-- Approx. Betweenes
-- Closeness
-
-Community Detection:
-- Louvain
-- Modularity Optimization
-- Label Propagation
-- Local Clustering Coefficient
-
-## Questions and Next Steps
+## Meeting Notes
 
 Target Audience: EA Architects  
 -> Only provide Graph Analysis + EA Smell Detection for now  
@@ -108,11 +154,6 @@ Target Audience: EA Architects
 Include neo4j within client?  
 -> Embedded Neo4j, then send data or driver to neovis
 
-- [ ] Embedded Neo4J Database
-  - [ ] Render embedded database with neovis 
-- [ ] Use CM2KG to transform model
-- [ ] Implement Graph Analysis/Algorithms in "Knowledge Graph View"
-- [ ] Implement EA Smell Detection
 
 ---
 
@@ -121,35 +162,14 @@ Include neo4j within client?
 
 ## TODO
 
-General:
+- [ ] Use CM2KG to transform model
+- [ ] External Neo4J Database
+  - [ ] Render with neovis 
+- [ ] Embedded Neo4J Database
+  - [ ] Render with neovis 
+- [ ] Implement Graph Analysis/Algorithms in "Knowledge Graph View"
+- [ ] Implement EA Smell Detection
 
-- [x] Create Concept Draft
-- [x] Add new icon
-- [x] Analyse Archimate Extension options
-  - [x] JavaSript in Views possible?
-  - [x] Neo4j Integration
-- [ ] Analyse CM2KG/eGEAA Platforms
-  - [x] What can the platforms do
-  - [ ] How does the Knowledge Graph look like
-  - [ ] How to include platform in the plugin?
-
-Implementation:
-
-- [x] Toolbar entries
-  - [x] Knowledge Graph
-  - [x] Detect EA Smells
-- [x] Menu entries
-  - [x] View Knowledge Graph
-  - [x] View Knowledge Graph in external browser
-  - [x] Detect EA Smells
-- [x] Knowledge Graph View (draft)
-  - [x] Graph Visualization
-- [x] Basic EA Smells View (draft)
-  - [x] Table
-- [ ] CM2KG 
-  - [ ] Import/Connect CM2KG with plugin
-  - [ ] Transform Archi model to GraphML
-  - [ ] Visualize Neo4J DB
 
 ---
 <br>
