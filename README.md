@@ -1,4 +1,4 @@
-<h1 align="center">Archi KG Analaysis Plugin </h1>
+<h1 align="center">Archi KG Analysis Plugin </h1>
 <p align="center">
   <img src="./images/logo.png" width="20%">
 </p>
