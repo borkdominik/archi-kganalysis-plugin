@@ -8,7 +8,14 @@
 > [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
 
 
-## To-Do
+## Current To-Do
+
+- [ ] Transform current Archi Model
+  - [ ] Export model as CSV
+  - [x] Load exported CSV files into neo4j
+- [ ] neovis.js Visualization
+  - [ ] Refactor index.html
+  - [ ] Configure labels/relationships
 
 
 
