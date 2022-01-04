@@ -18,7 +18,7 @@ public class EASmellsView extends ViewPart {
 	
 	public static String ID = "kganalysis.eaSmellsView"; //$NON-NLS-1$
 
-	private KGAnalysisViewer fViewer;
+	private EASmellsViewer fViewer;
 	
 	private IArchimateModel fModel;
 	
@@ -39,7 +39,7 @@ public class EASmellsView extends ViewPart {
         treeComp.setLayoutData(new GridData(GridData.FILL_BOTH));
         
         // TODO: Add JFace Viewer
-        fViewer = new KGAnalysisViewer(treeComp, SWT.NULL);
+        fViewer = new EASmellsViewer(treeComp, SWT.NULL);
         
         makeLocalActions();
         registerGlobalActions();
@@ -94,7 +94,7 @@ public class EASmellsView extends ViewPart {
         //TODO: Detect EA Smells Action
     }
     
-    public KGAnalysisViewer getViewer() {
+    public EASmellsViewer getViewer() {
         return fViewer;
     }
 	

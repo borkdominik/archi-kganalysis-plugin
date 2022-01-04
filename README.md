@@ -8,14 +8,11 @@
 > [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
 
 
-## Concept Draft 
+## To-Do
 
-Target Audience: EA Architects 
 
-- View Archi model as a **Knowledge Graph**
-- **Detect EA Smells** within the model
-- Perform common **Graph Analysis algorithms**
 
+## Overview
 
 ### Knowledge Graph
 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Knowledge Graph</title>
+    <style type="text/css">
+        html, body {
+            font: 16pt arial;
+        }
+
+        body {
+        	display: flex;
+        	flex-direction: row;
+        }
+
+        #panel-right {
+        	margin: 0.5em;
+        }
+
+        #viz {
+            margin: 0.5em;
+            width: 750px;
+            height: 550px;
+            border: 1px solid lightgray;
+            font: 22pt arial;
+        }
+
+    </style>
+
+	<script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/neo4j-driver"></script>
+    <script type="text/javascript">
+
+    	var viz;
+
+		function draw(labelConf) {
+			var config = {
+				container_id: "viz",
+				server_url: "bolt://localhost:7687",
+				//server_user: "neo4j",
+				//server_password: "abc",
+				//labels: labelConf,
+				labels: {
+					"Object": {
+						"caption": "ClassName",
+							"size": "score",
+							"community": "community"
+					}
+				},
+				relationships: {
+					"RELATED": {
+						"thickness": "weight",
+						"caption": false,
+						[NeoVis.NEOVIS_ADVANCED_CONFIG]: { 
+                			
+                			function: {
+                    			title: NeoVis.objectToTitleHtml
+                			}
+						} 
+					}
+				},
+				initial_cypher: "MATCH (n)-[r]->(m) RETURN *",
+				arrows: true,
+			};
+
+			//const newConfig = NeoVis.migrateFromOldConfig(oldConfig);
+
+			viz = new NeoVis.default(config);
+			viz.render();
+			console.log(viz);
+
+		}
+
+		var labelConf = [];
+
+		function addConfig() {
+			var driver = neo4j.driver(
+				'bolt://localhost:7687',
+				//neo4j.auth.basic('neo4j', 'abc')
+			);
+
+			labelConf = [];
+		
+			var communityCounter = 0;
+			var session = driver.session();
+			session.run("MATCH (n) RETURN distinct labels(n)[0] as label", {
+
+			})
+			.subscribe({
+				onKeys: keys => {
+					console.log(keys)
+				},
+				onNext: record => {
+					console.log(record.get('label'));
+					if (record.get('label')) {
+						
+						var communityResult;
+
+						communityResult = $("#community").val();
+						
+						labelConf[record.get('label')] = {
+							"caption": "className",
+							"size": "score",
+							"community": "community",
+
+						};
+					}
+					communityCounter++;
+
+				},
+				onCompleted: () => {
+					session.close() // returns a Promise
+					driver.close();
+					console.log(labelConf);
+
+					console.log(JSON.stringify(labelConf));
+					draw(labelConf);
+				},
+				onError: error => {
+					console.log(error)
+				}
+			});
+	}
+
+    </script>
+    
+</head>
+<body onload="draw()">
+<div id="viz"></div>
+
+<div id="panel-right">
+	Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea>
+	<br>
+	<input type="submit" value="Submit" id="reload">
+	<input type="submit" value="Get All" id="getAllNodes">
+	<input type="submit" value="Stabilize" id="stabilize">
+	<br>
+	<br>
+	EA Smells:
+	<input type="submit" value="Detect all EA Smells" id="all-smells">
+	<input type="submit" value="Cyclic Dependency" id="cyclic-dependency">
+	<input type="submit" value="Dead Component" id="dead-component">
+	<br>
+	<br>
+	Graph Algorithms:
+	<input type="submit" value="Louvain (Community)" id="louvain">
+	<input type="submit" value="Degree" id="degree">
+</div>
+
+
+
+
+</body>
+
+<script>
+	$("#reload").click(function() {
+
+		var cypher = $("#cypher").val();
+
+		if (cypher.length > 3) {
+			viz.renderWithCypher(cypher);
+		} else {
+			console.log("reload");
+			viz.reload();
+
+		}
+	});
+
+	$("#stabilize").click(function() {
+		viz.stabilize();
+	});
+
+	$("#getAllNodes").on('click', function() {
+		getAll(null);
+	});
+
+	$("#louvain").on('click', function() {
+		var driver = neo4j.driver(
+			'bolt://localhost:7687',
+			neo4j.auth.basic('neo4j', 'admin')
+		);
+
+		var session = driver.session();
+		session.run((louvain), {
+
+			})
+			.subscribe({
+				onKeys: keys => {
+					console.log(keys)
+				},
+				onNext: record => {
+					//console.log(record.get('name'))
+				},
+				onCompleted: () => {
+					session.close() // returns a Promise
+					driver.close();
+					addConfig();
+
+				},
+				onError: error => {
+					console.log(error)
+				}
+			});
+	});
+
+	$("#degree").on('click', function() {
+		var driver = neo4j.driver(
+			'bolt://localhost:7687',
+			neo4j.auth.basic('neo4j', 'admin')
+		);
+
+		var session = driver.session();
+		session.run((degree), {
+
+			})
+			.subscribe({
+				onKeys: keys => {
+					console.log(keys)
+				},
+				onNext: record => {
+					//console.log(record.get('name'))
+				},
+				onCompleted: () => {
+					session.close() // returns a Promise
+					driver.close();
+					addConfig();
+
+				},
+				onError: error => {
+					console.log(error)
+				}
+			});
+	});
+
+	$("#cyclic-dependency").on('click', function() {
+		cyclicDependency(null);
+	});
+
+var louvain =
+		`CALL gds.louvain.write({
+  nodeProjection: '*',
+  relationshipProjection: {
+    relType: {
+      type: '*',
+      orientation: 'UNDIRECTED',
+      properties: {}
+    }
+  },
+  relationshipWeightProperty: null,
+  includeIntermediateCommunities: false,
+  seedProperty: '',
+  writeProperty: 'community'
+});
+`;
+
+var degree =
+		`CALL gds.degree.write({
+  nodeProjection: '*',
+  relationshipProjection: {
+    relType: {
+      type: '*',
+      orientation: 'REVERSE',
+      properties: {}
+    }
+  },
+  relationshipWeightProperty: null,
+  writeProperty: 'score'
+});
+`;
+</script>
+</html>
+

@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-
 import com.archimatetool.editor.model.IModelExporter;
 import com.archimatetool.model.FolderType;
 import com.archimatetool.model.IArchimateConcept;
@@ -38,6 +37,7 @@ public class KGAnalysisExporter implements IModelExporter {
     private OutputStreamWriter writer;
     
     public KGAnalysisExporter() {
+    	
     }
 
     @Override

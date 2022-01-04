@@ -12,7 +12,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="kganalysis.preferences.SamplePreferencePage"
+            class="kganalysis.preferences.KGAnalysisPreferencePage"
             id="kganalysis.preferences.SamplePreferencePage"
             name="KG Analysis Plugin">
       </page>
@@ -26,17 +26,17 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="kganalysis.ShowEASmellsView"
+            defaultHandler="kganalysis.actions.ShowEASmellsView"
             id="kganalysis.command.showEASmells"
             name="Show EA Smells">
       </command>
       <command
-            defaultHandler="kganalysis.ShowKGGraph"
+            defaultHandler="kganalysis.actions.ShowKnowledgeGraph"
             id="kganalysis.command.showKGGraph"
             name="Show Knowledge Graph">
       </command>
       <command
-            defaultHandler="kganalysis.ShowKGGraphExternal"
+            defaultHandler="kganalysis.actions.ShowKGGraphExternal"
             id="kganalysis.command.showKGGraphExternal"
             name="Show Knowledge Graph in external Browser">
       </command>
@@ -100,7 +100,7 @@
             class="kganalysis.views.EASmellsView"
             icon="icons/sample.png"
             id="kganalysis.eaSmellsView"
-            name="KG Analysis View"
+            name="EA Smells"
             restorable="true">
       </view>
    </extension>
