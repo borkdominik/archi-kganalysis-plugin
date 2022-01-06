@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.archimatetool.editor.ArchiPlugin;
 import com.archimatetool.editor.Logger;
@@ -30,21 +27,20 @@ import org.neo4j.gds.labelpropagation.LabelPropagationWriteProc;
 import org.neo4j.gds.louvain.LouvainWriteProc;
 import org.neo4j.gds.pagerank.PageRankWriteProc;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.io.fs.FileUtils;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
 
-import static java.util.Arrays.asList;
 import static org.neo4j.configuration.GraphDatabaseSettings.DEFAULT_DATABASE_NAME;
 import static apoc.ApocConfig.APOC_IMPORT_FILE_ENABLED;
 import static apoc.ApocConfig.apocConfig;
-public class EmbeddedNeo4j {
 
-	public static Path KG_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-db").toPath();
+
+public class KGDatabase {
+	
+	// folder to store database
+	public static Path KG_DATABASE_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-db").toPath();
 	
 	// provides access and API to manage neo4j database
 	private DatabaseManagementService managementService;
@@ -53,19 +49,23 @@ public class EmbeddedNeo4j {
 	private GraphDatabaseService graphDb;
 
 	
-	public EmbeddedNeo4j() {
+	public KGDatabase() {
 	
 	}
 
-
+	/**
+	 * Create a new neo4j database with a bolt connector (bolt://localhost:7687) and
+	 * register procedures
+	 * 
+	 * @throws IOException
+	 */
 	public void createDb() throws IOException {
 		
-		// clear existing folder
-		FileUtils.deleteDirectory(KG_FOLDER);
-		Logger.logInfo("Database directory: " + KG_FOLDER);
+		// clear db folder
+		FileUtils.deleteDirectory(KG_DATABASE_FOLDER);
+		Logger.logInfo("Database directory: " + KG_DATABASE_FOLDER);
 		
-		// create new database with bolt connector (bolt://localhost:7687)
-		managementService = new DatabaseManagementServiceBuilder( KG_FOLDER )
+		managementService = new DatabaseManagementServiceBuilder( KG_DATABASE_FOLDER )
 				.setConfig(BoltConnector.enabled, true)
 				.setConfig(BoltConnector.listen_address, new SocketAddress("localhost", 7687)) 
 				.build();
@@ -73,28 +73,21 @@ public class EmbeddedNeo4j {
         
         registerShutdownHook(managementService);
         
-        // Register Procedures
         apocConfig().setProperty(APOC_IMPORT_FILE_ENABLED, true);
         registerProcedures(graphDb, ExportGraphML.class, GraphRefactoring.class, Create.class, PageRankWriteProc.class,
         		BetweennessCentralityWriteProc.class, DegreeCentralityWriteProc.class, LabelPropagationWriteProc.class,
         		LouvainWriteProc.class);
 	}
-
 	
-	public static void registerProcedures(GraphDatabaseService db, Class<?>... procedures) {
-        GlobalProcedures globalProcedures = ((GraphDatabaseAPI) db).getDependencyResolver().resolveDependency(GlobalProcedures.class);
-        for (Class<?> procedure : procedures) {
-            try {
-                globalProcedures.registerProcedure(procedure, true);
-                globalProcedures.registerFunction(procedure, true);
-                globalProcedures.registerAggregationFunction(procedure, true);
-            } catch (KernelException e) {
-                throw new RuntimeException("while registering " + procedure, e);
-            }
-        }
-    }
-	
+	/**
+	 * Load CSV-exported Archi Model into the database
+	 * 
+	 * @param folder containing the exported CSV files
+	 */
 	public void importCSVModel(File folder) {
+		
+		// TODO: Check if CSV files are present in folder
+		// TODO: Load properties
 		
 		File elementsFile = new File(folder.getAbsolutePath(), "elements.csv");
 		String elementsString = elementsFile.getAbsolutePath().replaceAll(" ", "%20");
@@ -102,42 +95,43 @@ public class EmbeddedNeo4j {
 		File relationsFile = new File(folder.getAbsolutePath(), "relations.csv");
 		String relationsString = relationsFile.getAbsolutePath().replaceAll(" ", "%20");
 		
-		//String elementsFile = "file:///" + folder.getAbsolutePath() + "/elements.csv";
-		//elementsFile = elementsFile.replaceAll(" ", "%20");
-		//String relationsFile = "file:///" + folder.getPath() + "/relations.csv";
-		//relationsFile = relationsFile.replaceAll(" ", "%20");
-		
-		// Load Elements from elements.csv
+		// Load elements into the db from the elements.csv File
 		try (Transaction tx = graphDb.beginTx()) {
-			tx.execute( 
-					"LOAD CSV WITH HEADERS FROM 'file://" + elementsString + "' AS line\n"
-					+ " CREATE (:elements {class:line.Type, name:line.Name, documentation:line.Documentation, id:line.ID })"
-					);
+			tx.execute("LOAD CSV WITH HEADERS FROM 'file://" + elementsString + "' AS line\n"
+					+ " CREATE (:elements {class:line.Type, name:line.Name, documentation:line.Documentation, id:line.ID })");
         	
-        	tx.commit();
+			tx.commit();
 		}
 		
-		
-		// Load Relations from relations.csv
+		// Load relations into the db from the relations.csv File
 		try (Transaction tx = graphDb.beginTx()) {
-			tx.execute( 
-					"LOAD CSV WITH HEADERS FROM 'file://" + relationsString + "' AS line\n"
+			tx.execute("LOAD CSV WITH HEADERS FROM 'file://" + relationsString + "' AS line\n"
 					+ " MATCH (n {id:line.Source})\n"
 					+ " WITH n, line\n" 
 					+ " MATCH (m {id:line.Target})\n"
 					+ " WITH n, m, line\n"
-					+ " CREATE (n)-[:relationships {id:line.ID, class:line.Type, documentation:line.Documentation, name:line.Name}]->(m)"
-					);
+					+ " CREATE (n)-[:relationships {id:line.ID, class:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
+        	
+			tx.commit();
+		}
+		
+		addPageRank();
+	}
+	
+	public void addPageRank() {
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute("CALL gds.pageRank.write({\n"
+					+ " nodeProjection: '*',\n"
+					+ " relationshipProjection: { relType: { type: '*', orientation: 'NATURAL', properties: {} }},\n"
+					+ " relationshipWeightProperty: null, dampingFactor: 0.85, maxIterations: 20, writeProperty: 'score'\n"
+					+ "});");
         	
 			tx.commit();
 		}
 	}
 	
-	
+	@Deprecated
 	public void importModel() {
-		// https://raw.githubusercontent.com/borkdominik/eGEAA/master/webapp/export/827b68d9-cff5-47d6-98d7-869c379bfe86.graphml
-		// https://raw.githubusercontent.com/borkdominik/CM2KG/main/webapp/export/d8bcd4f1-8252-4fcb-bc27-810bd5c616b0.graphml
-		// CYCLIC_DEPENDENCY, DENSE_STRUCTURE, MESSAGE_CHAIN
 		try (Transaction tx = graphDb.beginTx()) {
 			Result result = tx.execute( 
         			"CALL apoc.import.graphml('https://raw.githubusercontent.com/borkdominik/CM2KG/main/Experiments/EMF/Archi/ManyModels/repo-github-archimate/models/OpenGroup Format/transformed/11 domain events_transformed.graphml', {})");
@@ -165,7 +159,6 @@ public class EmbeddedNeo4j {
 	
 	}
 	
-	
 	public ArrayList<EASmell> cyclicDependency() {
 		String name = "Cyclic Dependency";
 		String description = " ";
@@ -185,40 +178,14 @@ public class EmbeddedNeo4j {
 		return detected;
 	}
 	
-	// Old method trying to import a CSV
-	public void importArchiModel() {
-		// create elements
-        try (Transaction tx = graphDb.beginTx()) {
-        	
-        	Result result = tx.execute( 
-        			"LOAD CSV WITH HEADERS FROM 'file:///Users/philipp/Documents/workspace/kganalysis/files/elements.csv' AS line\n"
-        			+ " CREATE (:Element {type:node.Type, name:node.Name, id:node.ID }) \n");
-        	result.close();
-
-        }
-        
-        try (Transaction tx = graphDb.beginTx()) {
-        	Result result = tx.execute(
-        			"LOAD CSV WITH HEADERS FROM 'file:///Users/philipp/Documents/workspace/kganalysis/files/relations.csv' AS r \n"
-        			+ "MATCH (n {id:r.Source})\n"
-        			+ " WITH n, r\n"
-        			+ " MATCH (m {id:r.Target})\n"
-        			+ " WITH n, m, r\n"
-        			+ " CREATE (n)-[:Relationships {id:r.ID, type:r.Type, name:r.Name}]->(m)\n");
-        	result.close();
-        }
-	}
-	
 	/**
-	 * Delete all nodes and relationships 
+	 * Remove all elements from the database
 	 */
 	public void removeData() {
 		try (Transaction tx = graphDb.beginTx()) {
-			Result result = tx.execute( 
-					"MATCH (n) \r\n"
-							+ "DETACH DELETE n \r\n");
-        	
-        	result.close();
+			tx.execute("MATCH (n)\n"
+					+ " DETACH DELETE n");
+			tx.commit();
 		}
 	}
 
@@ -235,7 +202,17 @@ public class EmbeddedNeo4j {
 			}
 		});
 	}
-
-
-
+	
+	public static void registerProcedures(GraphDatabaseService db, Class<?>... procedures) {
+        GlobalProcedures globalProcedures = ((GraphDatabaseAPI) db).getDependencyResolver().resolveDependency(GlobalProcedures.class);
+        for (Class<?> procedure : procedures) {
+            try {
+                globalProcedures.registerProcedure(procedure, true);
+                globalProcedures.registerFunction(procedure, true);
+                globalProcedures.registerAggregationFunction(procedure, true);
+            } catch (KernelException e) {
+                throw new RuntimeException("while registering " + procedure, e);
+            }
+        }
+    }
 }

@@ -31,7 +31,7 @@ import com.archimatetool.editor.ui.services.EditorManager;
 import com.archimatetool.editor.utils.FileUtils;
 import com.archimatetool.model.IArchimateModel;
 
-import kganalysis.db.EmbeddedNeo4j;
+import kganalysis.db.KGDatabase;
 
 public class KnowledgeGraph {
 	
@@ -39,7 +39,7 @@ public class KnowledgeGraph {
 	
 	private IProgressMonitor progressMonitor;
 	
-	private EmbeddedNeo4j db;
+	private KGDatabase db;
 	
 	private IArchimateModel archiModel;
 	
@@ -64,44 +64,7 @@ public class KnowledgeGraph {
 		
 		IRunnableWithProgress runnable = monitor -> {
 			try {
-				/*
-				//progressMonitor = monitor;
-				progressMonitor.beginTask("Creating Knowledge Graph", 100);
 				
-				
-				// 1) Copy HTML template to /kg-analysis folder
-				progressMonitor.subTask("Copying files");	
-				URL url = new URL("platform:/plugin/kganalysis/files/index.html");
-				InputStream inputStream = url.openConnection().getInputStream();
-				File file = new File(KG_FOLDER, "index.html");
-				copyInputStreamToFile(inputStream, file);
-				progressMonitor.worked(20);
-				
-				
-				
-				// 2) Export Archi Model as CSV to /kg-analysis folder
-				progressMonitor.subTask("Preparing Archi Model");
-				// TODO: use CSVExporter
-				progressMonitor.worked(20);
-				
-				
-				// 3) Start Neo4j Database	
-				progressMonitor.subTask("Starting Graph Database");
-				db = new EmbeddedNeo4j();
-				db.createDb();
-				progressMonitor.worked(20);
-				
-				
-				// 4) Import CSV Archi model to neo4j
-				progressMonitor.subTask("Importing Archi model to database");
-				db.importCSVModel(KG_FOLDER);
-				progressMonitor.worked(20);
-				
-				// 5) Open browser with copied index.html
-				progressMonitor.subTask("Done! Opening Browser...");
-				BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
-				progressMonitor.worked(20);
-				*/
 				File file = createGraph(monitor);
 				
 				BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
@@ -110,32 +73,11 @@ public class KnowledgeGraph {
 				
 				if(editor != null && browser != null) {
 					browser.refresh();
+					addBrowserFunctions(browser);
                 }
 				
 				// editor.getBrowser().execute("alert(\"JavaScript, called from Java\");");
 				//editor.getBrowser().execute("document.getElementById('viz').style.width= " + browser.getSize().y + ";");
-				//editor.getBrowser().execute("document.getElementById('viz').style.height= " + browser.getSize().y + ";");
-				
-				
-				new BrowserFunction(editor.getBrowser(), "getAll") {
-		            @Override
-		            public Object function(final Object[] arguments) {
-		            	String query = "'MATCH (n)-[r]->(m) RETURN *'";
-		            	editor.getBrowser().execute("document.getElementById('cypher').value= " + query + ";");
-		            	editor.getBrowser().execute("document.getElementById('reload').click();");
-		            	return null;
-		            }
-		        };
-		        
-		        new BrowserFunction(editor.getBrowser(), "cyclicDependency") {
-		            @Override
-		            public Object function(final Object[] arguments) {
-		            	String query = "'MATCH (a)-[r1]->(b)-[r2]->(c)-[]->(a) return a,b,c'";
-		            	editor.getBrowser().execute("document.getElementById('cypher').value= " + query + ";");
-		            	editor.getBrowser().execute("document.getElementById('reload').click();");
-		            	return null;
-		            }
-		        };
 
 			} catch(Exception e) {
 				exception[0] = e;
@@ -164,33 +106,30 @@ public class KnowledgeGraph {
             progressMonitor.beginTask("Creating Knowledge Graph", -1);
         }
 		
-		// 1) Copy HTML template to /kg-analysis folder
+		// 1) Copy HTML and CSS to /kg-analysis folder
 		setProgressSubTask("Copying files", true);
 		URL url = new URL("platform:/plugin/kganalysis/files/index.html");
+
+		
 		InputStream inputStream = url.openConnection().getInputStream();
-		File file = new File(KG_FOLDER, "index.html");
-		copyInputStreamToFile(inputStream, file);
+		File indexFile = new File(KG_FOLDER, "index.html");
+		copyInputStreamToFile(inputStream, indexFile);
 		
 		// 2) Export Archi Model as CSV to /kg-analysis folder
 		setProgressSubTask("Preparing Archi Model", true);
+		
 		// TODO: use CSVExporter
-		
-		
-		
+
 		// 3) Start Neo4j Database	
 		setProgressSubTask("Starting Graph Database", true);
-		db = new EmbeddedNeo4j();
+		db = new KGDatabase();
 		db.createDb();
-		
-		
 		
 		// 4) Import CSV Archi model to neo4j
 		db.importCSVModel(KG_FOLDER);
 		
 		
-		return file;
-	
-		
+		return indexFile;
 	}
 	
 	
@@ -205,6 +144,28 @@ public class KnowledgeGraph {
 			throw new IOException("No Archi Model!");
 		}
 		
+	}
+	
+	private void addBrowserFunctions(Browser browser) {
+		new BrowserFunction(browser, "getAll") {
+            @Override
+            public Object function(final Object[] arguments) {
+            	String query = "'MATCH (n)-[r]->(m) RETURN *'";
+            	browser.execute("document.getElementById('cypher').value= " + query + ";");
+            	browser.execute("document.getElementById('reload').click();");
+            	return null;
+            }
+        };
+        
+        new BrowserFunction(browser, "cyclicDependency") {
+            @Override
+            public Object function(final Object[] arguments) {
+            	String query = "'MATCH (a)-[r1]->(b)-[r2]->(c)-[]->(a) return a,b,c'";
+            	browser.execute("document.getElementById('cypher').value= " + query + ";");
+            	browser.execute("document.getElementById('reload').click();");
+            	return null;
+            }
+        };
 	}
 	
 

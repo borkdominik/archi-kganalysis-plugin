@@ -14,7 +14,7 @@ import com.archimatetool.editor.browser.IBrowserEditor;
 import com.archimatetool.editor.ui.services.EditorManager;
 import com.archimatetool.model.IArchimateModel;
 
-import kganalysis.db.EmbeddedNeo4j;
+import kganalysis.db.KGDatabase;
 
 
 public class GraphExternal {
@@ -49,7 +49,7 @@ public class GraphExternal {
 			browser.openURL(new URL("file", null, "/Users/philipp/" + "index.html"));
 			 //embeddedDb = new EmbeddedNeo4j();
 			 
-			EmbeddedNeo4j db = new EmbeddedNeo4j();
+			KGDatabase db = new KGDatabase();
 			db.createDb();
 			
 			
