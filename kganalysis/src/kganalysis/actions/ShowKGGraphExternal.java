@@ -31,4 +31,3 @@ public class ShowKGGraphExternal extends AbstractModelSelectionHandler {
 	
 	
 }
-

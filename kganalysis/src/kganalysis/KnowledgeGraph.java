@@ -1,34 +1,24 @@
 package kganalysis;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayList;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.Bundle;
 import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.ArchiPlugin;
 import com.archimatetool.editor.browser.BrowserEditorInput;
 import com.archimatetool.editor.browser.IBrowserEditor;
 import com.archimatetool.editor.ui.services.EditorManager;
-import com.archimatetool.editor.utils.FileUtils;
 import com.archimatetool.model.IArchimateModel;
 
 import kganalysis.db.KGDatabase;
@@ -53,9 +43,7 @@ public class KnowledgeGraph {
 		archiModel = model;
 		KG_FOLDER.mkdirs();
 	}
-	
-	
-	
+
 	
 	public void openBrowser() throws Exception {
 		
@@ -198,6 +186,7 @@ public class KnowledgeGraph {
             }
         }
     }
+
 
 	
 

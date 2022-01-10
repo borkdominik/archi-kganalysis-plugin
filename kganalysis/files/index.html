@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Knowledge Graph</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
     <style type="text/css">
         html, body {
             font: 16pt arial;
-        }
-
-        body {
-        	display: flex;
-        	flex-direction: row;
         }
 
         #panel-right {
@@ -18,155 +16,165 @@
 
         #viz {
             margin: 0.5em;
-            width: 750px;
-            height: 550px;
+            height: 600px;
             border: 1px solid lightgray;
             font: 22pt arial;
         }
 
     </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-	<script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
+	<title>Knowledge Graph</title>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-
-    <script src="https://unpkg.com/neo4j-driver"></script>
+	<!-- neovis.js Configuration -->
     <script type="text/javascript">
-
-    	var viz;
-
-		function draw(labelConf) {
+    	function draw() {
 			var config = {
 				container_id: "viz",
 				server_url: "bolt://localhost:7687",
-				//server_user: "neo4j",
-				//server_password: "abc",
-				//labels: labelConf,
 				labels: {
-					"Object": {
-						"caption": "ClassName",
-							"size": "score",
-							"community": "community"
+					"elements": {
+						"caption": "name",
+						"size": "score",
+						"community": "community"
 					}
 				},
 				relationships: {
-					"RELATED": {
-						"thickness": "weight",
-						"caption": false,
-						[NeoVis.NEOVIS_ADVANCED_CONFIG]: { 
-                			
-                			function: {
-                    			title: NeoVis.objectToTitleHtml
-                			}
-						} 
+					"relationships": {
+						"thickness": "count",
+						"caption": "class"
 					}
 				},
-				initial_cypher: "MATCH (n)-[r]->(m) RETURN *",
-				arrows: true,
+				initial_cypher: "MATCH (n)-[r]-(m) RETURN n,r,m",
+				//arrows: true,
 			};
 
-			//const newConfig = NeoVis.migrateFromOldConfig(oldConfig);
-
-			viz = new NeoVis.default(config);
+			var viz = new NeoVis.default(config);
 			viz.render();
 			console.log(viz);
-
 		}
-
-		var labelConf = [];
-
-		function addConfig() {
-			var driver = neo4j.driver(
-				'bolt://localhost:7687',
-				//neo4j.auth.basic('neo4j', 'abc')
-			);
-
-			labelConf = [];
-		
-			var communityCounter = 0;
-			var session = driver.session();
-			session.run("MATCH (n) RETURN distinct labels(n)[0] as label", {
-
-			})
-			.subscribe({
-				onKeys: keys => {
-					console.log(keys)
-				},
-				onNext: record => {
-					console.log(record.get('label'));
-					if (record.get('label')) {
-						
-						var communityResult;
-
-						communityResult = $("#community").val();
-						
-						labelConf[record.get('label')] = {
-							"caption": "className",
-							"size": "score",
-							"community": "community",
-
-						};
-					}
-					communityCounter++;
-
-				},
-				onCompleted: () => {
-					session.close() // returns a Promise
-					driver.close();
-					console.log(labelConf);
-
-					console.log(JSON.stringify(labelConf));
-					draw(labelConf);
-				},
-				onError: error => {
-					console.log(error)
-				}
-			});
-	}
-
     </script>
-    
 </head>
 <body onload="draw()">
-<div id="viz"></div>
+	
+	<!-- Knowledge Graph Visualization -->
+	<div class="container-fluid">
+		<div class="row">
+			
+			<!-- Left Panel-->
+			<div class="col-8">
+				
+				<!-- Toggle Content -->
+				<div class="collapse" id="toggleOptions">
+  					<div class="bg-dark p-4">
+    					<h5 class="text-white h5">Options</h5>
+    					<span class="text-muted">Node size:</span>
+    					<div class="input-group">
+  							<select class="form-select mb-3" aria-label="Node Size" id="nodeSize">
+  								<option selected>Choose...</option>
+  								<option value="pagerank">pagerank</option>
+  								<option value="degree">degree</option>
+  							</select>
+						</div>
+    					<button type="button" class="btn btn-primary" id="update">Set Node Size</button>
+  					</div>
+				</div>
+				
+				<!-- Toolbar -->
+				<nav class="navbar navbar-light">
+  					<div class="container-fluid">
+  						<!--<a class="navbar-brand">Knowledge Graph</a>-->
+  						<div class="btn-group" role="group" aria-label="Basic example">
+  							<button type="button" class="btn btn-outline-secondary">Restore View</button>
+  							<button type="button" class="btn btn-outline-secondary" id="stabilize">Stabilize</button>
 
-<div id="panel-right">
-	Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea>
-	<br>
-	<input type="submit" value="Submit" id="reload">
-	<input type="submit" value="Get All" id="getAllNodes">
-	<input type="submit" value="Stabilize" id="stabilize">
-	<br>
-	<br>
-	EA Smells:
-	<input type="submit" value="Detect all EA Smells" id="all-smells">
-	<input type="submit" value="Cyclic Dependency" id="cyclic-dependency">
-	<input type="submit" value="Dead Component" id="dead-component">
-	<br>
-	<br>
-	Graph Algorithms:
-	<input type="submit" value="Louvain (Community)" id="louvain">
-	<input type="submit" value="Degree" id="degree">
-</div>
+						</div>
+    					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleOptions" aria-controls="toggleOptions" aria-expanded="false" aria-label="Toggle Options">
+      						<span class="navbar-toggler-icon"></span>
+    					</button>
+  					</div>
+				</nav>
+
+				<!-- neovis.js Visualization container -->
+      			<div id="viz"></div>
+    		</div>
+
+    		<!-- Right Panel-->
+    		<div class="col-4">
+      			
+      			<!-- EA Smell Detection -->
+    			<div class="card mt-3 mb-5">
+  					<h5 class="card-header text-white bg-primary">EA Smell Detection</h5>
+  					<div class="card-body">
+  						<p class="card-text">Detect all available EA Smells or select a single one to detect</p>
+  						<div class="input-group">
+  							<select class="form-select mb-3" aria-label="Select Smell">
+  								<option selected>Choose...</option>
+  								<option value="1">Dead Component</option>
+  								<option value="2">Cyclic Dependency</option>
+  								<option value="3">Chatty Service</option>
+							</select>
+						</div>
+  						<a href="#" class="btn btn-primary">Detect all</a>
+    					<a href="#" class="btn btn-secondary">Detect selected</a>
+    				</div>
+    				<hr>
+    				<div class="card-body">
+    					<p class="card-text">Cypher Query</p>
+  						<div class="input-group mb-1">
+							<textarea class="form-control" id="inputCypher" rows="3">MATCH (n)-[r]->(m) RETURN *</textarea>
+							<button class="btn btn-secondary" type="button" id="reload">Execute Query</button>
+						</div>
+  					</div>
+  				</div>
+  			</div>
+		</div>
+	</div>
 
 
+	<!-- 
+
+		Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea>
+		<br>
+		<input type="submit" value="Submit" id="reload">
+		<input type="submit" value="Get All" id="getAllNodes">
+		<input type="submit" value="Stabilize" id="stabilize">
+		<br>
+		<br>
+		EA Smells:
+		<input type="submit" value="Detect all EA Smells" id="all-smells">
+		<input type="submit" value="Cyclic Dependency" id="cyclic-dependency">
+		<input type="submit" value="Dead Component" id="dead-component">
+		<br>
+		<br>
+		Graph Algorithms:
+		<input type="submit" value="Louvain (Community)" id="louvain">
+		<input type="submit" value="Degree" id="degree">
+	</div>
+	-->
+	<!-- Javascript -->
+	<!-- JQuery and Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 
+    <!-- neovis.js and neo4j driver -->
+	<script src="https://cdn.neo4jlabs.com/neovis.js/v1.5.0/neovis.js"></script>
+    <script src="https://unpkg.com/neo4j-driver"></script>
 </body>
 
 <script>
-	$("#reload").click(function() {
+	var driver = neo4j.driver( 'bolt://localhost:7687', neo4j.auth.basic('neo4j', 'admin') );
 
-		var cypher = $("#cypher").val();
+	$("#reload").click(function() {
+		var cypher = $("#inputCypher").val();
 
 		if (cypher.length > 3) {
 			viz.renderWithCypher(cypher);
 		} else {
 			console.log("reload");
 			viz.reload();
-
 		}
 	});
 
@@ -179,10 +187,7 @@
 	});
 
 	$("#louvain").on('click', function() {
-		var driver = neo4j.driver(
-			'bolt://localhost:7687',
-			neo4j.auth.basic('neo4j', 'admin')
-		);
+		
 
 		var session = driver.session();
 		session.run((louvain), {
@@ -207,14 +212,10 @@
 			});
 	});
 
-	$("#degree").on('click', function() {
-		var driver = neo4j.driver(
-			'bolt://localhost:7687',
-			neo4j.auth.basic('neo4j', 'admin')
-		);
+	$("#update").on('click', function() {
 
 		var session = driver.session();
-		session.run((degree), {
+		session.run($("#nodeSize").val(), {
 
 			})
 			.subscribe({
@@ -227,7 +228,7 @@
 				onCompleted: () => {
 					session.close() // returns a Promise
 					driver.close();
-					addConfig();
+					draw();
 
 				},
 				onError: error => {
@@ -256,6 +257,7 @@ var louvain =
   writeProperty: 'community'
 });
 `;
+
 
 var degree =
 		`CALL gds.degree.write({

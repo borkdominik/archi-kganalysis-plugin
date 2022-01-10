@@ -1,103 +1,110 @@
 package kganalysis.views;
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.layout.TreeColumnLayout;
-import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.archimatetool.editor.ui.IArchiImages;
-import com.archimatetool.model.IArchimateModel;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+
+import kganalysis.EASmell;
+import kganalysis.SmellsProvider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
+
 
 public class EASmellsView extends ViewPart {
 	
 	public static String ID = "kganalysis.eaSmellsView"; //$NON-NLS-1$
 
-	private EASmellsViewer fViewer;
-	
-	private IArchimateModel fModel;
-	
-	// Actions
-	private IAction fActionDetectSmells;
-    
-	private Label label;
-	
-	
-	public EASmellsView() {
-    	
-    }
+	private TableViewer viewer;
 	
 	@Override
     public void createPartControl(Composite parent) {	
-        Composite treeComp = new Composite(parent, SWT.NULL);
-        treeComp.setLayout(new TreeColumnLayout());
-        treeComp.setLayoutData(new GridData(GridData.FILL_BOTH));
-        
-        // TODO: Add JFace Viewer
-        fViewer = new EASmellsViewer(treeComp, SWT.NULL);
-        
-        makeLocalActions();
-        registerGlobalActions();
-        makeLocalToolbar();
-        
-        // TODO: ContextMenu
+		
+		GridLayout layout = new GridLayout(2, false);
+		parent.setLayout(layout);
+		
+		Label searchLabel = new Label(parent, SWT.NONE);
+		searchLabel.setText("Search: ");
+		
+		final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+                | GridData.HORIZONTAL_ALIGN_FILL));
+        createViewer(parent);
 	}
 
+	private void createViewer(Composite parent) {
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		createColumns(parent, viewer);
+		final Table table = viewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+        
+        viewer.setContentProvider(new ArrayContentProvider());
+        viewer.setInput(SmellsProvider.INSTANCE.getSmells());
+        getSite().setSelectionProvider(viewer);
+        
+        // Layout the viewer
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 2;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        viewer.getControl().setLayoutData(gridData);
+	}
+	
+	public TableViewer getViewer() {
+        return viewer;
+    }
+	
+	private void createColumns(final Composite parent, final TableViewer viewer) {
+		String[] titles = { "Name", "Description" };
+		int[] bounds = { 100, 100 };
+		
+		TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            
+        	@Override
+            public String getText(Object element) {
+                EASmell smell = (EASmell) element;
+                return smell.getName();
+            }
+        });
+        
+        col = createTableViewerColumn(titles[1], bounds[1], 1);
+        col.setLabelProvider(new ColumnLabelProvider() {
+            @Override
+            public String getText(Object element) {
+                EASmell p = (EASmell) element;
+                return p.getDescription();
+            }
+        });
+	}
+	
+	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
+        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+                SWT.NONE);
+        final TableColumn column = viewerColumn.getColumn();
+        column.setText(title);
+        column.setWidth(bound);
+        column.setResizable(true);
+        column.setMoveable(true);
+        return viewerColumn;
+
+    }
+	
 	@Override
 	public void setFocus() {
-		if(fViewer != null) {
-            fViewer.getControl().setFocus();
-        }	
+		viewer.getControl().setFocus();	
 	}
-	
-	private void makeLocalActions() {
-		// TODO: Detect EA Smells Action
-		
-		fActionDetectSmells = new Action("Detect Smells") {
-            
-			@Override
-            public void run() {
-                detectSmells();
-            }
-            
-            @Override
-            public String getToolTipText() {
-                return getText();
-            }
-            
-            @Override
-            public ImageDescriptor getImageDescriptor() {
-            	// Archi Validate icon
-            	return IArchiImages.ImageFactory.getImageDescriptor(IArchiImages.ICON_DIAGRAM);
-            }
-        };
-        fActionDetectSmells.setEnabled(false);
-	}
-	
-	/**
-	 * Global Action Handles
-	 */
-	private void registerGlobalActions() {
-        // No global actions
-    }
-	
-	private void makeLocalToolbar() {
-		// TODO: Populate toolbar once local actions are set
-	}
-	
-    public void detectSmells() {
-        //TODO: Detect EA Smells Action
-    }
-    
-    public EASmellsViewer getViewer() {
-        return fViewer;
-    }
-	
-	
-
 }

@@ -101,9 +101,6 @@ public class GraphExternal {
 		 managementService = new DatabaseManagementServiceBuilder( databaseDirectory ).build();
 	     graphDb = managementService.database( DEFAULT_DATABASE_NAME );
 	     registerShutdownHook( managementService );
-
-
-
 	        try ( Transaction tx = graphDb.beginTx() )
 	        {
 	            // Database operations go here
@@ -113,26 +110,21 @@ public class GraphExternal {
 	            firstNode.setProperty( "message", "Hello, " );
 	            secondNode = tx.createNode();
 	            secondNode.setProperty( "message", "World!" );
-
 	            relationship = firstNode.createRelationshipTo( secondNode, RelTypes.KNOWS );
 	            relationship.setProperty( "message", "brave Neo4j " );
 	            // end::addData[]
-
 	            // tag::readData[]
 	            System.out.print( firstNode.getProperty( "message" ) );
 	            System.out.print( relationship.getProperty( "message" ) );
 	            System.out.print( secondNode.getProperty( "message" ) );
 	            // end::readData[]
-
 	            greeting = ( (String) firstNode.getProperty( "message" ) )
 	                       + ( (String) relationship.getProperty( "message" ) )
 	                       + ( (String) secondNode.getProperty( "message" ) );
-
 	            // tag::transaction[]
 	            tx.commit();
 	        }
 	 }
-
 	void removeData() {
 		try (Transaction tx = graphDb.beginTx()) {
 			// tag::removingData[]
@@ -143,11 +135,9 @@ public class GraphExternal {
 			firstNode.delete();
 			secondNode.delete();
 			// end::removingData[]
-
 			tx.commit();
 		}
 	}
-
 	void shutDown() {
 		System.out.println();
 		System.out.println("Shutting down database ...");

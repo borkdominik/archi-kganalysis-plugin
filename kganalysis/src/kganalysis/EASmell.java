@@ -4,14 +4,18 @@ public class EASmell {
 	
 	private String name;
 	private String description;
-	private String object;
+	private String query;
 	
-	public EASmell(String name, String description, String object) {
-		this.name = name;
-		this.description = description;
-		this.object = object;
+	public EASmell() {
+		
 	}
 	
+	public EASmell(String name, String description, String query) {
+		this.name = name;
+		this.description = description;
+		this.query = query;
+	}
+
 	
 	public String getName() {
 		return name;
@@ -25,13 +29,10 @@ public class EASmell {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getObject() {
-		return object;
+	public String getQuery() {
+		return name;
 	}
-	public void setObject(String object) {
-		this.object = object;
+	public void setQuery(String query) {
+		this.query = query;
 	}
-	
-	
-
 }

@@ -1,0 +1,47 @@
+{
+    "name": "Dense Structure",
+    "aliases": [
+      ""
+    ],
+    "description": "This smell arises when an EA repository has excessive and dense dependencies without any particular structure.",
+    "context": "Derived from: \"Dense Structure\"",
+    "detection": "We prepare a graph for each repository to detect the smell. Each component is treated as a node and any reference from the component to another component is treated as an edge. We then compute the average degree of the graph (|E|/|V|). A graph with more than 1.75 average degree suffers from this smell. (One could also test the clustering coefficient)",
+    "consequences": "Modifications to the system may be cumbersome and many dependencies have to be added, due to the high coupling.",
+    "cause": "Inefficient abstraction that needs high coupling of components to work.",
+    "solution": "Extensive restructuring and rethinking of the architecture is needed, if the problems get noticeable.",
+    "example": "",
+    "sources": [],
+    "tags": [
+      "soa",
+      "microservices",
+      "business",
+      "application",
+      "technology",
+      "between elements",
+      "The Couplers",
+      "automatic detection"
+    ],
+    "relatedItems": [
+      {
+        "relation": "relates",
+        "name": "Hub-like Modularization"
+      },
+      {
+        "relation": "relates",
+        "name": "Weakened Modularity"
+      }
+    ],
+    "evidence": 0,
+    "relatedAntiPatterns": [
+      {
+        "relation": "relates",
+        "name": "Hub-like Modularization",
+        "description": "This smell arises when an abstraction has dependencies (both incoming and outgoing) with a large number of other abstractions, being a single point of failure."
+      },
+      {
+        "relation": "relates",
+        "name": "Weakened Modularity",
+        "description": "Each module must strive for high cohesion and low coupling. This smell arises when a module exhibits high coupling and low cohesion."
+      }
+    ]
+  }

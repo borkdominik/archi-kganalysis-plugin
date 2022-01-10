@@ -26,9 +26,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="kganalysis.actions.ShowEASmellsView"
-            id="kganalysis.command.showEASmells"
-            name="Show EA Smells">
+            defaultHandler="kganalysis.actions.InitKnowledgeGraph"
+            id="kganalysis.command.initKnowledgeGraph"
+            name="Initialize Knowledge Graph">
       </command>
       <command
             defaultHandler="kganalysis.actions.ShowKnowledgeGraph"
@@ -39,6 +39,11 @@
             defaultHandler="kganalysis.actions.ShowKGGraphExternal"
             id="kganalysis.command.showKGGraphExternal"
             name="Show Knowledge Graph in external Browser">
+      </command>
+      <command
+            defaultHandler="kganalysis.actions.ShowEASmellsView"
+            id="kganalysis.command.showEASmells"
+            name="Show EA Smells">
       </command>
    </extension>
    <extension
@@ -68,15 +73,15 @@
 		<menu
                id="kganalysis.menu"
                label="Knowledge Graph">
+     <command
+           commandId="kganalysis.command.initKnowledgeGraph"
+           icon="icons/logo.png"
+           label="Initialize Knowledge Graph"
+           style="push">
+     </command>
          <command
                commandId="kganalysis.command.showKGGraph"
                label="Show Knowledge Graph"
-               icon="icons/logo.png"
-               style="push">
-         </command>
-         <command
-               commandId="kganalysis.command.showKGGraphExternal"
-               label="Show Knowledge Graph in external Browser"
                icon="icons/logo.png"
                style="push">
          </command>
@@ -87,7 +92,7 @@
            <command
                commandId="kganalysis.command.showEASmells"
                id="kganalysis.menuItem.showEASmells"
-               label="Detect EA Smells"
+               label="Show EA Smells"
                icon="icons/sample.png"
                style="push">
          </command> 
