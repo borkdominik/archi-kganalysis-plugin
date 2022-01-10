@@ -11,40 +11,32 @@
 
 ## To Do
 
-- Create list of available EA smells
+- List available EA smells
   - import .json files
   - show list
-    - browser (smells.html)
-    - table? 
-
-
+    - browser (smells.html) or table?
 - Execute EA smells
-  - Table with all 
-  - Browser 
-    - select smell to detect (more info in smells.html)
+  - Execute from Table?
+  - Execute from Browser 
+    - select smell to detect from dropdown (more info in smells.html)
     - detect runs java function 
     - java function copies query to cypher textarea and runs query on embedded instance
-    - show detected elements in table
-
-- Browser
-  - Add Toolbar
+    - show detected elements in browser (for now only as a string)
+    - show detected elements in table (for now only as a string)
 - index.html
-  - Use neovis.js 2.0
-  - Fix Styling
-
+  - Fix UI/Styling
 - Database
-  - Initialize size, community
-  - Use queries
-- Use APOC core or full jar (not both)
+  - Initialize size, community, labels
 
 ### On-hold
 
+- InitKnowledgeGraphAction (seperated from `openBrowser()`)
+- Browser
+  - Add Toolbar
 - Fix ProgressMonitor
-
-### Planned
-
+- Use APOC core or full jar (not both, to decrease size)
+- Use neovis.js 2.0
 - Import properties.csv
-
 
 
 ## Plugin Overview
@@ -60,9 +52,9 @@
 
 
 
-### Database
+**KGDatabase**
 
-Elements stored as 
+Elements stored as: 
 ```json
 {
   "identity": 46,
