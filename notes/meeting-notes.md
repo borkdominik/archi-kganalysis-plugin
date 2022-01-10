@@ -2,6 +2,14 @@
 
 ## -
 
+- Archi Transformation
+  - Reused Archi CSV Export
+  - Load exported CSV files into neo4j
+- Knowledge Graph
+  - New Browser UI
+    - neovis.js Visualization (+ options)
+    - EA Smell Detection
+    - Cypher Query
 
 
 
