@@ -113,33 +113,3 @@ In the worst case, different services access
 the same entities of the same schema.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-kann diese propernutzen um die Nodes in z.B. verschiedene Größen oder Farben darzustellen
-
-
-wobei ich es noch nicht hinbekommen hab die Nodes in neovis komplett zu customizen ()
-
-Habs leider , wobei aber diverse Algorithmen  anwendbar sind und 
-
-
-
-
-Jedoch kann man  anwenden um so z.B. score
-

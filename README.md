@@ -25,8 +25,6 @@
     - show detected elements in table (for now only as a string)
 - index.html
   - Fix UI/Styling
-- Database
-  - Initialize size, community, labels
 
 ### On-hold
 

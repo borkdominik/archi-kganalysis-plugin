@@ -1,15 +1,24 @@
 # Meeting Notes
 
-## -
+## 19-01-2022
 
-- Archi Transformation
-  - Reused Archi CSV Export
-  - Load exported CSV files into neo4j
-- Knowledge Graph
-  - New Browser UI
-    - neovis.js Visualization (+ options)
-    - EA Smell Detection
-    - Cypher Query
+### Current Progress
+
+- [X] **ArchiMate Transformation** 
+- [X] **Knowledge Graph UI**
+  - [X] configurable Community/Score for Color/Size 
+  - [X] Cypher Query
+  - [x] EA Smell Detection 
+
+### Next
+
+- Show smells in Table
+- Add more smells 
+- Refresh/re-import Archi model
+- Fix ProgressMonitor
+
+
+
 
 
 
