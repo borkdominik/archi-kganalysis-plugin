@@ -11,44 +11,40 @@
 
 ## To Do
 
-- List available EA smells
-  - import .json files
-  - show list
-    - browser (smells.html) or table?
-- Execute EA smells
-  - Execute from Table?
-  - Execute from Browser 
-    - select smell to detect from dropdown (more info in smells.html)
-    - detect runs java function 
-    - java function copies query to cypher textarea and runs query on embedded instance
-    - show detected elements in browser (for now only as a string)
-    - show detected elements in table (for now only as a string)
-- index.html
-  - Fix UI/Styling
+### Plugin
+- [ ] List available smells
+- [ ] Report (detect ALL smells on model)
+- [ ] index.html UI
+  - [ ] Decrease font size
+- [ ] Combine Table + Browser View
+- [ ] Fix ProgressMonitor
+
+### Paper
+
+- Add Notes
+
 
 ### On-hold
 
 - InitKnowledgeGraphAction (seperated from `openBrowser()`)
 - Browser
   - Add Toolbar
-- Fix ProgressMonitor
 - Use APOC core or full jar (not both, to decrease size)
 - Use neovis.js 2.0
 - Import properties.csv
 
+<br>
 
 ## Plugin Overview
 
-**KGAnalysisPlugin** 
+<!-- TODO: -->
 
+**KGAnalysisPlugin** 
 
 `extends AbstractUIPlugin` for:
 - Preferences - support for storing, setting default preferences  
 - Dialogs - store dialogs e.g. choices from wizards
 - Images - image registry 
-
-
-
 
 **KGDatabase**
 
@@ -67,7 +63,6 @@ Elements stored as:
   }
 }
 ```
-
 
 <br>
 
