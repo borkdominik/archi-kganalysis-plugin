@@ -135,6 +135,21 @@ public class KnowledgeGraph {
 	}
 	
 	private void addBrowserFunctions(Browser browser) {
+		new BrowserFunction(browser, "setDegree") {
+            @Override
+            public Object function(final Object[] arguments) {
+            	db.setDegree();
+            	return null;
+            }
+        };
+        new BrowserFunction(browser, "setPageRank") {
+            @Override
+            public Object function(final Object[] arguments) {
+            	db.setPageRank();
+            	return null;
+            }
+        };
+		/*
 		new BrowserFunction(browser, "getAll") {
             @Override
             public Object function(final Object[] arguments) {
@@ -154,6 +169,7 @@ public class KnowledgeGraph {
             	return null;
             }
         };
+        */
 	}
 	
 

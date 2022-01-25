@@ -115,16 +115,53 @@ public class KGDatabase {
 			tx.commit();
 		}
 		
-		addPageRank();
+		addNodeLabels();
+		setPageRank();
+		addCommunity();
 	}
 	
-	public void addPageRank() {
+	public void setPageRank() {
 		try (Transaction tx = graphDb.beginTx()) {
 			tx.execute("CALL gds.pageRank.write({\n"
 					+ " nodeProjection: '*',\n"
 					+ " relationshipProjection: { relType: { type: '*', orientation: 'NATURAL', properties: {} }},\n"
 					+ " relationshipWeightProperty: null, dampingFactor: 0.85, maxIterations: 20, writeProperty: 'score'\n"
 					+ "});");
+        	
+			tx.commit();
+		}
+	}
+	
+	public void setDegree() {
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute("CALL gds.degree.write({\n"
+					+ " nodeProjection: '*',\n"
+					+ " relationshipProjection: { relType: { type: '*', orientation: 'REVERSE', properties: {} }},\n"
+					+ " relationshipWeightProperty: null, writeProperty: 'score'\n"
+					+ "});");
+        	
+			tx.commit();
+		}
+	}
+	
+	public void addCommunity() {
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute("CALL gds.louvain.write({\n"
+					+ " nodeProjection: '*',\n"
+					+ " relationshipProjection: { relType: { type: '*', orientation: 'UNDIRECTED', properties: {} }},\n"
+					+ " relationshipWeightProperty: null, includeIntermediateCommunities: false, seedProperty: '', writeProperty: 'community'\n"
+					+ "});");
+        	
+			tx.commit();
+		}
+	}
+	
+	public void addNodeLabels() {
+
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute("MATCH (n:elements)\n"
+					+ " CALL apoc.create.addLabels(n, [ n.class ]) YIELD node\n"
+					+ " RETURN node\n");
         	
 			tx.commit();
 		}

@@ -11,11 +11,10 @@
         }
 
         #panel-right {
-        	margin: 0.5em;
+
         }
 
         #viz {
-            margin: 0.5em;
             height: 600px;
             border: 1px solid lightgray;
             font: 22pt arial;
@@ -29,6 +28,8 @@
 
 	<!-- neovis.js Configuration -->
     <script type="text/javascript">
+    	var viz;
+
     	function draw() {
 			var config = {
 				container_id: "viz",
@@ -43,116 +44,101 @@
 				relationships: {
 					"relationships": {
 						"thickness": "count",
-						"caption": "class"
+						"caption": false
 					}
 				},
 				initial_cypher: "MATCH (n)-[r]-(m) RETURN n,r,m",
-				//arrows: true,
+				arrows: true,
 			};
 
-			var viz = new NeoVis.default(config);
+			viz = new NeoVis.default(config);
 			viz.render();
 			console.log(viz);
 		}
+
+		
     </script>
 </head>
 <body onload="draw()">
-	
-	<!-- Knowledge Graph Visualization -->
 	<div class="container-fluid">
 		<div class="row">
 			
-			<!-- Left Panel-->
-			<div class="col-8">
-				
-				<!-- Toggle Content -->
-				<div class="collapse" id="toggleOptions">
-  					<div class="bg-dark p-4">
-    					<h5 class="text-white h5">Options</h5>
-    					<span class="text-muted">Node size:</span>
-    					<div class="input-group">
-  							<select class="form-select mb-3" aria-label="Node Size" id="nodeSize">
-  								<option selected>Choose...</option>
-  								<option value="pagerank">pagerank</option>
-  								<option value="degree">degree</option>
-  							</select>
-						</div>
-    					<button type="button" class="btn btn-primary" id="update">Set Node Size</button>
-  					</div>
-				</div>
-				
-				<!-- Toolbar -->
-				<nav class="navbar navbar-light">
-  					<div class="container-fluid">
-  						<!--<a class="navbar-brand">Knowledge Graph</a>-->
-  						<div class="btn-group" role="group" aria-label="Basic example">
-  							<button type="button" class="btn btn-outline-secondary">Restore View</button>
-  							<button type="button" class="btn btn-outline-secondary" id="stabilize">Stabilize</button>
-
-						</div>
-    					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggleOptions" aria-controls="toggleOptions" aria-expanded="false" aria-label="Toggle Options">
-      						<span class="navbar-toggler-icon"></span>
-    					</button>
-  					</div>
-				</nav>
-
-				<!-- neovis.js Visualization container -->
-      			<div id="viz"></div>
+			<!-- Left Panel -->
+			<div class="col-8 mt-2">
+				<div id="viz"></div>
     		</div>
 
-    		<!-- Right Panel-->
-    		<div class="col-4">
-      			
-      			<!-- EA Smell Detection -->
-    			<div class="card mt-3 mb-5">
-  					<h5 class="card-header text-white bg-primary">EA Smell Detection</h5>
-  					<div class="card-body">
-  						<p class="card-text">Detect all available EA Smells or select a single one to detect</p>
-  						<div class="input-group">
-  							<select class="form-select mb-3" aria-label="Select Smell">
-  								<option selected>Choose...</option>
-  								<option value="1">Dead Component</option>
-  								<option value="2">Cyclic Dependency</option>
-  								<option value="3">Chatty Service</option>
-							</select>
-						</div>
-  						<a href="#" class="btn btn-primary">Detect all</a>
-    					<a href="#" class="btn btn-secondary">Detect selected</a>
-    				</div>
-    				<hr>
-    				<div class="card-body">
-    					<p class="card-text">Cypher Query</p>
-  						<div class="input-group mb-1">
-							<textarea class="form-control" id="inputCypher" rows="3">MATCH (n)-[r]->(m) RETURN *</textarea>
-							<button class="btn btn-secondary" type="button" id="reload">Execute Query</button>
-						</div>
+    		<!-- Right Panel -->
+    		<div class="col-4 mt-2">
+    			<div class="accordion" id="right-panel">
+  					
+    				<!-- EA Smell Detection -->
+  					<div class="accordion-item">
+    					<h2 class="accordion-header" id="smell-header">
+      						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#smell-collapse" aria-expanded="true" aria-controls="smell-collapse">
+        						EA Smell Detection
+      						</button>
+    					</h2>
+    					<div id="smell-collapse" class="accordion-collapse collapse show" aria-labelledby="smell-header">
+      						<div class="accordion-body">
+      							<div class="input-group">
+  									<select class="form-select mb-3" aria-label="Select Smell" id="smell-select" >
+  										
+
+									</select>
+								</div>
+								<button class="btn btn-primary" type="button" id="detect-smell">Detect</button>
+      						</div>
+    					</div>
+  					</div>
+
+  					<!-- Cypher Query -->
+  					<div class="accordion-item">
+						<h2 class="accordion-header" id="cypher-header">
+      						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cypher-collapse" aria-expanded="true" aria-controls="cypher-collapse">
+        						Cypher Query
+      						</button>
+    					</h2>
+    					<div id="cypher-collapse" class="accordion-collapse collapse" aria-labelledby="cypher-header">
+      						<div class="accordion-body">
+      							<textarea class="form-control mb-3" id="inputCypher" rows="3">MATCH (n)-[r]-(m) RETURN *</textarea>
+								<button class="btn btn-secondary" type="button" id="reload">Execute Query</button>
+      						</div>
+    					</div>
+  					</div>
+
+  					<!-- Graph Options -->
+  					<div class="accordion-item">
+						<h2 class="accordion-header" id="options-header">
+      						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#options-collapse" aria-expanded="true" aria-controls="options-collapse">
+        						Graph Options
+      						</button>
+    					</h2>
+    					<div id="options-collapse" class="accordion-collapse collapse" aria-labelledby="options-header">
+      						<div class="accordion-body">
+      							<label for="scoreSelect" class="col-sm-6 col-form-label">Score</label>
+    								<select class="form-select mb-2" id="scoreSelect" aria-label="Score">
+    									<option selected value="pagerank">Page Rank</option>
+  										<option value="degree">Degree</option>
+  										<option value="2">Eigen Vector</option>
+  										<option value="3">Betweenness</option>
+  										<option value="4">Closeness</option>
+									</select>
+								<label for="communitySelect" class="col-sm-6 col-form-label">Community</label>
+									<select class="form-select mb-2" id="communitySelect" aria-label="Community">
+  										<option selected>Louvain</option>
+  										<option value="1">Modularity Optimization</option>
+  										<option value="2">Label Propagation</option>
+  										<option value="3">Local Clustering Coefficient</option>
+									</select>
+							</div>
+    					</div>
   					</div>
   				</div>
   			</div>
 		</div>
 	</div>
 
-
-	<!-- 
-
-		Cypher query: <textarea rows="4" cols=50 id="cypher"></textarea>
-		<br>
-		<input type="submit" value="Submit" id="reload">
-		<input type="submit" value="Get All" id="getAllNodes">
-		<input type="submit" value="Stabilize" id="stabilize">
-		<br>
-		<br>
-		EA Smells:
-		<input type="submit" value="Detect all EA Smells" id="all-smells">
-		<input type="submit" value="Cyclic Dependency" id="cyclic-dependency">
-		<input type="submit" value="Dead Component" id="dead-component">
-		<br>
-		<br>
-		Graph Algorithms:
-		<input type="submit" value="Louvain (Community)" id="louvain">
-		<input type="submit" value="Degree" id="degree">
-	</div>
-	-->
 	<!-- Javascript -->
 	<!-- JQuery and Bootstrap -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -165,7 +151,17 @@
 </body>
 
 <script>
-	var driver = neo4j.driver( 'bolt://localhost:7687', neo4j.auth.basic('neo4j', 'admin') );
+	//var driver = neo4j.driver( 'bolt://localhost:7687', neo4j.auth.basic('neo4j', 'admin') );
+
+	$('#scoreSelect').on('change', function () {
+			if (this.value === "pagerank") {
+				setPageRank();
+				viz.reload();
+			} else if (this.value === "degree") {
+				setDegree();
+				viz.reload();
+			}
+		});
 
 	$("#reload").click(function() {
 		var cypher = $("#inputCypher").val();
@@ -182,97 +178,59 @@
 		viz.stabilize();
 	});
 
-	$("#getAllNodes").on('click', function() {
-		getAll(null);
+
+
+var smells =
+[
+ 	{
+    	"text"  : "No selection",
+    	"value" : "1",
+    	"selected" : true,
+    	"query" : "MATCH (n)-[r]-(m) RETURN n,r,m",
+    	"description" : "No smell selected. Showing all elements."
+  	},
+  	{
+    	"text"     : "Dead Component",
+    	"value"    : "2",
+    	"query" : "MATCH (n) WHERE size((n)--())=0 return n",
+    	"description" : "A component is no longer used or used to support potential future behavior."
+	},
+  	{
+    	"text"  : "Cyclic Dependency",
+    	"value" : "3",
+    	"query" : "MATCH (a)-[r1]->(b)-[r2]->(c)-[]->(a) return *",
+    	"description" : "Two or more abstractions directly or indirectly depend on each other"
+  	},
+  	{
+    	"text"  : "Documentation",
+    	"value" : "4",
+    	"query" : "MATCH (n) WHERE size(n.documentation)>256 RETURN n",
+    	"description" : "A lengthy documentation often points to unnecessary complex structures"
+  	},
+  	{
+    	"text"  : "Dense Structure",
+    	"value" : "5",
+    	"query" : "MATCH (p) RETURN CASE WHEN avg(apoc.node.degree(p))>1.75 THEN 1 ELSE 0 END AS result",
+    	"description" : "An EA repository has dense dependencies without any particular structure."
+  	}
+];
+
+var selectBox = document.getElementById('smell-select');
+
+for(var i = 0, l = smells.length; i < l; i++){
+  var smell = smells[i];
+  selectBox.options.add( new Option(smell.text, smell.value, smell.selected) );
+}
+
+$("#detect-smell").click(function() {
+		const index = $('#smell-select').prop('selectedIndex');
+		const query = smells[index].query;
+		$("#inputCypher").val(query);
+		viz.renderWithCypher(query);
+
 	});
 
-	$("#louvain").on('click', function() {
-		
 
-		var session = driver.session();
-		session.run((louvain), {
-
-			})
-			.subscribe({
-				onKeys: keys => {
-					console.log(keys)
-				},
-				onNext: record => {
-					//console.log(record.get('name'))
-				},
-				onCompleted: () => {
-					session.close() // returns a Promise
-					driver.close();
-					addConfig();
-
-				},
-				onError: error => {
-					console.log(error)
-				}
-			});
-	});
-
-	$("#update").on('click', function() {
-
-		var session = driver.session();
-		session.run($("#nodeSize").val(), {
-
-			})
-			.subscribe({
-				onKeys: keys => {
-					console.log(keys)
-				},
-				onNext: record => {
-					//console.log(record.get('name'))
-				},
-				onCompleted: () => {
-					session.close() // returns a Promise
-					driver.close();
-					draw();
-
-				},
-				onError: error => {
-					console.log(error)
-				}
-			});
-	});
-
-	$("#cyclic-dependency").on('click', function() {
-		cyclicDependency(null);
-	});
-
-var louvain =
-		`CALL gds.louvain.write({
-  nodeProjection: '*',
-  relationshipProjection: {
-    relType: {
-      type: '*',
-      orientation: 'UNDIRECTED',
-      properties: {}
-    }
-  },
-  relationshipWeightProperty: null,
-  includeIntermediateCommunities: false,
-  seedProperty: '',
-  writeProperty: 'community'
-});
-`;
-
-
-var degree =
-		`CALL gds.degree.write({
-  nodeProjection: '*',
-  relationshipProjection: {
-    relType: {
-      type: '*',
-      orientation: 'REVERSE',
-      properties: {}
-    }
-  },
-  relationshipWeightProperty: null,
-  writeProperty: 'score'
-});
-`;
 </script>
 </html>
 

@@ -16,9 +16,9 @@ public class InitKnowledgeGraph extends AbstractModelSelectionHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-            
-			IRunnableWithProgress op = new InitKGThread(10);
-            new ProgressMonitorDialog(new Shell()).run(true, true, op);
+
+			IRunnableWithProgress initKG = new InitKGThread(10);
+            new ProgressMonitorDialog(new Shell()).run(true, true, initKG);
             
          } catch (InvocationTargetException ex) {
              ex.printStackTrace();
