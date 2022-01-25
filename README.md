@@ -11,25 +11,23 @@
 
 ## To Do
 
-### Plugin
-- [ ] List available smells
-- [ ] Report (detect ALL smells on model)
-- [ ] index.html UI
-  - [ ] Decrease font size
-- [ ] Combine Table + Browser View
-- [ ] Fix ProgressMonitor
+- [ ] **Initialize Knowledge Graph** Command
+  - Refactor architecture
+  - Export to CSV, start DB, load CSV, set properties (label, score, community)
+  - ProgressMonitor
+- [ ] **Show Visualization** Command
+- [ ] **Show EA Smells Report** Command
+- [ ] KGVisualization (browser)
+  - [ ] decrease font size in HTML
+- [ ] EASmellsReport (table)
+  - Fill table with all detected smells
+- [ ] List available EA Smells (name, description, solution, ...)
 
-### Paper
-
-- Add Notes
 
 
 ### On-hold
 
-- InitKnowledgeGraphAction (seperated from `openBrowser()`)
-- Browser
-  - Add Toolbar
-- Use APOC core or full jar (not both, to decrease size)
+- Use APOC core or full jar (not both, to file plugin size)
 - Use neovis.js 2.0
 - Import properties.csv
 
