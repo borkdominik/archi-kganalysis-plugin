@@ -1,40 +1,41 @@
 package kganalysis.actions;
 
+import java.io.File;
+
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.swt.browser.Browser;
+import com.archimatetool.editor.browser.BrowserEditorInput;
+import com.archimatetool.editor.browser.IBrowserEditor;
+import com.archimatetool.editor.ui.services.EditorManager;
+import kganalysis.KGAnalysisPlugin;
+import kganalysis.db.KGDatabase;
 
-import com.archimatetool.editor.Logger;
-import com.archimatetool.editor.actions.AbstractModelSelectionHandler;
-import com.archimatetool.model.IArchimateModel;
 
-import kganalysis.KnowledgeGraph;
-
-public class ShowKnowledgeGraph extends AbstractModelSelectionHandler {
+public class ShowKnowledgeGraph extends AbstractHandler {
 	
 	@Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        
-		IArchimateModel model = getActiveArchimateModel();
-		
-        if (model != null) {
-            
-        	try {
-            	KnowledgeGraph knowledgeGraph = new KnowledgeGraph(model);
-            	knowledgeGraph.exportToCSV();
-            	knowledgeGraph.openBrowser();
-            
-            } catch (Exception ex) {
-            	
-            	Logger.log(IStatus.ERROR, "Error opening Knowledge Graph", ex); //$NON-NLS-1$
-            	MessageDialog.openError(HandlerUtil.getActiveShell(event),
-                        "Knowledge Graph Preview",
-                        (ex.getMessage() == null ? ex.toString() : ex.getMessage()) );
-            }
-        }
+		File file = new File(KGAnalysisPlugin.KG_FOLDER, "index.html");
+    	BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
+    	IBrowserEditor editor = (IBrowserEditor)EditorManager.openEditor(input, IBrowserEditor.ID);
+    	final Browser browser = editor.getBrowser();
+    		
+    	if(editor != null && browser != null) {
+    		browser.refresh();
+    		//TODO: addBrowserFunctions(browser);
+    	}	
 
         return null;
+    }
+	
+	@Override
+    public boolean isEnabled() {
+		KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+		if(db == null || db.isStarted() == false) {
+			return false;
+		}
+		return true;
     }
 }

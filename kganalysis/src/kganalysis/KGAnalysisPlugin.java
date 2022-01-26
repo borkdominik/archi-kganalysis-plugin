@@ -9,19 +9,22 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.archimatetool.editor.ArchiPlugin;
+
+import kganalysis.db.KGDatabase;
+
 
 /**
- * KG Analysis Plugin Activator 
- * 
- * Extends AbstractUIPlugin for preferences, dialogs, images
- *
+ * Activator for the KGAnalysis Plugin controlling the life-cycle,
+ * extends AbstractUIPlugin for preferences, dialogs, images
  */
 public class KGAnalysisPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "kganalysis";
-	
 	public static KGAnalysisPlugin INSTANCE;
-	
+	public static File KG_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-analysis");
+
+	private KGDatabase kgDatabase;
 	private static File pluginFolder;
 
 		
@@ -32,6 +35,7 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		setKGDatabase(new KGDatabase());
 	}
 
 	@Override
@@ -57,6 +61,15 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
         }
         return pluginFolder;
     }
+
+	public KGDatabase getKGDatabase() {
+		return kgDatabase;
+	}
+
+	public void setKGDatabase(KGDatabase kgDatabase) {
+		this.kgDatabase = kgDatabase;
+	}
+
     
     
     

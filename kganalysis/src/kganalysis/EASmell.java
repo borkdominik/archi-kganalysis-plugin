@@ -5,6 +5,7 @@ public class EASmell {
 	private String name;
 	private String description;
 	private String query;
+	private boolean detected;
 	
 	public EASmell() {
 		

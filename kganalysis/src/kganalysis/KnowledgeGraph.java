@@ -54,18 +54,14 @@ public class KnowledgeGraph {
 			try {
 				
 				File file = createGraph(monitor);
-				
 				BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
+				
 				IBrowserEditor editor = (IBrowserEditor)EditorManager.openEditor(input, IBrowserEditor.ID);
 				final Browser browser = editor.getBrowser();
-				
 				if(editor != null && browser != null) {
 					browser.refresh();
 					addBrowserFunctions(browser);
                 }
-				
-				// editor.getBrowser().execute("alert(\"JavaScript, called from Java\");");
-				//editor.getBrowser().execute("document.getElementById('viz').style.width= " + browser.getSize().y + ";");
 
 			} catch(Exception e) {
 				exception[0] = e;
@@ -97,6 +93,7 @@ public class KnowledgeGraph {
 		// 1) Copy HTML and CSS to /kg-analysis folder
 		setProgressSubTask("Copying files", true);
 		URL url = new URL("platform:/plugin/kganalysis/files/index.html");
+		
 
 		
 		InputStream inputStream = url.openConnection().getInputStream();
@@ -177,6 +174,7 @@ public class KnowledgeGraph {
 
 		try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
             int read;
+            
             byte[] bytes = new byte[8192];
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);

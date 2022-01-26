@@ -2,14 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="com.archimatetool.editor.exportHandler">
-      <exportHandler
-            class="kganalysis.KGAnalysisExporter"
-            id="kganalysis.exportHandler"
-            label="Model to GraphML">
-      </exportHandler>
-   </extension>
-   <extension
          point="org.eclipse.ui.preferencePages">
       <page
             class="kganalysis.preferences.KGAnalysisPreferencePage"
@@ -73,29 +65,39 @@
 		<menu
                id="kganalysis.menu"
                label="Knowledge Graph">
-     <command
-           commandId="kganalysis.command.initKnowledgeGraph"
-           icon="icons/logo.png"
-           label="Initialize Knowledge Graph"
-           style="push">
-     </command>
-         <command
-               commandId="kganalysis.command.showKGGraph"
-               label="Show Knowledge Graph"
-               icon="icons/logo.png"
-               style="push">
-         </command>
-         <separator
+			<command
+           		commandId="kganalysis.command.initKnowledgeGraph"
+           		icon="icons/logo.png"
+           		label="Initialize Knowledge Graph"
+           		style="push">
+     		</command>
+     		<separator
                   name="kganalysis.menu.separator1"
                   visible="true">
             </separator>
-           <command
-               commandId="kganalysis.command.showEASmells"
-               id="kganalysis.menuItem.showEASmells"
-               label="Show EA Smells"
-               icon="icons/sample.png"
-               style="push">
-         </command> 
+         	<command
+               	commandId="kganalysis.command.showKGGraph"
+               	label="Show Knowledge Graph"
+               	icon="icons/logo.png"
+               	style="push">
+        	</command>
+         	<command
+               	commandId="kganalysis.command.showKGGraphExternal"
+               	label="Show Knowledge Graph in external Browser"
+              	icon="icons/logo.png"
+               	style="push">
+         	</command>
+         	<separator
+                  name="kganalysis.menu.separator1"
+                  visible="true">
+            </separator>
+           	<command
+               	commandId="kganalysis.command.showEASmells"
+               	id="kganalysis.menuItem.showEASmells"
+               	label="Show EA Smells"
+               	icon="icons/sample.png"
+               	style="push">
+         	</command> 
          </menu>
       </menuContribution>
    </extension>

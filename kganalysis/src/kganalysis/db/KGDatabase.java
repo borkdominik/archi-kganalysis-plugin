@@ -47,10 +47,12 @@ public class KGDatabase {
 	
 	// for transactions on the graph database
 	private GraphDatabaseService graphDb;
+	
+	private boolean isStarted;
 
 	
 	public KGDatabase() {
-	
+		isStarted = false;
 	}
 
 	/**
@@ -77,6 +79,7 @@ public class KGDatabase {
         registerProcedures(graphDb, ExportGraphML.class, GraphRefactoring.class, Create.class, PageRankWriteProc.class,
         		BetweennessCentralityWriteProc.class, DegreeCentralityWriteProc.class, LabelPropagationWriteProc.class,
         		LouvainWriteProc.class);
+        isStarted = true;
 	}
 	
 	/**
@@ -252,4 +255,9 @@ public class KGDatabase {
             }
         }
     }
+
+	public boolean isStarted() {
+		return isStarted;
+	}
+
 }
