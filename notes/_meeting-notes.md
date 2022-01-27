@@ -1,5 +1,10 @@
 # Meeting Notes
 
+## 09-02-2022
+
+- **TODO** in README
+
+
 ## 19-01-2022
 
 ### Current Progress
