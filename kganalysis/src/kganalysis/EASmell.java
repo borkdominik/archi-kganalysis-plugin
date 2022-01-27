@@ -1,9 +1,15 @@
 package kganalysis;
 
+import com.google.gson.annotations.Expose;
+
 public class EASmell {
 	
+	@Expose
 	private String name;
+	@Expose
 	private String description;
+	@Expose
+	private String solution;
 	private String query;
 	private boolean detected;
 	
@@ -35,5 +41,13 @@ public class EASmell {
 	}
 	public void setQuery(String query) {
 		this.query = query;
+	}
+
+	public String getSolution() {
+		return solution;
+	}
+
+	public void setSolution(String solution) {
+		this.solution = solution;
 	}
 }

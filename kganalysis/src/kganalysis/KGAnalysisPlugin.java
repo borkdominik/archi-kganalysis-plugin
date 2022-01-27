@@ -3,10 +3,13 @@ package kganalysis;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Enumeration;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import com.archimatetool.editor.ArchiPlugin;
@@ -26,6 +29,7 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 
 	private KGDatabase kgDatabase;
 	private static File pluginFolder;
+	public static List<URL> files;
 
 		
 	public KGAnalysisPlugin() {
@@ -35,7 +39,10 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		setKGDatabase(new KGDatabase());
+		kgDatabase = new KGDatabase();
+		files = new ArrayList<>();
+		getJSONResources();
+		KG_FOLDER.mkdirs();
 	}
 
 	@Override
@@ -65,13 +72,12 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 	public KGDatabase getKGDatabase() {
 		return kgDatabase;
 	}
+	
+	public void getJSONResources() {
+		Enumeration<URL> e = getBundle().findEntries("files", "*.json", false);
+		while (e.hasMoreElements()) {
+			files.add(e.nextElement());
+		}
 
-	public void setKGDatabase(KGDatabase kgDatabase) {
-		this.kgDatabase = kgDatabase;
-	}
-
-    
-    
-    
-
+     }
 }
