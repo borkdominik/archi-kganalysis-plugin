@@ -9,95 +9,90 @@
 
 <br>
 
-## To Do
+-- Screenshot/GIF --
 
-- [ ] **Initialize Knowledge Graph** Command
-  - Refactor architecture
-  - Export to CSV, start DB, load CSV, set properties (label, score, community)
-  - ProgressMonitor
-- [ ] **Show Visualization** Command
-- [ ] **Show EA Smells Report** Command
-- [ ] KGVisualization (browser)
-  - [ ] decrease font size in HTML
-- [ ] EASmellsReport (table)
-  - Fill table with all detected smells
-- [ ] List available EA Smells (name, description, solution, ...)
+## Overview
 
+**Features:**
+- Transform ArchiMate models to Knowledge Graphs
+- Detect EA Smells
+- Visualization 
+
+
+## Getting Started
+
+
+### Installing the plugin
+
+
+Download the plugin `.jar` file and copy it into the `dropins` folder in the user directory of Archi. After a restart of Archi the plugin becomes active.
+
+### Using the plugin
+
+
+
+## EA Smells
+
+
+
+General info about EA Smells....
+
+List of smells:
+- Cyclic Dependency
+- Dead Componentt
+
+
+## TODO
+
+### Release
+
+High priority tasks to finish before the release:
+
+- *General*
+  - [X] Improve ProgressMonitor
+  - [ ] Documentation
+    - [ ] ReadMe (screenshot, features, getting started, supported smells, ...)
+- *Menubar*
+  - [X] **Initialize** 
+    - 1 - Export archi model as CSV
+    - 2 - Copy index.html
+    - 3 - Start neo4j database
+    - 4 - Load CSV to create nodes and relationships
+    - 5 - Set properties (score, community)
+  - [X] **Open Visualization**
+  - [X] **Open Visualiation in external Browser**
+    - [ ] Disable java functions (graph algorithms), as they cant be called externally -> load adapted index.html 
+  - [ ] **Open EA Smells Report**
+- *Toolbar*
+  - [ ] Add commmands with icons
+- *Visualization*
+  - [ ] UI
+    - [X] Decrease font-size
+    - [X] Fit content to view (no scrolling)
+    - [ ] Revise layout
+- *Report*
+  - [X] Load smells from JSON file and fill table
+    - [ ] Add more smells
+    - [ ] Include cypher query
+  - [ ] Smell Detection
+    - [ ] Run all smell queries and set respective *detected* variable to true/false 
+    - [ ] Show affected elements 
 
 
 ### On-hold
 
-- Use APOC core or full jar (not both, to file plugin size)
-- Use neovis.js 2.0
-- Import properties.csv
+Lower priority tasks to implement at a later stage:
+
+- Decrease plugin .jar file size
+  - Remove either apoc-core or apoc-full .jar (currently both in /lib)
+- Visualization
+  - Use neovis 2.0
+- Knowledge Graph
+  - support importing properties.csv
+- Preferences
+  - Support remote database
+  - Set user folder
+  - Knowledge Graph options
 
 <br>
 
-## Plugin Overview
-
-<!-- TODO: -->
-
-**KGAnalysisPlugin** 
-
-`extends AbstractUIPlugin` for:
-- Preferences - support for storing, setting default preferences  
-- Dialogs - store dialogs e.g. choices from wizards
-- Images - image registry 
-
-**KGDatabase**
-
-Elements stored as: 
-```json
-{
-  "identity": 46,
-  "labels": [
-    "elements"
-  ],
-  "properties": {
-"name": "Accept",
-"id": "572",
-"class": "BusinessProcess",
-"documentation": ""
-  }
-}
-```
-
-<br>
-
-## Installing the plugin
-
-Detailed instrcutions will follow, for now:
-
-Export the package as a plugin in Eclipse and move the .jar file into the `dropins` folder of Archi. After restarting Archi, the plugin should be active. 
-
-<br>
-
-## Useful Resources
-
-For useful notes see the `/notes` folder of the repository.
-
-<!-- TODO: Link notes here for quick navigation -->
-
-### Links
-
-[ArchiMate Language Specification](https://pubs.opengroup.org/architecture/archimate31-doc/toc.html)  
-[ArchiMate Concepts Overview](https://archimate.visual-paradigm.com/category/archimate-concepts/)  
-[Archi User Guide](https://www.archimatetool.com/downloads/Archi%20User%20Guide.pdf)  
-[Archi GitHub Repo](https://github.com/archimatetool/archi) ([Wiki](https://github.com/archimatetool/archi/wiki))
-
-**Archi Plugins**
-
-[ArchiContribs](http://archi-contribs.github.io/)  
-[Specialization Plugin](https://github.com/archi-contribs/specialization-plugin) - Icons and labels can be replaced in Archi  
-[Form Plugin](https://github.com/archi-contribs/form-plugin) - Allows to create forms to view and edit Archi models  
-[Repository Plugin](https://github.com/archimatetool/archi-modelrepository-plugin) - Allows collaborative work on Archi (sharing and versioning)
-
-
-**RCP**  
-[RCP Page Eclipse Wiki](http://wiki.eclipse.org/Rich_Client_Platform)
-
-### Publications
-[Verification of ArchiMate Behavioral
-Elements by Model Checking](https://link.springer.com/content/pdf/10.1007/978-3-319-24369-6_11.pdf) (Plugin for Archi)
-
-<br>

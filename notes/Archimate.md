@@ -26,6 +26,7 @@ ArchiMate Framework:
 <img src="../images/archi-framework.png" width="60%">
 
 
+
 **Relationships**
 
 [Overview](https://archimate.visual-paradigm.com/archimate-notation-part-8-relationships/)
