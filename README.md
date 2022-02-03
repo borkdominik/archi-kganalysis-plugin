@@ -11,12 +11,15 @@
 
 -- Screenshot/GIF --
 
-## Overview
 
-**Features:**
-- Transform ArchiMate models to Knowledge Graphs
-- Detect EA Smells
-- Visualization 
+## Features
+
+- Backed by an embedded [neo4j graph database](https://neo4j.com/developer/graph-platform/neo4j) to gain further insights about EA models in Archi
+- Transformation of ArchiMate models into a Knowledge Graph  
+- EA Smell Detection including a complete report of the detected smells and information from the [EA Smell Catalogue](https://swc-public.pages.rwth-aachen.de/smells/ea-smells/).
+- Visualization of the Knowledge Graph and the EA Smell Queries with [neovis.js](https://github.com/neo4j-contrib/neovis.js/). 
+- Run arbitrary Cypher Queries on the Graph or customize the visualization by using different graph algorithms
+
 
 
 ## Getting Started
@@ -24,12 +27,13 @@
 
 ### Installing the plugin
 
-
-Download the plugin `.jar` file and copy it into the `dropins` folder in the user directory of Archi. After a restart of Archi the plugin becomes active.
+Download the plugin and install it within Archi (*Help -> Manage Plugins... -> Install New...*) or alternatively download the plugin `.jar` file and copy it into the `dropins` folder located in the user directory of Archi.
+ 
+After a restart of the application the plugin becomes active with the new *Knowledge Graph* menu added to the menu bar at the top.
 
 ### Using the plugin
 
-
+-- TODO --
 
 ## EA Smells
 
@@ -48,45 +52,50 @@ List of smells:
 
 High priority tasks to finish before the release:
 
-- *General*
-  - [X] Improve ProgressMonitor
-  - [ ] Documentation
-    - [ ] ReadMe (screenshot, features, getting started, supported smells, ...)
-- *Menubar*
-  - [X] **Initialize** 
+- **General**
+  - *PogressMonitor*
+    - [X] Show progress
+  - *Documentation*
+    - [ ] ReadMe (screenshot, features, getting started)
+    - [ ] Wiki (feature overview, ea smells list)
+- **Menubar**
+  - [X] Initialize
     - 1 - Export archi model as CSV
     - 2 - Copy index.html
     - 3 - Start neo4j database
     - 4 - Load CSV to create nodes and relationships
     - 5 - Set properties (score, community)
+  - [ ] Start Graph Database
+  - [ ] Stop Graph Database
+  - [ ] Load active model
   - [X] **Open Visualization**
   - [X] **Open Visualiation in external Browser**
-    - [ ] Disable java functions (graph algorithms), as they cant be called externally -> load adapted index.html 
+    - [ ] Disable java functions (report), which cant be called externally -> load adapted index.html 
   - [ ] **Open EA Smells Report**
-- *Toolbar*
-  - [ ] Add commmands with icons
-- *Visualization*
-  - [ ] UI
-    - [X] Decrease font-size
+- **Toolbar**
+  - [ ] Add commands with icons
+- **Visualization**
+  - [X] Neovis 2.0
+  - *UI*
+    - [X] Changes (new layout, fix font-size)
     - [X] Fit content to view (no scrolling)
-    - [ ] Revise layout
+    - [X] General Tab (tools, options, cypher query)
+    - [ ] EA Smells Tab (report, EA smells)
 - *Report*
-  - [X] Load smells from JSON file and fill table
-    - [ ] Add more smells
-    - [ ] Include cypher query
   - [ ] Smell Detection
-    - [ ] Run all smell queries and set respective *detected* variable to true/false 
-    - [ ] Show affected elements 
+    - [ ] Command in menubar, view, browser
+    - [ ] Report -> fill table with detected elements 
+    - [ ] More smells
 
 
 ### On-hold
 
 Lower priority tasks to implement at a later stage:
 
-- Decrease plugin .jar file size
-  - Remove either apoc-core or apoc-full .jar (currently both in /lib)
-- Visualization
-  - Use neovis 2.0
+- Clean Up
+  - Remove either apoc-core or apoc-full .jar (currently both in /lib) to decrease file size
+  - General Code Clean Up
+  - Code comments
 - Knowledge Graph
   - support importing properties.csv
 - Preferences
