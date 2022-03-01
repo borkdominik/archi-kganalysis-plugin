@@ -27,13 +27,23 @@
 
 ### Installing the plugin
 
-Download the plugin and install it within Archi (*Help -> Manage Plugins... -> Install New...*) or alternatively download the plugin `.jar` file and copy it into the `dropins` folder located in the user directory of Archi.
- 
-After a restart of the application the plugin becomes active with the new *Knowledge Graph* menu added to the menu bar at the top.
+Copy the downloaded .jar file into the `/dropins` folder of Archi.
+
+Location of the `/dropins` folder:
+- Windows: `<home>/AppData/Roaming/Archi4/dropins`
+- Mac: `<home>/Library/Application Support/Archi4/dropins`
+- Linux: `<home>/.archi4/dropins`
+
+The plugin automatically becomes active upon restarting Archi.
 
 ### Using the plugin
 
--- TODO --
+From the menu choose the action: `Start database and initialize Knowledge Graph`. The process takes a while (~1-2 minutes) and once finished, the progress dialog disappears and the other actions from the menu become active.
+
+Additional Hints: 
+- Progress Dialog currently freezes the UI and does not indicate progress correctly.
+- If the database is not started and the Smells Report view is open (e.g. from a previous session) the view shows an error message. Start the database and the view can be properly opened again. 
+- Preference options are not implemented yet.
 
 ## EA Smells
 
