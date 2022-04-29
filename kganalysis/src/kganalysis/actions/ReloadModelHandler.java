@@ -2,6 +2,8 @@ package kganalysis.actions;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -10,24 +12,25 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
-import com.archimatetool.editor.actions.AbstractModelSelectionHandler;
 import com.archimatetool.model.IArchimateModel;
 
 import kganalysis.KGAnalysisPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
 
-public class ReloadModelHandler extends AbstractModelSelectionHandler {
+public class ReloadModelHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-	IArchimateModel model = getActiveArchimateModel();
+    	IWorkbenchPart part = HandlerUtil.getActivePart(event);
+        IArchimateModel model = part != null ? part.getAdapter(IArchimateModel.class) : null;
 
 	if (model != null) {
 	    try {

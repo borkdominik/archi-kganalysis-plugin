@@ -5,22 +5,23 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
-import com.archimatetool.editor.actions.AbstractModelSelectionHandler;
 import com.archimatetool.model.IArchimateModel;
 import kganalysis.KGAnalysisPlugin;
 import kganalysis.db.KGDatabase;
 
-public class InitializeHandler extends AbstractModelSelectionHandler {
+public class InitializeHandler extends AbstractHandler {
 
     private static final String CONFIRM_MESSAGE = "The process creates a new database and can take several minutes.\n"
 	    + "Continue?";
@@ -28,7 +29,8 @@ public class InitializeHandler extends AbstractModelSelectionHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-	IArchimateModel model = getActiveArchimateModel();
+    	IWorkbenchPart part = HandlerUtil.getActivePart(event);
+        IArchimateModel model = part != null ? part.getAdapter(IArchimateModel.class) : null;
 
 	if (model == null) {
 	    return null;
