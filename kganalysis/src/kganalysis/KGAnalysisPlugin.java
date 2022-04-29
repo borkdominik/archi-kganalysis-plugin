@@ -1,47 +1,46 @@
 package kganalysis;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Enumeration;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.osgi.framework.BundleContext;
 
 import com.archimatetool.editor.ArchiPlugin;
 
 import kganalysis.db.KGDatabase;
+import kganalysis.db.KGExporter;
+import kganalysis.db.SmellDetectionProvider;
 
 
 /**
- * Activator for the KGAnalysis Plugin controlling the life-cycle,
- * extends AbstractUIPlugin for preferences, dialogs, images
+ * Activator for the KGAnalysis Plugin to control the life-cycle,
+ * extends {@link AbstractUIPlugin} for preferences, dialogs, images
  */
 public class KGAnalysisPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "kganalysis";
 	public static KGAnalysisPlugin INSTANCE;
+	
 	public static File KG_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-analysis");
-
 	private KGDatabase kgDatabase;
-	private static File pluginFolder;
-	public static List<URL> files;
+	private KGExporter exporter;
+	private SmellDetectionProvider smellProvider;
 
 		
 	public KGAnalysisPlugin() {
 		INSTANCE = this;
 	}
 	
+	public static KGAnalysisPlugin getDefault() {
+		return INSTANCE;
+	}
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		kgDatabase = new KGDatabase();
-		files = new ArrayList<>();
-		getJSONResources();
+		exporter = new KGExporter();
 		KG_FOLDER.mkdirs();
 	}
 
@@ -51,33 +50,25 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public static KGAnalysisPlugin getDefault() {
-		return INSTANCE;
-	}
-
-	public File getPluginFolder() {
-        if(pluginFolder == null) {
-            URL url = getBundle().getEntry("/"); 
-            try {
-                url = FileLocator.resolve(url);
-            }
-            catch(IOException ex) {
-                ex.printStackTrace();
-            }
-            pluginFolder = new File(url.getPath());
-        }
-        return pluginFolder;
-    }
-
 	public KGDatabase getKGDatabase() {
 		return kgDatabase;
 	}
 	
-	public void getJSONResources() {
-		Enumeration<URL> e = getBundle().findEntries("files", "*.json", false);
-		while (e.hasMoreElements()) {
-			files.add(e.nextElement());
-		}
-
-     }
+	public GraphDatabaseService getGraphDb() {
+		return kgDatabase.getGraphDb();
+	}
+	
+	public KGExporter getExporter() {
+		return exporter;
+	}
+	
+	public SmellDetectionProvider getSmellProvider() {
+		return smellProvider;
+	}
+	
+	public void setSmellProvider(SmellDetectionProvider provider) {
+		this.smellProvider = provider;
+	}
+	
+	
 }

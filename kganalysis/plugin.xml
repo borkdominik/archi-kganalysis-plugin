@@ -18,24 +18,38 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="kganalysis.actions.InitKnowledgeGraph"
+            defaultHandler="kganalysis.actions.InitializeHandler"
             id="kganalysis.command.initKnowledgeGraph"
-            name="Initialize Knowledge Graph">
+            name="Initialize Knowledge Graph with model">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowKnowledgeGraph"
+            defaultHandler="kganalysis.actions.StopGraphDbHandler"
+            id="kganalysis.command.stopGraphDb"
+            name="Stop Graph Database">
+      </command>
+      <command
+            defaultHandler="kganalysis.actions.ReloadModelHandler"
+            id="kganalysis.command.reloadModel"
+            name="Reload with selected Archi Model">
+      </command>
+      <command
+            defaultHandler="kganalysis.actions.ShowKGHandler"
             id="kganalysis.command.showKGGraph"
             name="Show Knowledge Graph">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowKGGraphExternal"
+            defaultHandler="kganalysis.actions.ShowKGExternalHandler"
             id="kganalysis.command.showKGGraphExternal"
             name="Show Knowledge Graph in external Browser">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowEASmellsView"
-            id="kganalysis.command.showEASmells"
-            name="Show EA Smells">
+            defaultHandler="kganalysis.actions.ShowSmellsViewHandler"
+            id="kganalysis.commands.showSmellsView"
+            name="%command.name">
+      </command>
+      <command
+            id="kganalysis.commands.detect"
+            name="Detect Smells">
       </command>
    </extension>
    <extension
@@ -48,13 +62,13 @@
           <command
                 commandId="kganalysis.command.showKGGraph"
                 icon="icons/logo.png"
-                tooltip="Knowledge Graph"
+                tooltip="Open Knowledge Graph"
 				style="push">
            </command>
            <command
-                commandId="kganalysis.command.showEASmells"
-                icon="icons/sample.png"
-                tooltip="EA Smells"
+                commandId="kganalysis.commands.showSmellsView"
+                icon="icons/smells.png"
+                tooltip="Open EA Smells Report"
                 style="push">
            </command>
 		</toolbar>
@@ -67,8 +81,20 @@
                label="Knowledge Graph">
 			<command
            		commandId="kganalysis.command.initKnowledgeGraph"
-           		icon="icons/logo.png"
-           		label="Initialize Knowledge Graph"
+           		icon="icons/start.png"
+           		label="Start database and initialize Knowledge Graph"
+           		style="push">
+     		</command>
+     		<command
+           		commandId="kganalysis.command.stopGraphDb"
+           		icon="icons/stop.png"
+           		label="Stop Database"
+           		style="push">
+     		</command>
+     		<command
+           		commandId="kganalysis.command.reloadModel"
+           		icon="icons/reload.png"
+           		label="Reload with selected Archi Model"
            		style="push">
      		</command>
      		<separator
@@ -87,27 +113,23 @@
               	icon="icons/logo.png"
                	style="push">
          	</command>
-         	<separator
-                  name="kganalysis.menu.separator1"
-                  visible="true">
-            </separator>
-           	<command
-               	commandId="kganalysis.command.showEASmells"
-               	id="kganalysis.menuItem.showEASmells"
-               	label="Show EA Smells"
-               	icon="icons/sample.png"
-               	style="push">
-         	</command> 
+         	<command
+               commandId="kganalysis.commands.showSmellsView"
+               icon="icons/smells.png"
+               id="kganalysis.menuitem.showSmellsView"
+               label="Show Smells Report"
+               style="push">
+         </command>
          </menu>
       </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="kganalysis.views.EASmellsView"
-            icon="icons/sample.png"
-            id="kganalysis.eaSmellsView"
-            name="EA Smells"
+            class="kganalysis.views.SmellsView"
+            icon="icons/smells.png"
+            id="kganalysis.smellsView"
+            name="Smells"
             restorable="true">
       </view>
    </extension>
@@ -116,11 +138,20 @@
       <perspectiveExtension
             targetID="*">
          <view
-               id="kganalysis.eaSmellsView"
+               id="kganalysis.smellsView"
                minimized="false"
                relationship="stack"
                relative="com.archimatetool.editor.propertiesView">
          </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="*">
+            <view
+               id="kganalysis.smellsView"
+               minimized="false"
+               relationship="stack"
+               relative="com.archimatetool.editor.propertiesView">
+         	</view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -129,5 +160,6 @@
             class="kganalysis.Startup">
       </startup>
    </extension>
+   
 
 </plugin>

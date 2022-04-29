@@ -3,11 +3,11 @@ package kganalysis;
 import org.eclipse.ui.IStartup;
 
 /**
- * Early Startup class - shakes the plugin to come alive!
+ * Early Startup class to enable menu items 
  */
 public class Startup implements IStartup {
 	
-	@Override
+    @Override
     public void earlyStartup() {
         // Do nothing
     }
