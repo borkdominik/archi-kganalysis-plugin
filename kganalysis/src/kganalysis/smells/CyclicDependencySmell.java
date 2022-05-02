@@ -11,7 +11,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 
 public class CyclicDependencySmell implements ISmell {
@@ -28,7 +28,7 @@ public class CyclicDependencySmell implements ISmell {
     	+ "YIELD path RETURN path";*/
     
     public CyclicDependencySmell() {
-	this.graphdb = KGAnalysisPlugin.INSTANCE.getGraphDb();
+	this.graphdb = KGPlugin.INSTANCE.getGraphDb();
     }
     
     @Override

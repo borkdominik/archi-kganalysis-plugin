@@ -10,7 +10,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 public class DocumentationSmell implements ISmell {
     
@@ -20,7 +20,7 @@ public class DocumentationSmell implements ISmell {
     
     
     public DocumentationSmell() {
-	this.graphdb = KGAnalysisPlugin.INSTANCE.getGraphDb();
+	this.graphdb = KGPlugin.INSTANCE.getGraphDb();
     }
     
     @Override

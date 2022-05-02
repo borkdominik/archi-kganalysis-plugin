@@ -4,7 +4,7 @@ import com.archimatetool.editor.ui.ImageFactory;
 
 public interface IKGAnalysisImages {
 
-    ImageFactory ImageFactory = new ImageFactory(KGAnalysisPlugin.INSTANCE);
+    ImageFactory ImageFactory = new ImageFactory(KGPlugin.INSTANCE);
     String IMG_PATH = "icons/";
     String ICON_START = IMG_PATH + "start.png";
     String ICON_STOP = IMG_PATH + "stop.png";

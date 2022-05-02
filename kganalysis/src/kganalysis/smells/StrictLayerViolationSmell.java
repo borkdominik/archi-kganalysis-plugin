@@ -11,7 +11,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 public class StrictLayerViolationSmell implements ISmell {
     
@@ -25,7 +25,7 @@ public class StrictLayerViolationSmell implements ISmell {
     }
     
     public StrictLayerViolationSmell() {
-	this.graphDb = KGAnalysisPlugin.INSTANCE.getGraphDb();
+	this.graphDb = KGPlugin.INSTANCE.getGraphDb();
     }
     
     @Override

@@ -6,7 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 
 import com.archimatetool.editor.ui.services.ViewManager;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.views.ISmellsView;
 
@@ -20,7 +20,7 @@ public class ShowSmellsViewHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db == null || db.isStarted() == false) {
 	    return false;
 	}

@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import com.archimatetool.editor.ui.UIUtils;
 
 import org.eclipse.ui.IWorkbench;
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 /**
  * This class represents a preference page that
@@ -44,7 +44,7 @@ public class KGAnalysisPreferencePage
 	private Text password;
 
 	public KGAnalysisPreferencePage() {
-		setPreferenceStore(KGAnalysisPlugin.INSTANCE.getPreferenceStore());
+		setPreferenceStore(KGPlugin.INSTANCE.getPreferenceStore());
 		setDescription("Keep the default embedded mode or connect to an existing remote database");
 	}
 	

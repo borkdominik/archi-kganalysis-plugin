@@ -11,7 +11,7 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.archimatetool.editor.Logger;
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
 
@@ -20,7 +20,7 @@ public class ShowKGExternalHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
 	try {
-	    File file = new File(KGAnalysisPlugin.KG_FOLDER, "index.html");
+	    File file = new File(KGPlugin.KG_FOLDER, "index.html");
 	    IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
 	    IWebBrowser browser = support.getExternalBrowser();
 	    browser.openURL(file.toURI().toURL());
@@ -37,7 +37,7 @@ public class ShowKGExternalHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db == null || db.isStarted() == false) {
 	    return false;
 	}

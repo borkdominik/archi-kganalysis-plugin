@@ -17,28 +17,20 @@ import kganalysis.db.SmellDetectionProvider;
  * Activator for the KGAnalysis Plugin to control the life-cycle,
  * extends {@link AbstractUIPlugin} for preferences, dialogs, images
  */
-public class KGAnalysisPlugin extends AbstractUIPlugin {
+public class KGPlugin extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "kganalysis";
-	public static KGAnalysisPlugin INSTANCE;
-	
+	public static KGPlugin INSTANCE;
 	public static File KG_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-analysis");
 	private KGDatabase kgDatabase;
 	private KGExporter exporter;
 	private SmellDetectionProvider smellProvider;
-
-		
-	public KGAnalysisPlugin() {
-		INSTANCE = this;
-	}
 	
-	public static KGAnalysisPlugin getDefault() {
-		return INSTANCE;
-	}
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		INSTANCE = this;
 		kgDatabase = new KGDatabase();
 		exporter = new KGExporter();
 		KG_FOLDER.mkdirs();
@@ -48,6 +40,10 @@ public class KGAnalysisPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		INSTANCE = null;
 		super.stop(context);
+	}
+	
+	public static KGPlugin getDefault() {
+		return INSTANCE;
 	}
 
 	public KGDatabase getKGDatabase() {

@@ -12,7 +12,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 
 public class DuplicationSmell implements ISmell {
@@ -26,7 +26,7 @@ public class DuplicationSmell implements ISmell {
     }
     
     public DuplicationSmell() {
-	this.graphdb = KGAnalysisPlugin.INSTANCE.getGraphDb();
+	this.graphdb = KGPlugin.INSTANCE.getGraphDb();
     }
     
     @Override

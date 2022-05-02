@@ -21,7 +21,7 @@ import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
 import com.archimatetool.model.IArchimateModel;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
 
@@ -60,7 +60,7 @@ public class ReloadModelHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db == null || db.isStarted() == false) {
 	    return false;
 	}
@@ -97,7 +97,7 @@ public class ReloadModelHandler extends AbstractHandler {
 
 	private void deleteElements(IProgressMonitor monitor) throws InvocationTargetException {
 	    monitor.subTask("Removing current model...");
-	    KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	    KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	    db.removeData();
 	    monitor.worked(30);
 	}
@@ -106,7 +106,7 @@ public class ReloadModelHandler extends AbstractHandler {
 	    monitor.subTask("Exporting active ArchiMate model to CSV");
 	    CSVExporter exporter = new CSVExporter(activeModel);
 	    try {
-		exporter.export(KGAnalysisPlugin.KG_FOLDER);
+		exporter.export(KGPlugin.KG_FOLDER);
 	    } catch (IOException e) {
 		throw new InvocationTargetException(e, "Could not export archi model to user folder");
 	    }

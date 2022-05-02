@@ -8,7 +8,7 @@ import org.eclipse.swt.browser.Browser;
 import com.archimatetool.editor.browser.BrowserEditorInput;
 import com.archimatetool.editor.browser.IBrowserEditor;
 import com.archimatetool.editor.ui.services.EditorManager;
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
 
@@ -16,7 +16,7 @@ public class ShowKGHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-	File file = new File(KGAnalysisPlugin.KG_FOLDER, "index.html");
+	File file = new File(KGPlugin.KG_FOLDER, "index.html");
 	BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
 	IBrowserEditor editor = (IBrowserEditor) EditorManager.openEditor(input, IBrowserEditor.ID);
 	final Browser browser = editor.getBrowser();
@@ -30,7 +30,7 @@ public class ShowKGHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db == null || db.isStarted() == false) {
 	    return false;
 	}

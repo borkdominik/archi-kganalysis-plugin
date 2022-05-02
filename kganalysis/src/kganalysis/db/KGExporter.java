@@ -22,7 +22,7 @@ import com.archimatetool.model.IFolder;
 import com.archimatetool.model.IMotivationElement;
 import com.archimatetool.model.IPassiveStructureElement;
 
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 
 public class KGExporter {
 
@@ -36,7 +36,7 @@ public class KGExporter {
 
     public void export(IArchimateModel model) {
 	this.model = model;
-	this.graphDb = KGAnalysisPlugin.INSTANCE.getGraphDb();
+	this.graphDb = KGPlugin.INSTANCE.getGraphDb();
 	nodes = new HashMap<>();
 
 	exportElements(model.getFolder(FolderType.BUSINESS));
@@ -46,14 +46,14 @@ public class KGExporter {
 	exportElements(model.getFolder(FolderType.IMPLEMENTATION_MIGRATION));
 	exportElements(model.getFolder(FolderType.MOTIVATION));
 	exportElements(model.getFolder(FolderType.OTHER));
-	exportRelationships(KGAnalysisPlugin.KG_FOLDER);
+	exportRelationships(KGPlugin.KG_FOLDER);
 	
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	// db.addNodeLabels();
 	// db.addRelationshipLabels();
 	db.setCentralities();
 	db.setCommunities();
-	KGAnalysisPlugin.INSTANCE.setSmellProvider(new SmellDetectionProvider());
+	KGPlugin.INSTANCE.setSmellProvider(new SmellDetectionProvider());
     }
 
     private void exportElements(IFolder folder) {

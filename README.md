@@ -9,6 +9,7 @@
 
 <br>
 
+
 -- Screenshot/GIF --
 
 
@@ -56,9 +57,9 @@ List of smells:
 - Dead Componentt
 
 
-## TODO
+# TODO
 
-### Release
+## Release
 
 High priority tasks to finish before the release:
 

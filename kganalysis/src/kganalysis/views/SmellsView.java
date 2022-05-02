@@ -41,7 +41,7 @@ import com.archimatetool.model.IDiagramModelComponent;
 import com.archimatetool.model.IArchimateElement;
 
 import kganalysis.IKGAnalysisImages;
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.SmellDetectionProvider;
 
 public class SmellsView extends ViewPart implements ISmellsView {
@@ -73,7 +73,7 @@ public class SmellsView extends ViewPart implements ISmellsView {
 
 	//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, HELP_ID);
 	SmellDetectionProvider provider = new SmellDetectionProvider();
-	KGAnalysisPlugin.INSTANCE.setSmellProvider(provider);
+	KGPlugin.INSTANCE.setSmellProvider(provider);
 	tv.setContentProvider(provider);
 	tv.setInput("root");
 	/*

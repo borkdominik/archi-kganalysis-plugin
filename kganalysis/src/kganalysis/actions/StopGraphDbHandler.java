@@ -3,7 +3,7 @@ package kganalysis.actions;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import kganalysis.KGAnalysisPlugin;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
 
@@ -11,7 +11,7 @@ public class StopGraphDbHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db != null && db.isStarted()) {
 	    db.shutDown();
 	}
@@ -20,7 +20,7 @@ public class StopGraphDbHandler extends AbstractHandler {
 
     @Override
     public boolean isEnabled() {
-	KGDatabase db = KGAnalysisPlugin.INSTANCE.getKGDatabase();
+	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 	if (db == null || db.isStarted() == false) {
 	    return false;
 	}
