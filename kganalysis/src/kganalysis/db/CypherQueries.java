@@ -4,7 +4,6 @@ package kganalysis.db;
 public class CypherQueries {
     
     // --- Centrality -- 
-    
     public static final String PAGERANK = "CALL gds.pageRank.write({\n" + " nodeProjection: '*',\n"
 	    + " relationshipProjection: { relType: { type: '*', orientation: 'NATURAL', properties: {} }},\n"
 	    + " relationshipWeightProperty: null, dampingFactor: 0.85, maxIterations: 20, writeProperty: 'pageRank'\n"
@@ -19,7 +18,6 @@ public class CypherQueries {
 	    + " relationshipWeightProperty: null, writeProperty: 'degree'\n" + "});";
     
     // --- Community ---
-    
     public static final String LOUVAIN = "CALL gds.louvain.write({\n" + " nodeProjection: '*',\n"
 	    + " relationshipProjection: { relType: { type: '*', orientation: 'UNDIRECTED', properties: {} }},\n"
 	    + " relationshipWeightProperty: null, includeIntermediateCommunities: false, seedProperty: '', writeProperty: 'louvain'\n"

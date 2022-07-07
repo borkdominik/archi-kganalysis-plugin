@@ -6,25 +6,18 @@ import org.eclipse.core.commands.ExecutionException;
 import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
-
 public class StopGraphDbHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-	if (db != null && db.isStarted()) {
-	    db.shutDown();
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
+		db.shutDown();
+		return null;
 	}
-	return null;
-    }
 
-    @Override
-    public boolean isEnabled() {
-	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-	if (db == null || db.isStarted() == false) {
-	    return false;
+	@Override
+	public boolean isEnabled() {
+		return KGPlugin.getDefault().isGraphDbStarted();
 	}
-	return true;
-    }
 
 }

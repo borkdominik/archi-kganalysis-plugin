@@ -23,6 +23,11 @@
             name="Initialize Knowledge Graph with model">
       </command>
       <command
+            defaultHandler="kganalysis.actions.CreateGraphHandler"
+            id="kganalysis.command.createKnowledgeGraph"
+            name="Create Knowledge Graph">
+      </command>
+      <command
             defaultHandler="kganalysis.actions.StopGraphDbHandler"
             id="kganalysis.command.stopGraphDb"
             name="Stop Graph Database">
@@ -79,10 +84,10 @@
 		<menu
                id="kganalysis.menu"
                label="Knowledge Graph">
-			<command
-           		commandId="kganalysis.command.initKnowledgeGraph"
+     		<command
+           		commandId="kganalysis.command.createKnowledgeGraph"
            		icon="icons/start.png"
-           		label="Start database and initialize Knowledge Graph"
+           		label="Create Knowledge Graph"
            		style="push">
      		</command>
      		<command

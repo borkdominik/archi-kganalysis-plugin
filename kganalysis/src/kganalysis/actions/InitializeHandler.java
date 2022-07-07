@@ -10,8 +10,11 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -22,27 +25,43 @@ import com.archimatetool.model.IArchimateModel;
 import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
-public class InitializeHandler extends AbstractHandler {
 
+/**
+ * NOT USED!!!
+ * Old handler to create a new Knowledge Graph, new one { @see CreateGraphHandler }
+ */
+public class InitializeHandler extends AbstractHandler {
+	
+	private static final String CONFIRM_TITLE = "Confirm";
 	private static final String CONFIRM_MESSAGE = "The process creates a new database and can take several minutes.\n"
 			+ "Continue?";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		
+		// get current ArchiMate model
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		IArchimateModel model = part != null ? part.getAdapter(IArchimateModel.class) : null;
-
+		
 		if (model == null) {
 			return null;
 		}
 		
-		boolean result = MessageDialog.openConfirm(HandlerUtil.getActiveShell(event), "Confirm", CONFIRM_MESSAGE);
+		boolean result = MessageDialog.openConfirm(HandlerUtil.getActiveShell(event), CONFIRM_TITLE, CONFIRM_MESSAGE);
 		
+		// Cancel button pressed -> return
 		if (!result) {
-			// Cancel button pressed, return
 			return null;
+		// OK pressed -> run initialization progress
 		} else {
-			// OK pressed, continue and run initialization progress
+			IStatusLineManager manager = null;
+			if (part.getSite() instanceof IViewSite) {
+	            manager = ((IViewSite) (part.getSite())).getActionBars().getStatusLineManager();
+	        } else {
+	            manager = ((IEditorSite) (part.getSite())).getActionBars().getStatusLineManager();
+	        }
+			manager.setMessage("Starting Graph Database...");
+			
 			try {
 				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress() {
 
@@ -99,6 +118,12 @@ public class InitializeHandler extends AbstractHandler {
 		url = new URL("platform:/plugin/kganalysis/files/smells.js");
 		File smellsFile = new File(KGPlugin.KG_FOLDER, "smells.js");
 		FileUtils.copyURLToFile(url, smellsFile);
+		url = new URL("platform:/plugin/kganalysis/files/index.js");
+		File jsFile = new File(KGPlugin.KG_FOLDER, "index.js");
+		FileUtils.copyURLToFile(url, jsFile);
+		url = new URL("platform:/plugin/kganalysis/files/styles.css");
+		File cssFile = new File(KGPlugin.KG_FOLDER, "styles.css");
+		FileUtils.copyURLToFile(url, cssFile);
 	}
 
 }

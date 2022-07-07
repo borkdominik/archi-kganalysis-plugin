@@ -12,36 +12,29 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.handlers.HandlerUtil;
 import com.archimatetool.editor.Logger;
 import kganalysis.KGPlugin;
-import kganalysis.db.KGDatabase;
 
 
 public class ShowKGExternalHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	try {
-	    File file = new File(KGPlugin.KG_FOLDER, "index.html");
-	    IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
-	    IWebBrowser browser = support.getExternalBrowser();
-	    browser.openURL(file.toURI().toURL());
-	} catch (Exception ex) {
-	    Logger.log(IStatus.ERROR, "Error opening external Browser", ex);
-	    MessageDialog.openError(HandlerUtil.getActiveShell(event), "Knowledge Graph Preview",
-		    (ex.getMessage() == null ? ex.toString() : ex.getMessage()));
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			File file = new File(KGPlugin.KG_FOLDER, "index.html");
+			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
+			IWebBrowser browser = support.getExternalBrowser();
+			browser.openURL(file.toURI().toURL());
+		} catch (Exception ex) {
+			Logger.log(IStatus.ERROR, "Error opening external Browser", ex);
+			MessageDialog.openError(HandlerUtil.getActiveShell(event), "Knowledge Graph Preview",
+					(ex.getMessage() == null ? ex.toString() : ex.getMessage()));
+		}
+
+		return null;
 	}
 
-	// TODO: addBrowserFunctions(browser);
-
-	return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-	if (db == null || db.isStarted() == false) {
-	    return false;
+	@Override
+	public boolean isEnabled() {
+		return KGPlugin.getDefault().isGraphDbStarted();
 	}
-	return true;
-    }
-
+	
 }

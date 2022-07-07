@@ -2,9 +2,7 @@ package kganalysis.db;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.graphics.Color;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -12,7 +10,6 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import com.archimatetool.editor.ui.ColorFactory;
 import com.archimatetool.editor.utils.PlatformUtils;
-import com.archimatetool.model.FolderType;
 import com.archimatetool.model.IActiveStructureElement;
 import com.archimatetool.model.IArchimateConcept;
 import com.archimatetool.model.IArchimateElement;
@@ -21,127 +18,135 @@ import com.archimatetool.model.IBehaviorElement;
 import com.archimatetool.model.IFolder;
 import com.archimatetool.model.IMotivationElement;
 import com.archimatetool.model.IPassiveStructureElement;
-
 import kganalysis.KGPlugin;
+
 
 public class KGExporter {
 
-    IArchimateModel model;
-    GraphDatabaseService graphDb;
-    HashMap<String, IArchimateElement> nodes;
+	IArchimateModel model;
+	GraphDatabaseService graphDb;
 
-    public KGExporter() {
-
-    }
-
-    public void export(IArchimateModel model) {
-	this.model = model;
-	this.graphDb = KGPlugin.INSTANCE.getGraphDb();
-	nodes = new HashMap<>();
-
-	exportElements(model.getFolder(FolderType.BUSINESS));
-	exportElements(model.getFolder(FolderType.APPLICATION));
-	exportElements(model.getFolder(FolderType.TECHNOLOGY));
-	exportElements(model.getFolder(FolderType.STRATEGY));
-	exportElements(model.getFolder(FolderType.IMPLEMENTATION_MIGRATION));
-	exportElements(model.getFolder(FolderType.MOTIVATION));
-	exportElements(model.getFolder(FolderType.OTHER));
-	exportRelationships(KGPlugin.KG_FOLDER);
-	
-	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-	// db.addNodeLabels();
-	// db.addRelationshipLabels();
-	db.setCentralities();
-	db.setCommunities();
-	KGPlugin.INSTANCE.setSmellProvider(new SmellDetectionProvider());
-    }
-
-    private void exportElements(IFolder folder) {
-	List<IArchimateConcept> concepts = getConcepts(folder);
-	if (concepts.isEmpty()) {
-	    return;
-	}
-	String layer = folder.getType().toString();
-
-	try (Transaction tx = graphDb.beginTx()) {
-	    for (IArchimateConcept concept : concepts) {
-		if (concept instanceof IArchimateElement) {
-		    String id = concept.getId();
-		    String className = concept.eClass().getName();
-		    String name = concept.getName();
-		    String documentation = concept.getDocumentation();
-		    String aspect;
-		    Color color = ColorFactory.getDefaultFillColor(concept);
-		    if (concept instanceof IActiveStructureElement)
-			aspect = "active structure";
-		    else if (concept instanceof IBehaviorElement)
-			aspect = "behaviour";
-		    else if (concept instanceof IPassiveStructureElement)
-			aspect = "passive structure";
-		    else if (concept instanceof IMotivationElement)
-			aspect = "motivation";
-		    else
-			aspect = "other";
-
-		    Node node = tx.createNode();
-		    
-		    // Label.label("elements")
-		    node.setProperty("id", id);
-		    node.setProperty("class", className);
-		    node.setProperty("name", name);
-		    node.setProperty("documentation", documentation);
-		    node.setProperty("layer", layer);
-		    node.setProperty("aspect", aspect);
-		    node.setProperty("color", ColorFactory.convertColorToString(color));
-		    //nodes.put(id, (IArchimateElement) concept);
-		}
-	    }
-	    tx.commit();
-	}
-    }
-
-    private void exportRelationships(File folder) {
-	File relationsFile = new File(folder.getAbsolutePath(), "relations.csv");
-	String relationsString = relationsFile.getAbsolutePath().replaceAll(" ", "%20");
-	String filePrefix = "file://";
-	if (PlatformUtils.isWindows()) {
-	    filePrefix = "file:///";
-	}
+	public KGExporter() { 
 		
-	// TODO: Don't use CSV export?
-	try (Transaction tx = graphDb.beginTx()) {
-	    tx.execute("LOAD CSV WITH HEADERS FROM '" + filePrefix + relationsString + "' AS line\n"
-		    + " MATCH (n {id:line.Source})\n" + " WITH n, line\n" + " MATCH (m {id:line.Target})\n"
-		    + " WITH n, m, line\n"
-		    + " CREATE (n)-[:RELATIONSHIP {id:line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
-	    tx.commit();
+	}
+	
+	public void export(IArchimateModel model) {
+		this.model = model;
+		this.graphDb = KGPlugin.INSTANCE.getGraphDb();
+		
+		// Use the model folders to retrieve and store the elements/relations
+		model.getFolders().stream().forEach(e -> storeNodes(e));
+		storeRelationships();
+		
+		// Run graph algorithms on all nodes
+		KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
+		db.setCentralities();
+		db.setCommunities();
 	}
 
-    }
-
-    // Adapted from {@link CSVExporter} to return the concepts (elements) of a folder
-    private List<IArchimateConcept> getConcepts(IFolder folder) {
-	List<IArchimateConcept> concepts = new ArrayList<IArchimateConcept>();
-
-	if (folder == null) {
-	    return concepts;
+	private void storeNodes(IFolder folder) {
+		List<IArchimateConcept> concepts = getConcepts(folder);
+		if (concepts.isEmpty()) {
+			return;
+		}
+		
+		// Create a new node and set 
+		try (Transaction tx = graphDb.beginTx()) {
+			for (IArchimateConcept concept : concepts) {
+				if (concept instanceof IArchimateElement) {
+					Node node = tx.createNode();
+					node.setProperty("id", concept.getId());
+					node.setProperty("class", concept.eClass().getName());
+					node.setProperty("name", concept.getName());
+					node.setProperty("documentation", concept.getDocumentation());
+					node.setProperty("layer", folder.getType().toString());
+					node.setProperty("aspect", getAspect((IArchimateElement) concept));
+					Color color = ColorFactory.getDefaultFillColor(concept);
+					node.setProperty("color", ColorFactory.convertColorToString(color));
+				}
+			}
+			tx.commit();
+		}
 	}
 
-	for (EObject object : folder.getElements()) {
-	    if (object instanceof IArchimateConcept) {
-		concepts.add((IArchimateConcept) object);
-	    }
-	}
-	// also add subfolders
-	for (IFolder f : folder.getFolders()) {
-	    concepts.addAll(getConcepts(f));
-	}
+	private void storeRelationships() {
+		File folder = KGPlugin.KG_FOLDER;
+		File relationsFile = new File(folder.getAbsolutePath(), "relations.csv");
+		String relationsString = relationsFile.getAbsolutePath().replaceAll(" ", "%20");
+		String filePrefix = "file://";
+		if (PlatformUtils.isWindows()) {
+			filePrefix = "file:///";
+		}
 
-	return concepts;
-    }
+		// TODO: Don't use CSV export?
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute("LOAD CSV WITH HEADERS FROM '" + filePrefix + relationsString + "' AS line\n"
+					+ " MATCH (n {id:line.Source})\n" + " WITH n, line\n" + " MATCH (m {id:line.Target})\n"
+					+ " WITH n, m, line\n"
+					+ " CREATE (n)-[:RELATIONSHIP {id:line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
+			tx.commit();
+		}
 
-    public HashMap<String, IArchimateElement> getNodes() {
-	return nodes;
-    }
+	}
+	
+	/*
+	private void storeRelationships2() {
+		IFolder relationsFolder = model.getFolder(FolderType.RELATIONS);
+		List<IArchimateConcept> concepts = getConcepts(relationsFolder);
+		try (Transaction tx = graphDb.beginTx()) {
+			for (IArchimateConcept concept : concepts) {
+				if (concept instanceof IArchimateRelationship) {
+					IArchimateRelationship relation = (IArchimateRelationship) concept;
+					tx.execute(" MATCH (n " + relation.getSource().getId() + ")\n" + " WITH n\n" 
+							+ " MATCH (m " + relation.getSource().getId() + ")\n" + " WITH n, m\n"
+							+ " CREATE (n)-[:RELATIONSHIP {id:" + relation.getId() + ", type:" + relation.eClass().getName()
+							+ "line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
+					tx.commit();
+				}
+		}
+		
+		
+		try (Transaction tx = graphDb.beginTx()) {
+			tx.execute(" MATCH (n " +  "{id:line.Source})\n" + " WITH n, line\n" + " MATCH (m {id:line.Target})\n"
+					+ " WITH n, m, line\n"
+					+ " CREATE (n)-[:RELATIONSHIP {id:line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
+			tx.commit();
+		}
+
+	}
+	*/
+
+	// Adapted from {@link CSVExporter} to return the concepts (elements) of a folder
+	private List<IArchimateConcept> getConcepts(IFolder folder) {
+		List<IArchimateConcept> concepts = new ArrayList<IArchimateConcept>();
+
+		if (folder == null) {
+			return concepts;
+		}
+		for (EObject object : folder.getElements()) {
+			if (object instanceof IArchimateConcept) {
+				concepts.add((IArchimateConcept) object);
+			}
+		}
+		// also add subfolders
+		for (IFolder f : folder.getFolders()) {
+			concepts.addAll(getConcepts(f));
+		}
+
+		return concepts;
+	}
+	
+	private String getAspect(IArchimateElement element) {
+		if (element instanceof IActiveStructureElement)
+			return "active structure";
+		else if (element instanceof IBehaviorElement)
+			return "behaviour";
+		else if (element instanceof IPassiveStructureElement)
+			return "passive structure";
+		else if (element instanceof IMotivationElement)
+			return "motivation";
+		
+		return "other";
+	}
 
 }

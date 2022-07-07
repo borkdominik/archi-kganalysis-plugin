@@ -1,16 +1,15 @@
 package kganalysis;
 
 import java.io.File;
-
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.osgi.framework.BundleContext;
-
 import com.archimatetool.editor.ArchiPlugin;
+import com.archimatetool.editor.ui.services.ViewManager;
 
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
-import kganalysis.db.SmellDetectionProvider;
+import kganalysis.views.ISmellsView;
 
 
 /**
@@ -24,7 +23,6 @@ public class KGPlugin extends AbstractUIPlugin {
 	public static File KG_FOLDER = new File(ArchiPlugin.INSTANCE.getUserDataFolder(), "kg-analysis");
 	private KGDatabase kgDatabase;
 	private KGExporter exporter;
-	private SmellDetectionProvider smellProvider;
 	
 	
 	@Override
@@ -39,6 +37,7 @@ public class KGPlugin extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		INSTANCE = null;
+		ViewManager.hideViewPart(ISmellsView.ID);
 		super.stop(context);
 	}
 	
@@ -58,12 +57,12 @@ public class KGPlugin extends AbstractUIPlugin {
 		return exporter;
 	}
 	
-	public SmellDetectionProvider getSmellProvider() {
-		return smellProvider;
-	}
 	
-	public void setSmellProvider(SmellDetectionProvider provider) {
-		this.smellProvider = provider;
+	public boolean isGraphDbStarted() {
+		if (kgDatabase != null && kgDatabase.isStarted()) {
+			return true;
+		}
+		return false;
 	}
 	
 	

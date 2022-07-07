@@ -1,0 +1,64 @@
+.main-container {
+    height: 100vh;
+  }
+
+  #toolbar {
+    min-height: 64px;
+  }
+
+  #collapseExample {
+    z-index: 9999;
+  }
+  #leftPanel {
+    border-right: 1px solid gray;
+  }
+  #viz {
+    background-color: #d5fefd;
+    background-image: linear-gradient(315deg, #d5fefd 0%, #fffcff 74%);
+    height: calc(100vh - 70px);
+    border: 1px solid black;
+    border-radius: 10px;
+  }
+  div.vis-network div.vis-navigation div.vis-button.vis-up, 
+  div.vis-network div.vis-navigation div.vis-button.vis-down, 
+  div.vis-network div.vis-navigation div.vis-button.vis-left, 
+  div.vis-network div.vis-navigation div.vis-button.vis-right, 
+  div.vis-network div.vis-navigation div.vis-button.vis-zoomIn, 
+  div.vis-network div.vis-navigation div.vis-button.vis-zoomOut, 
+  div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
+    background-image: none !important;
+  }
+  div.vis-network div.vis-navigation div.vis-button:hover {
+    box-shadow: none !important;
+  }
+  .vis-button:after {
+    font-size: 2em;
+    color: gray;
+  }
+  .vis-button:hover:after {
+    font-size: 2em;
+    color: lightgray;
+  }
+  .vis-button.vis-up:after {
+    content: "▲";
+  }
+  .vis-button.vis-down:after {
+    content: "▼";
+  }
+  .vis-button.vis-left:after {
+    content: "◀";
+  }
+  .vis-button.vis-right:after {
+    content: "▶";
+  }
+  .vis-button.vis-zoomIn:after {
+    content: "+";
+    font-weight: bold;
+  }
+  .vis-button.vis-zoomOut:after {
+    content: "−";
+    font-weight: bold;
+  }
+  .vis-button.vis-zoomExtends:after {
+    content: "⤧";
+  }

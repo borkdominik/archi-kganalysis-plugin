@@ -9,31 +9,26 @@ import com.archimatetool.editor.browser.BrowserEditorInput;
 import com.archimatetool.editor.browser.IBrowserEditor;
 import com.archimatetool.editor.ui.services.EditorManager;
 import kganalysis.KGPlugin;
-import kganalysis.db.KGDatabase;
 
 
 public class ShowKGHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	File file = new File(KGPlugin.KG_FOLDER, "index.html");
-	BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
-	IBrowserEditor editor = (IBrowserEditor) EditorManager.openEditor(input, IBrowserEditor.ID);
-	final Browser browser = editor.getBrowser();
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		File file = new File(KGPlugin.KG_FOLDER, "index.html");
+		BrowserEditorInput input = new BrowserEditorInput(file.getPath(), "Knowledge Graph");
+		IBrowserEditor editor = (IBrowserEditor) EditorManager.openEditor(input, IBrowserEditor.ID);
+		final Browser browser = editor.getBrowser();
 
-	if (editor != null && browser != null) {
-	    browser.refresh();
+		if (editor != null && browser != null) {
+			browser.refresh();
+		}
+
+		return null;
 	}
 
-	return null;
-    }
-
-    @Override
-    public boolean isEnabled() {
-	KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-	if (db == null || db.isStarted() == false) {
-	    return false;
+	@Override
+	public boolean isEnabled() {
+		return KGPlugin.getDefault().isGraphDbStarted();
 	}
-	return true;
-    }
 }
