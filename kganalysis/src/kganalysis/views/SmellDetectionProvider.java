@@ -8,6 +8,7 @@ import java.util.Set;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import kganalysis.KGPlugin;
 import kganalysis.smells.AbstractSmell;
+import kganalysis.smells.ChattyServiceSmell;
 import kganalysis.smells.CyclicDependencySmell;
 import kganalysis.smells.DeadComponentSmell;
 import kganalysis.smells.DocumentationSmell;
@@ -30,6 +31,7 @@ public class SmellDetectionProvider implements ITreeContentProvider {
 		String[] elements;
 
 		// add individual smell detectors
+		smells.add(new ChattyServiceSmell());
 		smells.add(new CyclicDependencySmell());
 		smells.add(new DeadComponentSmell());
 		smells.add(new DocumentationSmell());

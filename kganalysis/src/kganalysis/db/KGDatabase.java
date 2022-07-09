@@ -56,7 +56,8 @@ public class KGDatabase {
 		// create the new database
 		managementService = new DatabaseManagementServiceBuilder(KG_DATABASE_FOLDER)
 				.setConfig(BoltConnector.enabled, true)
-				.setConfig(BoltConnector.listen_address, new SocketAddress("localhost", 7687)).build();
+				.setConfig(BoltConnector.listen_address, new SocketAddress("localhost", 7687))
+				.build();
 		graphDb = managementService.database(DEFAULT_DATABASE_NAME);
 		registerShutdownHook(managementService);
 

@@ -16,7 +16,7 @@ public class SmellsView extends ViewPart implements ISmellsView {
 
 
 	public SmellsView() {
-
+		super();
 	}
 
 	@Override
