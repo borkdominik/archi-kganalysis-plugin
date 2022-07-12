@@ -53,8 +53,9 @@
             name="%command.name">
       </command>
       <command
-            id="kganalysis.commands.detect"
-            name="Detect Smells">
+            defaultHandler="kganalysis.actions.ShowCypherEditorHandler"
+            id="kganalysis.commands.showCypherEditorView"
+            name="%command.name">
       </command>
    </extension>
    <extension
@@ -124,7 +125,14 @@
                id="kganalysis.menuitem.showSmellsView"
                label="Show Smells Report"
                style="push">
-         </command>
+         	</command>
+         	<command
+               commandId="kganalysis.commands.showCypherEditorView"
+               icon="icons/smells.png"
+               id="kganalysis.menuitem.showCypherEditorView"
+               label="Show Cypher Editor"
+               style="push">
+         	</command>
          </menu>
       </menuContribution>
    </extension>
@@ -135,7 +143,14 @@
             icon="icons/smells.png"
             id="kganalysis.smellsView"
             name="Smells"
-            restorable="true">
+            restorable="false">
+      </view>
+      <view
+            class="kganalysis.views.CypherEditorView"
+            icon="icons/smells.png"
+            id="kganalysis.cypherEditorView"
+            name="Cypher Editor"
+            restorable="false">
       </view>
    </extension>
    <extension
@@ -144,16 +159,13 @@
             targetID="*">
          <view
                id="kganalysis.smellsView"
-               minimized="false"
+               minimized="true"
                relationship="stack"
                relative="com.archimatetool.editor.propertiesView">
          </view>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="*">
-            <view
-               id="kganalysis.smellsView"
-               minimized="false"
+         <view
+               id="kganalysis.cypherEditorView"
+               minimized="true"
                relationship="stack"
                relative="com.archimatetool.editor.propertiesView">
          	</view>

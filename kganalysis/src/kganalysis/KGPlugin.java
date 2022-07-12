@@ -5,11 +5,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.osgi.framework.BundleContext;
 import com.archimatetool.editor.ArchiPlugin;
-import com.archimatetool.editor.ui.services.ViewManager;
-
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
-import kganalysis.views.ISmellsView;
 
 
 /**
@@ -37,7 +34,6 @@ public class KGPlugin extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		INSTANCE = null;
-		ViewManager.hideViewPart(ISmellsView.ID);
 		super.stop(context);
 	}
 	
