@@ -37,8 +37,8 @@ public class SmellDetectionProvider implements ITreeContentProvider {
 		smells.add(new DeadComponentSmell());
 		smells.add(new DocumentationSmell());
 		smells.add(new DuplicationSmell());
-		smells.add(new StrictLayerViolationSmell());
 		smells.add(new SharedPersistencySmell());
+		smells.add(new StrictLayerViolationSmell());
 
 		// initialize the tree with smell names
 		String[] smellNames = smells
