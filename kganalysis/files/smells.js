@@ -1,114 +1,75 @@
-smells = [
-  {
-    "name": "Chatty Service",
-    "description": "A high number of operations is required to complete one abstraction. Such operations are typically rather simple tasks that needlessly slow down an entire process.",
-    "query": "MATCH (a)-[r:RELATIONSHIP]-(b) WHERE a.class contains 'Service' and b.class contains 'Service' and not r.type contains 'Composition' WITH a, count(r) as cnt WHERE cnt > 3 MATCH (a)-[r1:RELATIONSHIP]-(b1) WHERE a.class contains 'Service' and b1.class contains 'Service' RETURN a, r1, b1",
-    "context": "Derived from: \"Chatty Service\"",
-    "detection": "A chatty service may have many fine-grained operations/responsibilities. It is suspicious when a service relates to many other services and makes use of them, especially when the provided functionality is rather simple.",
-    "consequences": "Maintenance becomes harder, like e.g. changing the order of invocations. Many interactions are required, which leads to overall higher time consumption. This can be especially harmful when synchronous tasks are chained together.",
-    "cause": "",
-    "solution": "Simple operations should not be made available to other elements. Instead, a more coarse-grained operation should be created to fulfill an abstraction.",
-    "example": "",
-    "sources": [],
-    "tags": [
-      "microservices",
-      "soa",
-      "business",
-      "application",
-      "technology",
-      "abstraction",
-      "data management",
-      "automatic detection"
-    ],
-    "relatedItems": [
-      {
-        "relation": "precedes",
-        "name": "Nanoservices"
-      },
-      {
-        "relation": "relates",
-        "name": "Message Chain"
-      },
-      {
-        "relation": "precedes",
-        "name": "Data Service"
-      },
-      {
-        "relation": "relates",
-        "name": "Cyclic Dependency"
-      },
-      {
-        "relation": "precedes",
-        "name": "Feature Envy"
-      }
-    ],
-    "evidence": 0,
-    "relatedAntiPatterns": [
-      {
-        "relation": "relates",
-        "name": "Cyclic Dependency",
-        "description": "This smell arises when two or more abstractions depend on each other directly or indirectly (creating a tight coupling between the abstractions). A cyclic chain of calls between abstractions exists."
-      },
-      {
-        "relation": "precedes",
-        "name": "Data Service",
-        "description": "A service that exclusively performs information retrieval and typically provides only simple read operations. Often goes hand in hand with Feature Envy, because relevant functionality is not provided."
-      },
-      {
-        "relation": "precedes",
-        "name": "Feature Envy",
-        "description": "Data and behavior that acts on that data belong together. When a component makes too many calls to other components to obtain data or functionality, Feature Envy is in the air. It is often, but not always, accompanied by another smell, Data Service."
-      },
-      {
-        "relation": "relates",
-        "name": "Message Chain",
-        "description": "A chain of service calls and messages fulfills common functionality."
-      },
-      {
-        "relation": "precedes",
-        "name": "Nanoservices",
-        "description": "A service is too fine-grained so that its communication and maintenance efforts outweigh its utility. Such services often require several other coupled services to complete an abstraction."
-      }
-    ]
-  },
-  {
-    "name": "Shared Persistency",
-    "aliases": [
-      ""
-    ],
-    "description": "Different services access the same database. In the worst case, different services access the same entities of the same schema.",
-    "context": "Derived from: \"Shared Persistency\"<br /> The implementation of services usually follows a \"share nothing\" philosophy. This is especially relevant for clear data ownership. Each data collection or schema usually belongs to exactly one service. The only allowed access to this data is via this service.",
-    "query": "MATCH (a)-[r]-(b) WHERE a.class='SystemSoftware' and (r.Label='AssociationRelationship' or r.Label='RealizationRelationship' or r.Label='AssignmentRelationship') with a, count(r) as cnt MATCH (a)-[r1]-(b1) where cnt>1 and (r1.Label='AssociationRelationsip' or r1.Label='RealizationRelationship' or r1.Label='AssignmentRelationship') return a, r1, b1",
-    "detection": "Data is accessed directly by more than 1 element.",
-    "consequences": "This smell highly couples the services connected to the same data, reducing team and service independence.",
-    "cause": "",
-    "solution": "Possible solutions are to use independent databases for each service, to use a shared database with a set of private tables for each service that can be accessed by only that service, or to use a private database schema for each service.",
-    "example": "",
-    "sources": [],
-    "tags": [
-      "microservices",
-      "soa",
-      "application",
-      "technology",
-      "data management",
-      "The Couplers",
-      "automatic detection"
-    ],
-    "relatedItems": [
-      {
-        "relation": "relates",
-        "name": "Scattered Parasitic Functionality"
-      }
-    ],
-    "relatedAntiPatterns": [
-      {
-        "relation": "relates",
-        "name": "Scattered Parasitic Functionality",
-        "description": "Multiple services are responsible for the same concern and some of these services are also responsible for orthogonal concerns."
-      }
-    ],
-    "evidence": 0
-  },
+smells = [{
+  "name": "Chatty Service",
+  "description": "A high number of operations is required to complete one abstraction. Such operations are typically rather simple tasks that needlessly slow down an entire process.",
+  "query": "MATCH (a)-[r:RELATIONSHIP]-(b) WHERE a.class contains 'Service' and b.class contains 'Service' and not r.type contains 'Composition' WITH a, count(r) as cnt WHERE cnt > 3 MATCH (a)-[r1:RELATIONSHIP]-(b1) WHERE a.class contains 'Service' and b1.class contains 'Service' RETURN a, r1, b1",
+  "context": "Derived from: \"Chatty Service\"",
+  "detection": "A chatty service may have many fine-grained operations/responsibilities. It is suspicious when a service relates to many other services and makes use of them, especially when the provided functionality is rather simple.",
+  "consequences": "Maintenance becomes harder, like e.g. changing the order of invocations. Many interactions are required, which leads to overall higher time consumption. This can be especially harmful when synchronous tasks are chained together.",
+  "cause": "",
+  "solution": "Simple operations should not be made available to other elements. Instead, a more coarse-grained operation should be created to fulfill an abstraction.",
+  "example": "",
+  "sources": [],
+  "tags": [
+    "microservices",
+    "soa",
+    "business",
+    "application",
+    "technology",
+    "abstraction",
+    "data management",
+    "automatic detection"
+  ],
+  "relatedItems": [
+    {
+      "relation": "precedes",
+      "name": "Nanoservices"
+    },
+    {
+      "relation": "relates",
+      "name": "Message Chain"
+    },
+    {
+      "relation": "precedes",
+      "name": "Data Service"
+    },
+    {
+      "relation": "relates",
+      "name": "Cyclic Dependency"
+    },
+    {
+      "relation": "precedes",
+      "name": "Feature Envy"
+    }
+  ],
+  "evidence": 0,
+  "relatedAntiPatterns": [
+    {
+      "relation": "relates",
+      "name": "Cyclic Dependency",
+      "description": "This smell arises when two or more abstractions depend on each other directly or indirectly (creating a tight coupling between the abstractions). A cyclic chain of calls between abstractions exists."
+    },
+    {
+      "relation": "precedes",
+      "name": "Data Service",
+      "description": "A service that exclusively performs information retrieval and typically provides only simple read operations. Often goes hand in hand with Feature Envy, because relevant functionality is not provided."
+    },
+    {
+      "relation": "precedes",
+      "name": "Feature Envy",
+      "description": "Data and behavior that acts on that data belong together. When a component makes too many calls to other components to obtain data or functionality, Feature Envy is in the air. It is often, but not always, accompanied by another smell, Data Service."
+    },
+    {
+      "relation": "relates",
+      "name": "Message Chain",
+      "description": "A chain of service calls and messages fulfills common functionality."
+    },
+    {
+      "relation": "precedes",
+      "name": "Nanoservices",
+      "description": "A service is too fine-grained so that its communication and maintenance efforts outweigh its utility. Such services often require several other coupled services to complete an abstraction."
+    }
+  ]
+},
   {
   "name": "Cyclic Dependency",
   "aliases": [
