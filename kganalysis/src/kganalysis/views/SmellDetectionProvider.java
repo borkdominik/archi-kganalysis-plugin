@@ -13,6 +13,7 @@ import kganalysis.smells.CyclicDependencySmell;
 import kganalysis.smells.DeadComponentSmell;
 import kganalysis.smells.DocumentationSmell;
 import kganalysis.smells.DuplicationSmell;
+import kganalysis.smells.MessageChainSmell;
 import kganalysis.smells.SharedPersistencySmell;
 import kganalysis.smells.StrictLayerViolationSmell;
 
@@ -37,6 +38,7 @@ public class SmellDetectionProvider implements ITreeContentProvider {
 		smells.add(new DeadComponentSmell());
 		smells.add(new DocumentationSmell());
 		smells.add(new DuplicationSmell());
+		smells.add(new MessageChainSmell());
 		smells.add(new SharedPersistencySmell());
 		smells.add(new StrictLayerViolationSmell());
 

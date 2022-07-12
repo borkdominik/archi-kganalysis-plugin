@@ -27,8 +27,7 @@ public class DeadComponentSmell extends AbstractSmell {
 				Map<String, Object> row = result.next();
 				Node n = (Node) row.get("n");
 				n.addLabel(Label.label("Smell"));
-				String element = n.getProperty("name").toString();
-				detected.add("Element '" + element + "' is not connected to any other element.");
+				detected.add("Element '" + getName(n) + "' is not connected to any other element.");
 			}
 			tx.commit();
 		}

@@ -41,9 +41,7 @@ public class DuplicationSmell extends AbstractSmell {
 				Relationship duplication = a.createRelationshipTo(b, RelTypes.DUPLICATION);
 				duplication.setProperty("weight", score);
 
-				String aString = a.getProperty("name").toString();
-				String bString = b.getProperty("name").toString();
-				detected.add("'" + aString + "' and '" + bString + "' (" + score + ")");
+				detected.add("'" + getName(a) + "' and '" + getName(b) + "' (" + score + ")");
 			}
 			tx.commit();
 		}

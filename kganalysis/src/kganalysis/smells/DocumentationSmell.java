@@ -27,9 +27,8 @@ public class DocumentationSmell extends AbstractSmell {
 				Map<String, Object> row = result.next();
 				Node n = (Node) row.get("n");
 				n.addLabel(Label.label("Smell"));
-				String nameString = (n).getProperty("name").toString();
 				String docString = (n).getProperty("documentation").toString();
-				detected.add("Documentation for element '" + nameString + "' might be too long. (" + docString.length() + "characters)");
+				detected.add("Documentation for element '" + getName(n) + "' might be too long. (" + docString.length() + "characters)");
 			}
 			tx.commit();
 		}

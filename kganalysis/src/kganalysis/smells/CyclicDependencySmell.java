@@ -38,13 +38,9 @@ public class CyclicDependencySmell extends AbstractSmell {
 
 				a.createRelationshipTo(b, RelTypes.CYCLIC_DEPENDENCY);
 				a.addLabel(Label.label("Smell"));
-
-				String elementName = (a).getProperty("name").toString();
-				String bName = (b).getProperty("name").toString();
-				String cName = (c).getProperty("name").toString();
 				
-				detected.add("Element '"  + elementName + "' is part of a cycle. (" + elementName + " → " + bName + " → " + cName
-						+ " → " + elementName + ")");
+				detected.add("Element '"  + getName(a) + "' is part of a cycle. (" + getName(a) + " → " + getName(b) + " → " + getName(c)
+						+ " → " + getName(a) + ")");
 			}
 			tx.commit();
 		}

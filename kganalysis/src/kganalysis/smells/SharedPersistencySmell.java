@@ -29,8 +29,7 @@ public class SharedPersistencySmell extends AbstractSmell {
 				long count = (long) row.get("cnt");
 				a.addLabel(Label.label("Smell"));
 				
-				String elementName = (a).getProperty("name").toString();
-				detected.add("Element '" + elementName + "' is a shared persistency between " + count + " elements.");
+				detected.add("Element '" + getName(a) + "' is a shared persistency between " + count + " elements.");
 			}
 			tx.commit();
 		}

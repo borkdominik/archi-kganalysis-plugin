@@ -177,6 +177,30 @@ smells = [
   ]
 },
 {
+  "name": "Message Chain",
+  "aliases": [
+    "Service Chain"
+  ],
+  "description": "A chain of service calls and messages fulfills common functionality.",
+  "query": "MATCH (a)-[r1:RELATIONSHIP]->(b)-[r2:RELATIONSHIP]->(c)-[r3:RELATIONSHIP]->(d)-[r4:RELATIONSHIP]->(e) WHERE a.class contains 'Service' and b.class contains 'Service' and c.class contains 'Service' and d.class contains 'Service' and e.class contains 'Service' RETURN a, b, c, d, e, r1, r2, r3, r4",
+  "context": "Derived from: \"Message Chain\"<br /> Multiple services exist that call each other sequentially to fulfill an abstraction or business process. Overly aggressive delegate hiding can cause structures in which it is hard to see where the functionality is actually occurring.",
+  "detection": "Restricted to Service Chains: a transitive Service Chain with at least 4 relations exists.",
+  "consequences": "Such a chain may slow down performance and reduces the availability of the chained abstraction. It may also be harder to change the abstraction, especially with respect to the invocation order of services.",
+  "cause": "The organization may have created a detailed map of processes, which resulted in a series of grand \"end to end\" process models that are categorized by their large number of steps and a lack of sub-processes. However, no valid business services have been identified and thus the process maps have been created without a proper service structure. This makes identifying valid services a tricky process, especially when looking for cross-functional or horizontal services.",
+  "solution": "The first resolution is to create the services architecture independently of the process map. This will provide a structure for breaking down processes and creating a clear hierarchy of use. Next, this service architecture should be compared with the process map to understand where the cuts should be made. The current system can then be incrementally refactored to create a more service-oriented solution by attacking major inflexibilities in the system.",
+  "example": "",
+  "sources": [],
+  "tags": [
+    "microservices",
+    "soa",
+    "application",
+    "technology",
+    "The Couplers",
+    "between elements",
+    "automatic detection"
+  ],
+},
+{
   "name": "Shared Persistency",
   "query": "MATCH (a)-[r:RELATIONSHIP]-(b) WHERE a.class='SystemSoftware' and (r.type='AssociationRelationship' or r.type='RealizationRelationship' or r.type='AssignmentRelationship') with a, count(r) as cnt WHERE cnt>1 MATCH (a)-[r1:RELATIONSHIP]-(b1) RETURN a, r1, b1",
   "description": "Different services access the same database. In the worst case, different services access the same entities of the same schema.",

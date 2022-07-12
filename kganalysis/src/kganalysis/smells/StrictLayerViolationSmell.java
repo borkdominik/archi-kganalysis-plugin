@@ -36,9 +36,7 @@ public class StrictLayerViolationSmell extends AbstractSmell {
 				a.createRelationshipTo(b, RelTypes.STRICT_LAYER_VIOLATION);
 				a.addLabel(Label.label("Smell"));
 
-				String aString = (a).getProperty("name").toString();
-				String bString = (b).getProperty("name").toString();
-				detected.add("'" + aString + "' (business) " + " - '" + bString + "' (technology)");
+				detected.add("'" + getName(a) + "' (business) " + " - '" + getName(b) + "' (technology)");
 			}
 			tx.commit();
 		}

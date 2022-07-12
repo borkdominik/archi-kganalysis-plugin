@@ -34,9 +34,8 @@ public class ChattyServiceSmell extends AbstractSmell {
 				long count = (long) row.get("cnt");
 				
 				a.addLabel(Label.label("Smell"));
-				String elementName = (a).getProperty("name").toString();
 				
-				detected.add("Element '"  + elementName + "' is connected to " + count + " other services.");
+				detected.add("Element '"  + getName(a) + "' is connected to " + count + " other services.");
 			}
 			tx.commit();
 		}
