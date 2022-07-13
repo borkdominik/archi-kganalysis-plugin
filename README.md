@@ -1,12 +1,16 @@
-<h1 align="center">Archi KG Analysis Plugin </h1>
-<p align="center">
-  <img src="./images/logo.png" width="20%">
-</p>
+# EAKG Archi Toolkit
+<img src="./images/logo.png" align="left" width="192px" height="192px"/>
+<img align="left" width="0" height="192px" hspace="10"/>
+
+> [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture models as **Knowledge Graphs**.
 
 <br>
 
-> [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
+Gain further insights about ArchiMate models within Archi through advanced visualization options, graph algorithms, and EA Smells detection. Backed by an embedded [Neo4j Graph Database](https://neo4j.com/developer/graph-platform/neo4j) and its powerful [Cypher Query Language](https://neo4j.com/developer/cypher/).
 
+<br>
+<br>
+<br>
 
 <p align="center">
   <img src="./images/plugin-screenshot.png" width="100%">
@@ -45,5 +49,4 @@ Additional Hints:
 - Progress Dialog currently freezes the UI and does not indicate progress correctly.
 - If the database is not started and the Smells Report view is open (e.g. from a previous session) the view shows an error message. Start the database and the view can be properly opened again. 
 - Preference options are not implemented yet.
-
 
