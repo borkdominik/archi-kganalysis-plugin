@@ -7,10 +7,10 @@
 
 > [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture (EA) models as **Knowledge Graphs**, including the detection of **EA Smells**.
 
-<br>
 
-
--- Screenshot/GIF --
+<p align="center">
+  <img src="./images/plugin-screenshot.png" width="100%">
+</p>
 
 
 ## Features
@@ -46,13 +46,4 @@ Additional Hints:
 - If the database is not started and the Smells Report view is open (e.g. from a previous session) the view shows an error message. Start the database and the view can be properly opened again. 
 - Preference options are not implemented yet.
 
-## EA Smells
-
-
-
-General info about EA Smells....
-
-List of smells:
-- Cyclic Dependency
-- Dead Componentt
 

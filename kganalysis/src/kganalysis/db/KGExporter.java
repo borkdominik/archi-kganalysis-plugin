@@ -50,7 +50,7 @@ public class KGExporter {
 			return;
 		}
 		
-		// Create a new node and set 
+		// Create a new node and set the properties
 		try (Transaction tx = graphDb.beginTx()) {
 			for (IArchimateConcept concept : concepts) {
 				if (concept instanceof IArchimateElement) {
@@ -90,31 +90,39 @@ public class KGExporter {
 	}
 	
 	/*
-	private void storeRelationships2() {
+	private void transformArchiModel() {
 		IFolder relationsFolder = model.getFolder(FolderType.RELATIONS);
 		List<IArchimateConcept> concepts = getConcepts(relationsFolder);
+		
 		try (Transaction tx = graphDb.beginTx()) {
 			for (IArchimateConcept concept : concepts) {
 				if (concept instanceof IArchimateRelationship) {
-					IArchimateRelationship relation = (IArchimateRelationship) concept;
-					tx.execute(" MATCH (n " + relation.getSource().getId() + ")\n" + " WITH n\n" 
-							+ " MATCH (m " + relation.getSource().getId() + ")\n" + " WITH n, m\n"
-							+ " CREATE (n)-[:RELATIONSHIP {id:" + relation.getId() + ", type:" + relation.eClass().getName()
-							+ "line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
-					tx.commit();
+					IArchimateRelationship relationship = (IArchimateRelationship) concept;
+					// only create nodes and relationship if source and target are present
+					if (relationship.getSource() != null && relationship.getTarget() != null) {
+						Node source = createNode(relationship.getSource());
+						Node target = createNode(relationship.getTarget());
+						createRelationship(relationship());
+					}
 				}
+			}
 		}
-		
-		
-		try (Transaction tx = graphDb.beginTx()) {
-			tx.execute(" MATCH (n " +  "{id:line.Source})\n" + " WITH n, line\n" + " MATCH (m {id:line.Target})\n"
-					+ " WITH n, m, line\n"
-					+ " CREATE (n)-[:RELATIONSHIP {id:line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
-			tx.commit();
-		}
-
 	}
-	*/
+	
+	
+	private Node createNode(IArchimateConcept concept) {
+		if (concept instanceof IArchimateElement) {
+			Node node = tx.createNode();
+			node.setProperty("id", concept.getId());
+			node.setProperty("class", concept.eClass().getName());
+			node.setProperty("name", concept.getName());
+			node.setProperty("documentation", concept.getDocumentation());
+			node.setProperty("layer", getconcept.getfolder.getType().toString());
+			node.setProperty("aspect", getAspect((IArchimateElement) concept));
+			Color color = ColorFactory.getDefaultFillColor(concept);
+			node.setProperty("color", ColorFactory.convertColorToString(color));
+		}
+	}*/
 
 	// Adapted from {@link CSVExporter} to return the concepts (elements) of a folder
 	private List<IArchimateConcept> getConcepts(IFolder folder) {

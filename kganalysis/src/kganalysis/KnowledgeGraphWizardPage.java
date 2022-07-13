@@ -3,19 +3,15 @@ package kganalysis;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -28,26 +24,25 @@ import com.archimatetool.model.IArchimateModel;
 public class KnowledgeGraphWizardPage extends WizardPage {
 	
 	private Text dbFolder;
-	private List<Button> modelsButton;
+	private List<Button> radioButtons;
 	private IArchimateModel selectedModel;
 	
 	public KnowledgeGraphWizardPage() {
         super("KnowledgeGraphWizardPage1");
-        
-        setTitle("Create new Knowledge Graph");
-        setDescription("Choose the graph database folder and a model");
+        setTitle("New Knowledge Graph");
+        setDescription("Choose an ArchiMate model:");
         setImageDescriptor(IKGAnalysisImages.ImageFactory.getImageDescriptor(IKGAnalysisImages.WIZARD_LOGO));
     }
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
-        container.setLayout(new GridLayout());
-        setControl(container);
+		Composite comp = new Composite(parent, SWT.NULL);
+        comp.setLayout(new GridLayout());
+        setControl(comp);
         setPageComplete(false);
         
-        // DB Folder
-        Composite fieldContainer = new Composite(container, SWT.NULL);
+        // DB Folder (currently not synchronized with anything and only serves as info)
+        Composite fieldContainer = new Composite(comp, SWT.NULL);
         fieldContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         fieldContainer.setLayout(new GridLayout(3, false));
         Label label = new Label(fieldContainer, SWT.NONE);
@@ -55,41 +50,32 @@ public class KnowledgeGraphWizardPage extends WizardPage {
         dbFolder = UIUtils.createSingleTextControl(fieldContainer, SWT.BORDER, false);
         dbFolder.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         dbFolder.setText(ArchiPlugin.INSTANCE.getUserDataFolder().toString());
-        dbFolder.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                validateFields();
-            }
-        });
-        Button button = new Button(fieldContainer, SWT.PUSH);
-        button.setText("Browse...");
-        button.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                handleBrowse();
-            }
-        });
+        dbFolder.setEnabled(false);
+        
+        // Horizontal line seperator
+        Label line = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
+        line.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         
         // Model Selection
-        Group group = new Group(container, SWT.NONE);
-        group.setText("Choose an ArchiMate model:");
+        Group group = new Group(comp, SWT.NONE);
+        group.setText("Select ArchiMate model");
         group.setLayout(new GridLayout(1, false));
         GridData gdata = new GridData(SWT.FILL, SWT.FILL, true, false); 
         gdata.heightHint = 200;
         group.setLayoutData(gdata);
         
-        ScrolledComposite scomposite = new ScrolledComposite(group, SWT.V_SCROLL);
-        scomposite.setLayout(new GridLayout(1, false));
-        scomposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        ScrolledComposite scrolledComp = new ScrolledComposite(group, SWT.V_SCROLL);
+        scrolledComp.setLayout(new GridLayout(1, false));
+        scrolledComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         
-        Composite composite = new Composite(scomposite, SWT.NONE);
-        composite.setLayout(new GridLayout(2, true));
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        Composite innerComp = new Composite(scrolledComp, SWT.NONE);
+        innerComp.setLayout(new GridLayout(1, false));
+        innerComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
               
-        modelsButton = new ArrayList<Button>();
+        radioButtons = new ArrayList<Button>();
         
         for(IArchimateModel model : IEditorModelManager.INSTANCE.getModels()) {	
-	        Button modelButton = new Button(composite, SWT.RADIO);
+	        Button modelButton = new Button(innerComp, SWT.RADIO);
 	        modelButton.setText(model.getName());
 	        modelButton.setData("id", model.getId());
 	        modelButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -99,14 +85,12 @@ public class KnowledgeGraphWizardPage extends WizardPage {
 	                validateFields();
 	            }
 	        });
-	        
-	        modelsButton.add(modelButton);    
-	        
+	        radioButtons.add(modelButton);    
         }
-        scomposite.setContent(composite);
-        scomposite.setExpandHorizontal(true);
-        scomposite.setExpandVertical(true);
-        scomposite.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        scrolledComp.setContent(innerComp);
+        scrolledComp.setExpandHorizontal(true);
+        scrolledComp.setExpandVertical(true);
+        scrolledComp.setMinSize(innerComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         
         
 	}
@@ -114,7 +98,7 @@ public class KnowledgeGraphWizardPage extends WizardPage {
 	private void validateFields() {
 		Boolean isOK = false;
 		
-		for (Button button : modelsButton) {
+		for (Button button : radioButtons) {
 			if (button.getSelection()) {
 				String modelId = (String) button.getData("id");
 				for (IArchimateModel archiModel : IEditorModelManager.INSTANCE.getModels()) {	
@@ -135,18 +119,6 @@ public class KnowledgeGraphWizardPage extends WizardPage {
 		setErrorMessage(null);
 		setPageComplete(true);
 	}
-	
-	private void handleBrowse() {
-        DirectoryDialog dialog = new DirectoryDialog(getShell());
-        dialog.setText("Knowledge Graph");
-        dialog.setMessage("Select a folder where the graph database will be stored");
-        dialog.setFilterPath(dbFolder.getText());
-        
-        String path = dialog.open();
-        if (path != null) {
-            dbFolder.setText(path);
-        }
-    }
 	
 	public File getDbFolder() {
         return new File(dbFolder.getText());
