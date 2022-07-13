@@ -2,7 +2,7 @@
 <img src="./images/logo.png" align="left" width="192px" height="192px"/>
 <img align="left" width="0" height="192px" hspace="10"/>
 
-# EAKG Archi Toolkit
+## EAKG Archi Toolkit
 
 > [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture models as **Knowledge Graphs**.
 
