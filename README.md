@@ -1,14 +1,13 @@
-# EAKG Archi Toolkit
+
 <img src="./images/logo.png" align="left" width="192px" height="192px"/>
 <img align="left" width="0" height="192px" hspace="10"/>
 
-> [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture models as **Knowledge Graphs**.
+# EAKG Archi Toolkit
 
-<br>
+> [Archi](https://www.archimatetool.com/) plugin to visualize and analyze Enterprise Architecture models as **Knowledge Graphs**.
 
 Gain further insights about ArchiMate models within Archi through advanced visualization options, graph algorithms, and EA Smells detection. Backed by an embedded [Neo4j Graph Database](https://neo4j.com/developer/graph-platform/neo4j) and its powerful [Cypher Query Language](https://neo4j.com/developer/cypher/).
 
-<br>
 <br>
 
 <p align="center">
