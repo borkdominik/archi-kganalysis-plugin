@@ -10,7 +10,6 @@ Gain further insights about ArchiMate models within Archi through advanced visua
 
 <br>
 <br>
-<br>
 
 <p align="center">
   <img src="./images/plugin-screenshot.png" width="100%">
