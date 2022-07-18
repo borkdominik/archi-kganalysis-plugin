@@ -3,14 +3,11 @@ package kganalysis.db;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-
 import com.archimatetool.editor.ArchiPlugin;
-
 import apoc.create.Create;
 import apoc.nodes.Nodes;
 import apoc.refactor.GraphRefactoring;
 import apoc.text.Strings;
-
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.api.procedure.GlobalProcedures;
 import org.neo4j.configuration.connectors.BoltConnector;
@@ -27,10 +24,10 @@ import org.neo4j.gds.wcc.WccWriteProc;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.io.fs.FileUtils;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
-
 import static org.neo4j.configuration.GraphDatabaseSettings.DEFAULT_DATABASE_NAME;
 import static apoc.ApocConfig.APOC_IMPORT_FILE_ENABLED;
 import static apoc.ApocConfig.apocConfig;
+
 
 public class KGDatabase {
 	
@@ -44,10 +41,10 @@ public class KGDatabase {
 		isStarted = false;
 	}
 
-	/*
-	 * Creates a new neo4j database with a bolt connector and registers procedures
-	 * 
-	 * TODO: Fix Exception Handling
+	/**
+	 ** Creates a new neo4j database with a bolt connector and registers procedures
+	 ** 
+	 ** TODO: Fix Exception Handling
 	 */
 	public void createDb() throws IOException {
 		// clear db folder to avoid inconsistencies
@@ -69,8 +66,8 @@ public class KGDatabase {
 	}
 	
 	/**
-	 * Runs various centrality graph algorithms { @see CypherQueries } and sets 'pageRank', 'betweenness', and 
-	 * 'degree' properties for each node. Used for the size of nodes in the visualization.
+	 ** Runs various centrality graph algorithms { @see CypherQueries } and sets 'pageRank', 'betweenness', and 
+	 ** 'degree' properties for each node. Used for the size of nodes in the visualization.
 	 */
 	public void setCentralities() {
 		try (Transaction tx = graphDb.beginTx()) {
@@ -82,8 +79,8 @@ public class KGDatabase {
 	}
 	
 	/**
-	 * Runs various community graph algorithms { @see CypherQueries } and sets 'louvain', 'labelPropagation', and 
-	 * 'wcc' properties for each node. Used for the color of nodes in the visualization.
+	 ** Runs various community graph algorithms { @see CypherQueries } and sets 'louvain', 'labelPropagation', and 
+	 ** 'wcc' properties for each node. Used for the color of nodes in the visualization.
 	 */
 	public void setCommunities() {
 		try (Transaction tx = graphDb.beginTx()) {
@@ -95,7 +92,7 @@ public class KGDatabase {
 	}
 
 	/**
-	 * Removes all nodes and their relationships from the database
+	 ** Removes all nodes and their relationships from the database
 	 */
 	public void removeData() {
 		try (Transaction tx = graphDb.beginTx()) {
@@ -105,7 +102,7 @@ public class KGDatabase {
 	}
 
 	/**
-	 * Manually shut down the database.
+	 ** Manually shut down the database.
 	 */
 	public void shutDown() {
 		managementService.shutdown();

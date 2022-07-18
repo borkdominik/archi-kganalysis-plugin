@@ -25,10 +25,12 @@ public class DocumentationSmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node n = (Node) row.get("n");
 				n.addLabel(Label.label("Smell"));
 				String docString = (n).getProperty("documentation").toString();
-				detected.add("Documentation for element '" + getName(n) + "' might be too long. (" + docString.length() + "characters)");
+				
+				detected.add("Documentation for element '" + getName(n) + "' might be too long. (" + docString.length() + " characters)");
 			}
 			tx.commit();
 		}

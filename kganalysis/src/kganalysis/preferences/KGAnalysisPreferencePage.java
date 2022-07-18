@@ -13,13 +13,16 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-
 import com.archimatetool.editor.ui.UIUtils;
-
 import org.eclipse.ui.IWorkbench;
 import kganalysis.KGPlugin;
 
 
+/**
+ ** Preferences (work in progress)
+ ** 
+ ** TODO: Configure database, enable/disable Smells, configure Smells
+ */
 public class KGAnalysisPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, IPreferenceConstants {
 
 	private Button externalMode;

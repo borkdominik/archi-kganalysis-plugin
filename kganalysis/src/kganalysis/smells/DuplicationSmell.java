@@ -32,12 +32,12 @@ public class DuplicationSmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node a = (Node) row.get("a");
 				Node b = (Node) row.get("b");
-				double score = (double) row.get("distance");
-
 				a.addLabel(Label.label("Smell"));
-
+				double score = (double) row.get("distance");
+				
 				Relationship duplication = a.createRelationshipTo(b, RelTypes.DUPLICATION);
 				duplication.setProperty("weight", score);
 

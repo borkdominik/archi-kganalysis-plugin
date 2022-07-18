@@ -2,7 +2,6 @@ package kganalysis.views;
 
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -19,18 +18,19 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.QueryExecutionException;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
-
-import kganalysis.IKGAnalysisImages;
+import kganalysis.IEAKGImages;
 import kganalysis.KGPlugin;
 
 
+/**
+ ** Experimental Cypher Editor (work in progress)
+ */
 public class CypherEditorView extends ViewPart implements ICypherEditorView {
 
 	private Text cypherText;
     private Label statusLabel;
 	private Action executeQuery;
 	private GraphDatabaseService graphDb;
-	
 	
 	
 	public CypherEditorView() {
@@ -42,7 +42,6 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-		
 	    cypherText = new Text(sashForm, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		cypherText.addKeyListener(new KeyListener() {
 			
@@ -64,7 +63,6 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 		statusLabel = new Label(sashForm, SWT.WRAP);
 		statusLabel.setText("No query result. Execute a query!");
 		
-        
         executeQuery = new Action("Execute Query") {
             @Override
             public void run() {
@@ -78,7 +76,7 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
             
             @Override
             public ImageDescriptor getImageDescriptor() {
-                return IKGAnalysisImages.ImageFactory.getImageDescriptor(IKGAnalysisImages.ICON_RELOAD);
+                return IEAKGImages.ImageFactory.getImageDescriptor(IEAKGImages.ICON_RELOAD);
             }
         };
         executeQuery.setEnabled(true);
@@ -95,6 +93,7 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 	}
 	
 	private void executeCurrentQuery(String query) {
+		// TODO: Properly output result
 		String resultText = "";
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(query)) {
 			while (result.hasNext()) {
@@ -111,6 +110,7 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 	}
 	
 	private boolean validate() {
+		// TODO: Validate text input
 		return true;
 	}
 

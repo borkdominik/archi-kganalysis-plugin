@@ -32,10 +32,10 @@ public class CyclicDependencySmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node a = (Node) row.get("a");
 				Node b = (Node) row.get("b");
 				Node c = (Node) row.get("c");
-
 				a.createRelationshipTo(b, RelTypes.CYCLIC_DEPENDENCY);
 				a.addLabel(Label.label("Smell"));
 				

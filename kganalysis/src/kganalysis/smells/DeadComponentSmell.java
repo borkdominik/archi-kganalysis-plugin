@@ -25,8 +25,10 @@ public class DeadComponentSmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node n = (Node) row.get("n");
 				n.addLabel(Label.label("Smell"));
+				
 				detected.add("Element '" + getName(n) + "' is not connected to any other element.");
 			}
 			tx.commit();

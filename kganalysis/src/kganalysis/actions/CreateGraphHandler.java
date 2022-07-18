@@ -12,7 +12,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.archimatetool.editor.ui.components.ExtendedWizardDialog;
 import com.archimatetool.model.IArchimateModel;
 import kganalysis.KGPlugin;
-import kganalysis.KnowledgeGraphWizard;
+import kganalysis.views.KnowledgeGraphWizard;
 
 
 public class CreateGraphHandler extends AbstractHandler {

@@ -2,20 +2,14 @@ package kganalysis.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-
 import kganalysis.KGPlugin;
 
-/**
- * Class used to initialize default preference values.
- */
-public class PreferenceInitializer extends AbstractPreferenceInitializer 
-	implements IPreferenceConstants {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
+/**
+ ** Class used to initialize default preference values.
+ */
+public class PreferenceInitializer extends AbstractPreferenceInitializer implements IPreferenceConstants {
+
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = KGPlugin.INSTANCE.getPreferenceStore();
 		store.setDefault(PREF_DB_FOLDER, KGPlugin.KG_FOLDER.getAbsolutePath());

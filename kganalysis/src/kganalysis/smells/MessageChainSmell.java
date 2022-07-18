@@ -3,11 +3,11 @@ package kganalysis.smells;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+
 
 public class MessageChainSmell extends AbstractSmell {
 
@@ -20,7 +20,6 @@ public class MessageChainSmell extends AbstractSmell {
 			+ "and e.class contains 'Service' \n"
 			+ "return a, b, c, d, e";
 	
-	
 	@Override
 	public String getLabel() {
 		return LABEL;
@@ -30,10 +29,10 @@ public class MessageChainSmell extends AbstractSmell {
 	public String[] detect() {
 		List<String> detected = new ArrayList<String>();
 
-		// start a new transaction, execute the query and iterate over the result
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node a = (Node) row.get("a");
 				Node b = (Node) row.get("b");
 				Node c = (Node) row.get("c");

@@ -30,12 +30,12 @@ public class StrictLayerViolationSmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
+				
 				Node a = (Node) row.get("a");
 				Node b = (Node) row.get("b");
-
-				a.createRelationshipTo(b, RelTypes.STRICT_LAYER_VIOLATION);
 				a.addLabel(Label.label("Smell"));
-
+				a.createRelationshipTo(b, RelTypes.STRICT_LAYER_VIOLATION);
+				
 				detected.add("'" + getName(a) + "' (business) " + " - '" + getName(b) + "' (technology)");
 			}
 			tx.commit();

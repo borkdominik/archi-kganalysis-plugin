@@ -2,10 +2,13 @@ package kganalysis.smells;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-
 import kganalysis.KGPlugin;
 
 
+/**
+ ** Abstract class for EA Smells, which provides access to the graph database
+ ** and specifies the required methods to be displayed in the tree.
+ */
 public abstract class AbstractSmell {
 	
 	protected GraphDatabaseService graphDb;
@@ -28,4 +31,5 @@ public abstract class AbstractSmell {
 		}
 		return "";
 	}
+    
 }

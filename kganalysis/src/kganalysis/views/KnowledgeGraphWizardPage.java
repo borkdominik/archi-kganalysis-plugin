@@ -1,4 +1,4 @@
-package kganalysis;
+package kganalysis.views;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,11 +15,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
 import com.archimatetool.editor.ArchiPlugin;
 import com.archimatetool.editor.model.IEditorModelManager;
 import com.archimatetool.editor.ui.UIUtils;
 import com.archimatetool.model.IArchimateModel;
+import kganalysis.IEAKGImages;
+
 
 public class KnowledgeGraphWizardPage extends WizardPage {
 	
@@ -31,9 +32,9 @@ public class KnowledgeGraphWizardPage extends WizardPage {
         super("KnowledgeGraphWizardPage1");
         setTitle("New Knowledge Graph");
         setDescription("Choose an ArchiMate model:");
-        setImageDescriptor(IKGAnalysisImages.ImageFactory.getImageDescriptor(IKGAnalysisImages.WIZARD_LOGO));
+        setImageDescriptor(IEAKGImages.ImageFactory.getImageDescriptor(IEAKGImages.WIZARD_LOGO));
     }
-
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite comp = new Composite(parent, SWT.NULL);
@@ -52,7 +53,7 @@ public class KnowledgeGraphWizardPage extends WizardPage {
         dbFolder.setText(ArchiPlugin.INSTANCE.getUserDataFolder().toString());
         dbFolder.setEnabled(false);
         
-        // Horizontal line seperator
+        // Horizontal line separator
         Label line = new Label(comp, SWT.SEPARATOR | SWT.HORIZONTAL);
         line.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         
@@ -73,7 +74,6 @@ public class KnowledgeGraphWizardPage extends WizardPage {
         innerComp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
               
         radioButtons = new ArrayList<Button>();
-        
         for(IArchimateModel model : IEditorModelManager.INSTANCE.getModels()) {	
 	        Button modelButton = new Button(innerComp, SWT.RADIO);
 	        modelButton.setText(model.getName());
@@ -87,22 +87,21 @@ public class KnowledgeGraphWizardPage extends WizardPage {
 	        });
 	        radioButtons.add(modelButton);    
         }
+        
         scrolledComp.setContent(innerComp);
         scrolledComp.setExpandHorizontal(true);
         scrolledComp.setExpandVertical(true);
         scrolledComp.setMinSize(innerComp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        
-        
 	}
 	
 	private void validateFields() {
-		Boolean isOK = false;
+		boolean isOK = false;
 		
 		for (Button button : radioButtons) {
 			if (button.getSelection()) {
 				String modelId = (String) button.getData("id");
 				for (IArchimateModel archiModel : IEditorModelManager.INSTANCE.getModels()) {	
-    				if(archiModel.getId() == modelId) {
+    				if (archiModel.getId() == modelId) {
     					selectedModel = archiModel;
     					isOK = true;
     				}
@@ -110,7 +109,7 @@ public class KnowledgeGraphWizardPage extends WizardPage {
 			}
 		}
 		
-		if(!isOK) {
+		if (!isOK) {
 			setErrorMessage("Invalid input!");
 	        setPageComplete(false);
             return;

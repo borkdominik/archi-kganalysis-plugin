@@ -6,6 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 
+
 public class StopGraphDbHandler extends AbstractHandler {
 
 	@Override

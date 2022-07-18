@@ -21,6 +21,9 @@ import com.archimatetool.model.IPassiveStructureElement;
 import kganalysis.KGPlugin;
 
 
+/**
+ ** Transforms an ArchiMate model to a Knowledge Graph and stores it in the graph database.
+ */
 public class KGExporter {
 
 	IArchimateModel model;
@@ -46,6 +49,7 @@ public class KGExporter {
 
 	private void storeNodes(IFolder folder) {
 		List<IArchimateConcept> concepts = getConcepts(folder);
+		
 		if (concepts.isEmpty()) {
 			return;
 		}
@@ -88,41 +92,6 @@ public class KGExporter {
 		}
 
 	}
-	
-	/*
-	private void transformArchiModel() {
-		IFolder relationsFolder = model.getFolder(FolderType.RELATIONS);
-		List<IArchimateConcept> concepts = getConcepts(relationsFolder);
-		
-		try (Transaction tx = graphDb.beginTx()) {
-			for (IArchimateConcept concept : concepts) {
-				if (concept instanceof IArchimateRelationship) {
-					IArchimateRelationship relationship = (IArchimateRelationship) concept;
-					// only create nodes and relationship if source and target are present
-					if (relationship.getSource() != null && relationship.getTarget() != null) {
-						Node source = createNode(relationship.getSource());
-						Node target = createNode(relationship.getTarget());
-						createRelationship(relationship());
-					}
-				}
-			}
-		}
-	}
-	
-	
-	private Node createNode(IArchimateConcept concept) {
-		if (concept instanceof IArchimateElement) {
-			Node node = tx.createNode();
-			node.setProperty("id", concept.getId());
-			node.setProperty("class", concept.eClass().getName());
-			node.setProperty("name", concept.getName());
-			node.setProperty("documentation", concept.getDocumentation());
-			node.setProperty("layer", getconcept.getfolder.getType().toString());
-			node.setProperty("aspect", getAspect((IArchimateElement) concept));
-			Color color = ColorFactory.getDefaultFillColor(concept);
-			node.setProperty("color", ColorFactory.convertColorToString(color));
-		}
-	}*/
 
 	// Adapted from {@link CSVExporter} to return the concepts (elements) of a folder
 	private List<IArchimateConcept> getConcepts(IFolder folder) {

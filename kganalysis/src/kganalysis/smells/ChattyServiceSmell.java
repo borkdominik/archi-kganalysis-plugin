@@ -3,11 +3,11 @@ package kganalysis.smells;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
+
 
 public class ChattyServiceSmell extends AbstractSmell {
 
@@ -30,10 +30,10 @@ public class ChattyServiceSmell extends AbstractSmell {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(QUERY)) {
 			while (result.hasNext()) {
 				Map<String, Object> row = result.next();
-				Node a = (Node) row.get("a");
-				long count = (long) row.get("cnt");
 				
+				Node a = (Node) row.get("a");
 				a.addLabel(Label.label("Smell"));
+				long count = (long) row.get("cnt");
 				
 				detected.add("Element '"  + getName(a) + "' is connected to " + count + " other services.");
 			}

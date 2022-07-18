@@ -1,9 +1,14 @@
 package kganalysis.db;
 
 
+/**
+ ** Cypher Queries to set centrality and community properties of nodes by running various
+ ** graph algorithms (provided by the neo4j GDS library).
+ */
 public class CypherQueries {
     
-    // --- Centrality -- 
+	
+    // Centrality
     public static final String PAGERANK = "CALL gds.pageRank.write({\n" + " nodeProjection: '*',\n"
 	    + " relationshipProjection: { relType: { type: '*', orientation: 'NATURAL', properties: {} }},\n"
 	    + " relationshipWeightProperty: null, dampingFactor: 0.85, maxIterations: 20, writeProperty: 'pageRank'\n"
@@ -17,7 +22,8 @@ public class CypherQueries {
 	    + " relationshipProjection: { relType: { type: '*', orientation: 'REVERSE', properties: {} }},\n"
 	    + " relationshipWeightProperty: null, writeProperty: 'degree'\n" + "});";
     
-    // --- Community ---
+    
+    // Community
     public static final String LOUVAIN = "CALL gds.louvain.write({\n" + " nodeProjection: '*',\n"
 	    + " relationshipProjection: { relType: { type: '*', orientation: 'UNDIRECTED', properties: {} }},\n"
 	    + " relationshipWeightProperty: null, includeIntermediateCommunities: false, seedProperty: '', writeProperty: 'louvain'\n"

@@ -18,6 +18,10 @@ import kganalysis.smells.SharedPersistencySmell;
 import kganalysis.smells.StrictLayerViolationSmell;
 
 
+/**
+ ** Provides EA Smells and their detected elements in form of a tree structure.
+ ** Used in the EA Smells Report view { @see SmellsView }.
+ */
 public class SmellDetectionProvider implements ITreeContentProvider {
 
 	private Map<String, String[]> contentMap = new HashMap<>();
@@ -50,7 +54,7 @@ public class SmellDetectionProvider implements ITreeContentProvider {
 		
 		contentMap.put("smells", smellNames);
 
-		// run the smell detection
+		// run the smell detection and add affected elements
 		for (AbstractSmell smell : smells) {
 			elements = smell.detect();
 			contentMap.put(smell.getLabel(), elements);

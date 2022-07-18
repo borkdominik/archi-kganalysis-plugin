@@ -1,8 +1,6 @@
 package kganalysis.actions;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -16,14 +14,13 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
-
 import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
 import com.archimatetool.model.IArchimateModel;
-
 import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
+
 
 /**
  * Handler to reload the currently selected model into the existing graph database
@@ -77,14 +74,18 @@ public class ReloadModelHandler extends AbstractHandler {
 
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-			monitor.beginTask("Reloading active ArchiMate model into database", 100);
-
-			// 1 - Delete all nodes
-			deleteElements(monitor);
-			// 2 - Export Archi Model as CSV
-			exportAsCSV(monitor);
-			// 3 - Load CSV into db
-			transformModel(monitor);
+			monitor.beginTask("Reloading active ArchiMate model into database", IProgressMonitor.UNKNOWN);
+			
+			try {
+				KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
+				db.removeData();
+				CSVExporter csvExporter = new CSVExporter(activeModel);
+				csvExporter.export(KGPlugin.KG_FOLDER);
+				KGExporter kgExporter = KGPlugin.INSTANCE.getExporter();
+				kgExporter.export(activeModel);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			// TODO: Cancel operation
 			if (monitor.isCanceled()) {
@@ -94,30 +95,6 @@ public class ReloadModelHandler extends AbstractHandler {
 
 			monitor.done();
 
-		}
-
-		private void deleteElements(IProgressMonitor monitor) throws InvocationTargetException {
-			monitor.subTask("Removing current model...");
-			KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
-			db.removeData();
-			monitor.worked(30);
-		}
-
-		private void exportAsCSV(IProgressMonitor monitor) throws InvocationTargetException {
-			monitor.subTask("Exporting active ArchiMate model to CSV");
-			CSVExporter exporter = new CSVExporter(activeModel);
-			try {
-				exporter.export(KGPlugin.KG_FOLDER);
-			} catch (IOException e) {
-				throw new InvocationTargetException(e, "Could not export archi model to user folder");
-			}
-			monitor.worked(10);
-		}
-
-		private void transformModel(IProgressMonitor monitor) throws InvocationTargetException {
-			KGExporter kgExporter = new KGExporter();
-			kgExporter.export(activeModel);
-			monitor.worked(60);
 		}
 
 	}

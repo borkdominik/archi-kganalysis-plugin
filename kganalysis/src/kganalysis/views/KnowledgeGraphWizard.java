@@ -1,4 +1,4 @@
-package kganalysis;
+package kganalysis.views;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,19 +8,21 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
 import com.archimatetool.model.IArchimateModel;
+import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
 
+
 /**
- * Wizard used to create a new knowledge graph 
- *
+ ** Wizard to select an ArchiMate model and create a new knowledge graph.
+ ** Consists of one page { @see KnowledgeGraphWizardPage }.
  */
 public class KnowledgeGraphWizard extends Wizard {
 	
@@ -30,7 +32,6 @@ public class KnowledgeGraphWizard extends Wizard {
 	public KnowledgeGraphWizard() {
 		setWindowTitle("New Knowledge Graph");
 	}
-	
 	
 	@Override
     public void addPages() {
@@ -71,7 +72,8 @@ public class KnowledgeGraphWizard extends Wizard {
 				
 			} catch (Throwable ex) {
 				Display.getCurrent().asyncExec( new Runnable() {
-                    @Override
+                    
+					@Override
                     public void run() {
                         // TODO: Cancel 
                     	/*
@@ -88,7 +90,7 @@ public class KnowledgeGraphWizard extends Wizard {
 			}
 		};
 		
-		PlatformUI.getWorkbench().getProgressService().busyCursorWhile(runnable);
+		new ProgressMonitorDialog(getShell()).run(true, true, runnable);
 	}
 	
 	// TODO: Improve this
