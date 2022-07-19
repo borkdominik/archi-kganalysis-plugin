@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Knowledge Graph Analysis
+Bundle-Name: EAKG Toolkit
 Bundle-SymbolicName: kganalysis;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Philipp-Lorenz Glaser
-Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.ui,
