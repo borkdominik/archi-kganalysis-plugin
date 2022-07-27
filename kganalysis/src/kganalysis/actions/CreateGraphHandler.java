@@ -21,19 +21,19 @@ public class CreateGraphHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePart(event);
 		IArchimateModel model = part != null ? part.getAdapter(IArchimateModel.class) : null;
-        
+		
 		if (model != null) {
-        	KnowledgeGraphWizard wizard = new KnowledgeGraphWizard();
-        	WizardDialog dialog = new ExtendedWizardDialog(HandlerUtil.getActiveShell(event), wizard, "KnowledgeGraphWizard");
-        	if (dialog.open() == Window.OK) {
-        		try {
-        			wizard.runWithProgress();
-        		} catch (InvocationTargetException | InterruptedException ex) {
-        			ex.printStackTrace();
-        		}
-        	}
-        }
-        
+			KnowledgeGraphWizard wizard = new KnowledgeGraphWizard();
+			WizardDialog dialog = new ExtendedWizardDialog(HandlerUtil.getActiveShell(event), wizard, "KnowledgeGraphWizard");
+			if (dialog.open() == Window.OK) {
+				try {
+					wizard.runWithProgress();
+				} catch (InvocationTargetException | InterruptedException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		
 		return null;
 	}
 	

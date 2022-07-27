@@ -34,10 +34,10 @@ public class KnowledgeGraphWizard extends Wizard {
 	}
 	
 	@Override
-    public void addPages() {
-        page = new KnowledgeGraphWizardPage();
-        addPage(page);
-    }
+	public void addPages() {
+		page = new KnowledgeGraphWizardPage();
+		addPage(page);
+	}
 	
 	@Override
 	public boolean canFinish() {
@@ -75,19 +75,19 @@ public class KnowledgeGraphWizard extends Wizard {
 				
 			} catch (Throwable ex) {
 				Display.getCurrent().asyncExec( new Runnable() {
-                    
+					
 					@Override
-                    public void run() {
-                        // TODO: Cancel 
-                    	/*
-                    	if (ex instanceof CancelledException) {
-                            MessageDialog.openInformation(getShell(), Messages.ExtendedReportsWizard_0, ex.getMessage());
-                        }
-                        */
-                        Logger.log(IStatus.ERROR, "Exception while creating Knowledge Graph.", ex);
-                        MessageDialog.openError(getShell(), "Error! Could not create Knowledge Graph", ex.getMessage());
-                    }
-                });
+					public void run() {
+						// TODO: Cancel 
+						/*
+						if (ex instanceof CancelledException) {
+							MessageDialog.openInformation(getShell(), Messages.ExtendedReportsWizard_0, ex.getMessage());
+						}
+						*/
+						Logger.log(IStatus.ERROR, "Exception while creating Knowledge Graph.", ex);
+						MessageDialog.openError(getShell(), "Error! Could not create Knowledge Graph", ex.getMessage());
+					}
+				});
 			} finally {
 				monitor.done();
 			}

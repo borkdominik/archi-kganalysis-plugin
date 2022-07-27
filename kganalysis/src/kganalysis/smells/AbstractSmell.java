@@ -21,15 +21,15 @@ public abstract class AbstractSmell {
 	public abstract String getLabel();
 	
 	// returns the detected elements as strings by running the smell query on the graphDb
-    public abstract String[] detect();
-    
-    // returns the name of the node
-    protected String getName(Node node) {
+	public abstract String[] detect();
+	
+	// returns the name of the node
+	protected String getName(Node node) {
 		String name = node.getProperty("name").toString();
 		if (name != null) {
 			return name;
 		}
 		return "";
 	}
-    
+	
 }

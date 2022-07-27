@@ -28,7 +28,7 @@ import kganalysis.KGPlugin;
 public class CypherEditorView extends ViewPart implements ICypherEditorView {
 
 	private Text cypherText;
-    private Label statusLabel;
+	private Label statusLabel;
 	private Action executeQuery;
 	private GraphDatabaseService graphDb;
 	
@@ -42,11 +42,11 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
 		SashForm sashForm = new SashForm(parent, SWT.HORIZONTAL);
-	    cypherText = new Text(sashForm, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		cypherText = new Text(sashForm, SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		cypherText.addKeyListener(new KeyListener() {
 			
 			@Override
-            public void keyReleased(KeyEvent keyEvent) {
+			public void keyReleased(KeyEvent keyEvent) {
 				if (!validate()) {
 					return;
 				}
@@ -63,30 +63,28 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 		statusLabel = new Label(sashForm, SWT.WRAP);
 		statusLabel.setText("No query result. Execute a query!");
 		
-        executeQuery = new Action("Execute Query") {
-            @Override
-            public void run() {
-            	executeCurrentQuery(cypherText.getText());
-            }
-            
-            @Override
-            public String getToolTipText() {
-                return getText();
-            }
-            
-            @Override
-            public ImageDescriptor getImageDescriptor() {
-                return IEAKGImages.ImageFactory.getImageDescriptor(IEAKGImages.ICON_RELOAD);
-            }
-        };
-        executeQuery.setEnabled(true);
-	    
-	    IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
-	    manager.add(executeQuery);
-	}
+		executeQuery = new Action("Execute Query") {
+			@Override
+			public void run() {
+				executeCurrentQuery(cypherText.getText());
+			}
+			
+			@Override
+			public String getToolTipText() {
+				return getText();
+			}
+			
+			@Override
+			public ImageDescriptor getImageDescriptor() {
+				return IEAKGImages.ImageFactory.getImageDescriptor(IEAKGImages.ICON_RELOAD);
+			}
+		};
+		executeQuery.setEnabled(true);
 		
+		IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
+		manager.add(executeQuery);
+	}
 	
-
 	@Override
 	public void setFocus() {
 		cypherText.setFocus();
@@ -98,10 +96,10 @@ public class CypherEditorView extends ViewPart implements ICypherEditorView {
 		try (Transaction tx = graphDb.beginTx(); Result result = tx.execute(query)) {
 			while (result.hasNext()) {
 				Map<String,Object> row = result.next();
-			    for (Entry<String,Object> column : row.entrySet()){
-			    	resultText += column.getKey() + ": " + column.getValue() + "; ";
-			    }
-			    	resultText += "\n";
+				for (Entry<String,Object> column : row.entrySet()){
+					resultText += column.getKey() + ": " + column.getValue() + "; ";
+				}
+					resultText += "\n";
 			}
 		} catch (QueryExecutionException ex) {
 			resultText = "Invalid query: " + ex.getMessage();
