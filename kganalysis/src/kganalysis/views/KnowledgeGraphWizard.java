@@ -64,7 +64,10 @@ public class KnowledgeGraphWizard extends Wizard {
 				csvExporter.export(KGPlugin.KG_FOLDER);
 				
 				// 3) Copy files for browser
-				copyFiles();
+				copyFile("index.html");
+				copyFile("index.js");
+				copyFile("smells.js");
+				copyFile("styles.css");
 
 				// 4) Transform ArchiMate model and store in DB
 				KGExporter kgExporter = KGPlugin.INSTANCE.getExporter();
@@ -93,20 +96,10 @@ public class KnowledgeGraphWizard extends Wizard {
 		new ProgressMonitorDialog(getShell()).run(true, true, runnable);
 	}
 	
-	// TODO: Improve this
-	private void copyFiles() throws IOException {
-		URL url = new URL("platform:/plugin/kganalysis/files/index.html");
-		File indexFile = new File(KGPlugin.KG_FOLDER, "index.html");
-		FileUtils.copyURLToFile(url, indexFile);
-		url = new URL("platform:/plugin/kganalysis/files/smells.js");
-		File smellsFile = new File(KGPlugin.KG_FOLDER, "smells.js");
-		FileUtils.copyURLToFile(url, smellsFile);
-		url = new URL("platform:/plugin/kganalysis/files/index.js");
-		File jsFile = new File(KGPlugin.KG_FOLDER, "index.js");
-		FileUtils.copyURLToFile(url, jsFile);
-		url = new URL("platform:/plugin/kganalysis/files/styles.css");
-		File cssFile = new File(KGPlugin.KG_FOLDER, "styles.css");
-		FileUtils.copyURLToFile(url, cssFile);
+	private void copyFile(String fileName) throws IOException {
+		URL url = new URL("platform:/plugin/kganalysis/files/" + fileName);
+		File file = new File(KGPlugin.KG_FOLDER, fileName);
+		FileUtils.copyURLToFile(url, file);
 	}
 
 }
