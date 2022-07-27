@@ -1,18 +1,18 @@
-package kganalysis.actions;
+package kganalysis.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import com.archimatetool.editor.ui.services.ViewManager;
 import kganalysis.KGPlugin;
-import kganalysis.views.ISmellsView;
+import kganalysis.db.KGDatabase;
 
 
-public class ShowSmellsViewHandler extends AbstractHandler {
+public class StopGraphDbHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewManager.toggleViewPart(ISmellsView.ID, false);
+		KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
+		db.shutDown();
 		return null;
 	}
 

@@ -1,4 +1,4 @@
-package kganalysis.actions;
+package kganalysis.handlers;
 
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.commands.AbstractHandler;

@@ -1,4 +1,4 @@
-package kganalysis.actions;
+package kganalysis.handlers;
 
 import java.io.File;
 import org.eclipse.core.commands.AbstractHandler;

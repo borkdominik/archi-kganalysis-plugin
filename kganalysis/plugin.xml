@@ -18,37 +18,37 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="kganalysis.actions.CreateGraphHandler"
+            defaultHandler="kganalysis.handlers.CreateGraphHandler"
             id="kganalysis.command.createKnowledgeGraph"
             name="Create Knowledge Graph">
       </command>
       <command
-            defaultHandler="kganalysis.actions.StopGraphDbHandler"
+            defaultHandler="kganalysis.handlers.StopGraphDbHandler"
             id="kganalysis.command.stopGraphDb"
             name="Stop Graph Database">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ReloadModelHandler"
+            defaultHandler="kganalysis.handlers.ReloadModelHandler"
             id="kganalysis.command.reloadModel"
             name="Reload with selected Archi Model">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowKGHandler"
+            defaultHandler="kganalysis.handlers.ShowKGHandler"
             id="kganalysis.command.showKGGraph"
             name="Show Knowledge Graph">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowKGExternalHandler"
+            defaultHandler="kganalysis.handlers.ShowKGExternalHandler"
             id="kganalysis.command.showKGGraphExternal"
             name="Show Knowledge Graph in external Browser">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowSmellsViewHandler"
+            defaultHandler="kganalysis.handlers.ShowSmellsViewHandler"
             id="kganalysis.commands.showSmellsView"
             name="Show EA Smells Report">
       </command>
       <command
-            defaultHandler="kganalysis.actions.ShowCypherEditorHandler"
+            defaultHandler="kganalysis.handlers.ShowCypherEditorHandler"
             id="kganalysis.commands.showCypherEditorView"
             name="Show Cypher Editor">
       </command>
