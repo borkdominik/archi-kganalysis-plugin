@@ -15,54 +15,54 @@
   </p>
 </div>
 
-
-
-<!-- ABOUT -->
-## About the Project
-
 <p align="center">
   <img src="./images/plugin-screenshot.png" width="100%">
 </p>
 
-The EAKG toolkit allows enterprise architects to make use of advanced visualization and analysis on ArchiMate models through an **Enterprise Architecture Knowledge Graph (EAKG)**. Main features of the plug-in include:
+<!-- ABOUT -->
+## About the Project
 
-- Transformation of an ArchiMate model to a Knowledge Graphs that is stored in an embedded [Neo4j Graph Database](https://neo4j.com/developer/graph-platform/neo4j). 
-- Visualization of the Knowledge Graph with additional filters and options for different representations
-- Detection of [EA Smells](https://swc-public.pages.rwth-aachen.de/smells/ea-smells/) through powerful [Cypher Queries](https://neo4j.com/developer/cypher/) which can be individually visualized.
-- Graph analysis with centrality and community algorithms, e.g., Page Rank, Degree, or Louvain. 
+
+The **EAKG Toolkit** for [Archi](https://www.archimatetool.com/) allows enterprise architects to perform advanced analysis on ArchiMate models by using **Enterprise Architecture Knowledge Graphs (EAKGs)** for additional visualization and representation methods. 
+
+**Features:**
+- *Transformation* of ArchiMate models into EAKGs, stored in an embedded [Neo4j Graph Database](https://neo4j.com/developer/graph-platform/neo4j) and making use of the powerful [Cypher Query Language](https://neo4j.com/developer/cypher/).
+- *Visualization* of the created EAKGs with [neovis.js](https://github.com/neo4j-contrib/neovis.js), including filters, options and execution of custom queries for changing the representation.
+- *EA Smell Detection* for detecting commonly considered bad practices in EA models. Currently features 8 different smells from the [EA Smells Catalogue](https://swc-public.pages.rwth-aachen.de/smells/ea-smells/) which can be individually visualized.
+- *Graph Analysis* for highlighting centrality and community measures in the EAKG through graph algorithms, such as page rank or degree.
 
 
 <!-- INSTALLING -->
 ## Installation
 
-Copy the downloaded .jar file into the `/dropins` folder of Archi.
+Copy the downloaded `.jar` file into the `/dropins` folder of Archi.
 
 Location of the `/dropins` folder:
 - Windows: `<home>/AppData/Roaming/Archi4/dropins`
 - Mac: `<home>/Library/Application Support/Archi4/dropins`
 - Linux: `<home>/.archi4/dropins`
 
-The plug-in automatically becomes active upon restarting Archi.
+Restart Archi for the plugin to become active.
 
 
 
 <!-- Usage -->
 ## Usage
 
-Once the plug-in is installed the *Knowledge Graph* menu becomes available within Archi. Choose the *Create Knowledge Graph* action to transform an existing Archi model to a Knowledge Graph, stored in an embedded neo4j graph database. The process might take a while (up to 2 minutes, subsequent uses are faster) and once finished, the progress dialog disappears and the other actions from the menu become active. 
+After installing the plug-in, the *Knowledge Graph* menu becomes available within Archi. For transforming an ArchiMate model, choose the `Create Knowledge Graph` action. Wait for the creation process to finish and see the other actions in the menu become available (can initially take up to 2 minutes).
 
-The EAKG toolkit currently offers two additional views that can be toggled from the menu:
+The EAKG toolkit offers two additional views that can be toggled from the menu:
 - *Knowledge Graph Visualization*
 - *EA Smells Report*
 
-Furthermore, the toolkit includes actions to reload a new model and to stop the graph database.
+Furthermore, the toolkit includes actions for reloading a new model and to stop the graph database.
 
 
 
 <!-- CONTRIBUTING --->
 ## Contributing
 
-Contributions to the project are highly welcome! Please see our [Contribution Guidelines](https://github.com/borkdominik/archi-kganalysis-plugin/wiki) for details on how to contribute to the project. Additional instructions regarding development are available in the [Wiki](https://github.com/borkdominik/archi-kganalysis-plugin/wiki).
+Contributions to the project are highly welcome! You can find additional instructions regarding development in the [EAKG Wiki](https://github.com/borkdominik/archi-kganalysis-plugin/wiki).
 
 
 
