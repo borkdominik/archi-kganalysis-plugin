@@ -10,7 +10,7 @@ import kganalysis.db.KGExporter;
 
 
 /**
- * Activator for the EAKG plug-ib to control the life-cycle.
+ * Activator for the EAKG plug-in to control the life-cycle.
  * Extends {@link AbstractUIPlugin} for preferences, dialogs, and images.
  */
 public class KGPlugin extends AbstractUIPlugin {

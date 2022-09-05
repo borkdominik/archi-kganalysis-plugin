@@ -72,6 +72,9 @@ public class KnowledgeGraphWizard extends Wizard {
 				// 4) Transform ArchiMate model and store in DB
 				KGExporter kgExporter = KGPlugin.INSTANCE.getExporter();
 				kgExporter.export(model);
+				// TODO: fix this
+				new SmellDetectionProvider();
+				
 				
 			} catch (Throwable ex) {
 				Display.getCurrent().asyncExec( new Runnable() {
