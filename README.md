@@ -31,6 +31,8 @@ The **EAKG Toolkit** for [Archi](https://www.archimatetool.com/) allows enterpri
 - *EA Smell Detection* for detecting commonly considered bad practices in EA models. Currently features 8 different smells from the [EA Smells Catalogue](https://swc-public.pages.rwth-aachen.de/smells/ea-smells/) which can be individually visualized.
 - *Graph Analysis* for highlighting centrality and community measures in the EAKG through graph algorithms, such as page rank or degree.
 
+**Publications:**
+- The method for constructing model-based Enterprise Architecture Knowledge Graphs is proposed in this [EDOC'22 paper](./papers/EDOC2022-Model_based_Construction_of_EAKG-Web.pdf).
 
 <!-- INSTALLING -->
 ## Installation
