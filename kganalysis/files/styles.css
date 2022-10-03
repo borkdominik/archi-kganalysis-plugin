@@ -40,16 +40,16 @@
     color: lightgray;
   }
   .vis-button.vis-up:after {
-    content: "▲";
+    content: "↑";
   }
   .vis-button.vis-down:after {
-    content: "▼";
+    content: "↓";
   }
   .vis-button.vis-left:after {
-    content: "◀";
+    content: "←";
   }
   .vis-button.vis-right:after {
-    content: "▶";
+    content: "→";
   }
   .vis-button.vis-zoomIn:after {
     content: "+";

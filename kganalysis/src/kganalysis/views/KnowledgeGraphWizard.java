@@ -12,7 +12,6 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
-import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
 import com.archimatetool.model.IArchimateModel;
 import kganalysis.KGPlugin;
@@ -58,20 +57,18 @@ public class KnowledgeGraphWizard extends Wizard {
 				// 1) Create and start new neo4j Graph DB
 				KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 				db.createDb();
-
-				// 2) Export model as CSV (used for relationships)
-				CSVExporter csvExporter = new CSVExporter(model);
-				csvExporter.export(KGPlugin.KG_FOLDER);
 				
-				// 3) Copy files for browser
+				// 2) Copy files for browser
 				copyFile("index.html");
 				copyFile("index.js");
 				copyFile("smells.js");
 				copyFile("styles.css");
 
-				// 4) Transform ArchiMate model and store in DB
+				// 3) Create nodes and relationships from ArchiMate model and run graph algorithms
 				KGExporter kgExporter = KGPlugin.INSTANCE.getExporter();
 				kgExporter.export(model);
+				
+				// 4) EA Smell Detection
 				// TODO: fix this
 				new SmellDetectionProvider();
 				

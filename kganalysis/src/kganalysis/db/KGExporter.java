@@ -1,6 +1,5 @@
 package kganalysis.db;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.emf.ecore.EObject;
@@ -9,15 +8,29 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import com.archimatetool.editor.ui.ColorFactory;
-import com.archimatetool.editor.utils.PlatformUtils;
+import com.archimatetool.model.FolderType;
+import com.archimatetool.model.IAccessRelationship;
 import com.archimatetool.model.IActiveStructureElement;
 import com.archimatetool.model.IArchimateConcept;
 import com.archimatetool.model.IArchimateElement;
 import com.archimatetool.model.IArchimateModel;
+import com.archimatetool.model.IArchimateRelationship;
+import com.archimatetool.model.IAssignmentRelationship;
+import com.archimatetool.model.IAssociationRelationship;
 import com.archimatetool.model.IBehaviorElement;
+import com.archimatetool.model.ICompositionRelationship;
+import com.archimatetool.model.IDependendencyRelationship;
+import com.archimatetool.model.IDynamicRelationship;
 import com.archimatetool.model.IFolder;
+import com.archimatetool.model.IInfluenceRelationship;
 import com.archimatetool.model.IMotivationElement;
+import com.archimatetool.model.IOtherRelationship;
 import com.archimatetool.model.IPassiveStructureElement;
+import com.archimatetool.model.IRealizationRelationship;
+import com.archimatetool.model.IServingRelationship;
+import com.archimatetool.model.ISpecializationRelationship;
+import com.archimatetool.model.IStructuralRelationship;
+import com.archimatetool.model.ITriggeringRelationship;
 import kganalysis.KGPlugin;
 
 
@@ -39,7 +52,7 @@ public class KGExporter {
 		
 		// Use the model folders to retrieve and store the elements/relations
 		model.getFolders().stream().forEach(e -> storeNodes(e));
-		storeRelationships();
+		storeRelationships2(model.getFolder(FolderType.RELATIONS));
 		
 		// Run graph algorithms on all nodes
 		KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
@@ -72,7 +85,37 @@ public class KGExporter {
 			tx.commit();
 		}
 	}
-
+	
+	private void storeRelationships2(IFolder folder) {
+		List<IArchimateConcept> concepts = getConcepts(folder);
+		if (concepts.isEmpty()) {
+			return;
+		}
+		
+		for (IArchimateConcept concept : concepts) {
+			if (concept instanceof IArchimateRelationship) {
+				String relId = concept.getId();
+				String doc = concept.getDocumentation();
+				String name = concept.eClass().getName();
+				String type = getType(((IArchimateRelationship) concept));
+				String sourceId = ((IArchimateRelationship) concept).getSource().getId();
+				String targetId = ((IArchimateRelationship) concept).getTarget().getId();
+				if (sourceId.isEmpty() || targetId.isEmpty()) {
+					continue;
+				}
+				
+				try (Transaction tx = graphDb.beginTx()) {
+					tx.execute("MATCH (n {id:'" + sourceId + "'}), (m {id:'" + targetId + "'}) WITH n, m\n" +
+							"CREATE (n)-[:RELATIONSHIP {id:'" + relId + "', type:'" + type + "', documentation:'" + doc + "', name:'" + name + "'}]->(m)");
+					tx.commit();
+				}
+			}
+		}
+		
+	}
+	
+	// Old method to store relationships by using the CSV export. TODO: Remove this
+	/*
 	private void storeRelationships() {
 		File folder = KGPlugin.KG_FOLDER;
 		File relationsFile = new File(folder.getAbsolutePath(), "relations.csv");
@@ -90,8 +133,8 @@ public class KGExporter {
 					+ " CREATE (n)-[:RELATIONSHIP {id:line.ID, type:line.Type, documentation:line.Documentation, name:line.Name}]->(m)");
 			tx.commit();
 		}
-
 	}
+	*/
 
 	// Adapted from {@link CSVExporter} to return the concepts (elements) of a folder
 	private List<IArchimateConcept> getConcepts(IFolder folder) {
@@ -124,6 +167,37 @@ public class KGExporter {
 			return "motivation";
 		
 		return "other";
+	}
+	
+	private String getType(IArchimateRelationship relationship) {
+		if (relationship instanceof IAccessRelationship)
+			return "AccessRelationship";
+		else if (relationship instanceof IAssignmentRelationship)
+			return "AssignmentRelationship";
+		else if (relationship instanceof IAssociationRelationship)
+			return "AssociationRelationship";
+		else if (relationship instanceof ICompositionRelationship)
+			return "CompositionRelationship";
+		else if (relationship instanceof IDependendencyRelationship)
+			return "DependencyRelationship";
+		else if (relationship instanceof IDynamicRelationship)
+			return "DynamicRelationship";
+		else if (relationship instanceof IInfluenceRelationship)
+			return "InfluenceRelationship";
+		else if (relationship instanceof IOtherRelationship)
+			return "OtherRelationship";
+		else if (relationship instanceof IRealizationRelationship)
+			return "RealizationRelationship";
+		else if (relationship instanceof IServingRelationship)
+			return "ServingRelationship";
+		else if (relationship instanceof ISpecializationRelationship)
+			return "SpecializationRelationship";
+		else if (relationship instanceof IStructuralRelationship)
+			return "StructuralRelationship";
+		else if (relationship instanceof ITriggeringRelationship)
+			return "TriggeringRelationship";
+		
+		return "Other";
 	}
 
 }

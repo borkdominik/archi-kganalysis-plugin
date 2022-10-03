@@ -182,26 +182,27 @@ function drawSmells() {
     viz.render();
 }
 
-$(document).ready(function() {
+$(window).ready(function() {
     // Update EA Smells tab with data from smells.js
-    smells.forEach(function(currentValue, index) {
-      var $card = $("<div>", {class: "list-group-item d-flex justify-content-between align-items-center"});
-      var $smellName = $("<h6>", {class: "ml-2", text: smells[index].name});
-      var $button = $("<button>", {class: "btn btn-sm btn-warning mr-2", text: "Detect"});
+  smells.forEach(function(currentValue, index) {
+    var $card = $("<div>", {class: "list-group-item d-flex justify-content-between align-items-center"});
+    var $smellName = $("<h6>", {class: "ml-2", text: smells[index].name});
+    var $button = $("<button>", {class: "btn btn-sm btn-warning mr-2", text: "Detect"});
       
-      // event listener to update info once smell is clicked
-      $button.click(function() {
-        $("#cypher").val(smells[index].query);
-        drawSmells();
-        $("#smellName").text(smells[index].name);
-        $("#smellDescription").text("Description: " + smells[index].description);
-        $("#smellSolution").text("Solution: " + smells[index].solution);
-      });
-
-      $card.append($smellName, $button);
-      $("#smells-list").append($card);
+    // event listener to update info once smell is clicked
+    $button.click(function() {
+      $("#cypher").val(smells[index].query);
+      drawSmells();
+      $("#smellName").text(smells[index].name);
+      $("#smellDescription").text("Description: " + smells[index].description);
+      $("#smellSolution").text("Solution: " + smells[index].solution);
     });
+
+    $card.append($smellName, $button);
+    $("#smells-list").append($card);
   });
+  draw();
+});
 
   // -- Show Graph --
   $("#getAll").click(async function () {
@@ -248,7 +249,6 @@ $("#apply").click(async function () {
     });
     query = query.slice(0, query.length - 4);
     query += ") OPTIONAL MATCH (n)-[r]->(m) RETURN n, r";
-    console.log(query);
     $("#cypher").val(query);
     viz.stabilize();
     draw();
