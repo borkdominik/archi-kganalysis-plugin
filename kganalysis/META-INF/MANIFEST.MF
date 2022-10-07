@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  com.archimatetool.editor,
  com.archimatetool.editor.browser,
- com.archimatetool.csv,
  org.eclipse.ui.workbench,
  com.archimatetool.help,
  org.eclipse.help
