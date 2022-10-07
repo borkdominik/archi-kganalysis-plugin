@@ -14,12 +14,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.handlers.IHandlerService;
-import com.archimatetool.csv.export.CSVExporter;
 import com.archimatetool.editor.Logger;
 import com.archimatetool.model.IArchimateModel;
 import kganalysis.KGPlugin;
 import kganalysis.db.KGDatabase;
 import kganalysis.db.KGExporter;
+import kganalysis.views.SmellDetectionProvider;
 
 
 /**
@@ -56,7 +56,6 @@ public class ReloadModelHandler extends AbstractHandler {
 						(ex.getMessage() == null ? ex.toString() : ex.getMessage()));
 			}
 		}
-
 		return null;
 	}
 
@@ -65,7 +64,9 @@ public class ReloadModelHandler extends AbstractHandler {
 		return KGPlugin.getDefault().isGraphDbStarted();
 	}
 
+	
 	private static class ReloadModelThread implements IRunnableWithProgress {
+		
 		private IArchimateModel activeModel;
 
 		public ReloadModelThread(IArchimateModel activeModel) {
@@ -75,14 +76,12 @@ public class ReloadModelHandler extends AbstractHandler {
 		@Override
 		public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 			monitor.beginTask("Reloading active ArchiMate model into database", IProgressMonitor.UNKNOWN);
-			
 			try {
 				KGDatabase db = KGPlugin.INSTANCE.getKGDatabase();
 				db.removeData();
-				CSVExporter csvExporter = new CSVExporter(activeModel);
-				csvExporter.export(KGPlugin.KG_FOLDER);
 				KGExporter kgExporter = KGPlugin.INSTANCE.getExporter();
 				kgExporter.export(activeModel);
+				new SmellDetectionProvider();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -94,9 +93,7 @@ public class ReloadModelHandler extends AbstractHandler {
 			}
 
 			monitor.done();
-
 		}
-
 	}
 
 }
