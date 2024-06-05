@@ -14,7 +14,6 @@ import org.neo4j.configuration.connectors.BoltConnector;
 import org.neo4j.configuration.helpers.SocketAddress;
 import org.neo4j.dbms.api.DatabaseManagementService;
 import org.neo4j.dbms.api.DatabaseManagementServiceBuilder;
-import org.neo4j.exceptions.KernelException;
 import org.neo4j.gds.betweenness.BetweennessCentralityWriteProc;
 import org.neo4j.gds.degree.DegreeCentralityWriteProc;
 import org.neo4j.gds.labelpropagation.LabelPropagationWriteProc;
@@ -124,11 +123,11 @@ public class KGDatabase {
 				.resolveDependency(GlobalProcedures.class);
 		for (Class<?> procedure : procedures) {
 			try {
-				globalProcedures.registerProcedure(procedure, true);
-				globalProcedures.registerFunction(procedure, true);
-				globalProcedures.registerAggregationFunction(procedure, true);
-			} catch (KernelException e) {
-				throw new RuntimeException("while registering " + procedure, e);
+				globalProcedures.registerProcedure(procedure);
+				globalProcedures.registerFunction(procedure);
+				globalProcedures.registerAggregationFunction(procedure);
+			} catch (Exception e) {
+				throw new RuntimeException("Error while registering " + procedure, e);
 			}
 		}
 	}
