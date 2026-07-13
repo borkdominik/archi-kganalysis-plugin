@@ -5,7 +5,6 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -41,7 +40,7 @@ public class ReloadModelHandler extends AbstractHandler {
 
 			} catch (Exception ex) {
 
-				Logger.log(IStatus.ERROR, "Error reloading model", ex);
+				Logger.error("Error reloading model: " + ex.getMessage());
 				MessageDialog.openError(HandlerUtil.getActiveShell(event), "Error reloading Model",
 						(ex.getMessage() == null ? ex.toString() : ex.getMessage()));
 			}
@@ -51,7 +50,7 @@ public class ReloadModelHandler extends AbstractHandler {
 			try {
 				handlerService.executeCommand("kganalysis.command.showKGGraph", null);
 			} catch (Exception ex) {
-				Logger.log(IStatus.ERROR, "Error opening Knowledge Graph", ex);
+				Logger.error("Error opening Knowledge Graph: " + ex.getMessage());
 				MessageDialog.openError(HandlerUtil.getActiveShell(event), "Knowledge Graph Preview",
 						(ex.getMessage() == null ? ex.toString() : ex.getMessage()));
 			}

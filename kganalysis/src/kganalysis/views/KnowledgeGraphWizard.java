@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -84,7 +83,7 @@ public class KnowledgeGraphWizard extends Wizard {
 							MessageDialog.openInformation(getShell(), Messages.ExtendedReportsWizard_0, ex.getMessage());
 						}
 						*/
-						Logger.log(IStatus.ERROR, "Exception while creating Knowledge Graph.", ex);
+						Logger.error("Exception while creating Knowledge Graph: " + ex.getMessage());
 						MessageDialog.openError(getShell(), "Error! Could not create Knowledge Graph", ex.getMessage());
 					}
 				});

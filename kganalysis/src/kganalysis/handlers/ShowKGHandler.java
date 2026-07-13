@@ -22,7 +22,7 @@ public class ShowKGHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		if (PlatformUtils.isWindows() && !ArchiPlugin.PREFERENCES.getBoolean(IPreferenceConstants.EDGE_BROWSER)) {
+		if (PlatformUtils.isWindows() && !ArchiPlugin.getInstance().getPreferenceStore().getBoolean(IPreferenceConstants.EDGE_BROWSER)) {
 			MessageDialog.openError(HandlerUtil.getActiveShell(event), "Error opening Visualization", "Please enable the 'Use MS Edge' option in the Preferences to open the Knowledge Graph Visualization");
 			return null;
 		}

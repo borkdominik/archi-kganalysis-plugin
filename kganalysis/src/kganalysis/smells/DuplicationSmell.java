@@ -3,10 +3,7 @@ package kganalysis.smells;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 
@@ -14,12 +11,15 @@ import org.neo4j.graphdb.Transaction;
 public class DuplicationSmell extends AbstractSmell {
 
 	public final String LABEL = "Duplication";
-	public final String QUERY = "MATCH (a),(b) WHERE a<>b AND a.class = b.class AND apoc.text.jaroWinklerDistance(a.name, b.name)>0.9 "
-			+ "RETURN a, b, round(apoc.text.jaroWinklerDistance(a.name, b.name), 2) AS distance ORDER by distance DESC";
-
-	private enum RelTypes implements RelationshipType {
-		DUPLICATION
-	}
+	public final String QUERY = "MATCH (a),(b) "
+			+ "WHERE id(a) < id(b) AND a.class = b.class "
+			+ "AND a.name IS NOT NULL AND b.name IS NOT NULL "
+			+ "AND trim(a.name) <> '' AND trim(b.name) <> '' "
+			+ "WITH a, b, apoc.text.jaroWinklerDistance(toLower(trim(a.name)), toLower(trim(b.name))) AS distance "
+			+ "WHERE distance < 0.1 "
+			+ "MERGE (a)-[dup:DUPLICATION]->(b) "
+			+ "SET dup.weight = round(1.0 - distance, 2), a:Smell, b:Smell "
+			+ "RETURN a, b, dup.weight AS similarity ORDER BY similarity DESC";
 
 	public DuplicationSmell() {
 		super();
@@ -35,11 +35,7 @@ public class DuplicationSmell extends AbstractSmell {
 				
 				Node a = (Node) row.get("a");
 				Node b = (Node) row.get("b");
-				a.addLabel(Label.label("Smell"));
-				double score = (double) row.get("distance");
-				
-				Relationship duplication = a.createRelationshipTo(b, RelTypes.DUPLICATION);
-				duplication.setProperty("weight", score);
+				double score = ((Number) row.get("similarity")).doubleValue();
 
 				detected.add("'" + getName(a) + "' and '" + getName(b) + "' (" + score + ")");
 			}
